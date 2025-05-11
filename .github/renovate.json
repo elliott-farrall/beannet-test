@@ -1,0 +1,70 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:weekly",
+    "group:allNonMajor",
+    "group:allDigest",
+    ":automergeAll"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "docker-compose",
+    "nix"
+  ],
+  "nix": {
+    "enabled": true
+  },
+  "labels": [
+    "automated",
+    "dependencies"
+  ],
+  "packageRules": [
+    {
+      "description": "github actions",
+      "matchManagers": [
+        "github-actions"
+      ]
+    },
+    {
+      "description": "docker images",
+      "matchManagers": [
+        "docker-compose"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "systems/x86_64-linux/broad/services/compose.sh"
+        ]
+      }
+    },
+    {
+      "description": "ignore invalid dependencies",
+      "matchManagers": [
+        "nix"
+      ],
+      "matchPackageNames": [
+        "https://flakehub.com/f/**",
+        "https://nixos.org/channels/**/nixexprs.tar.xz"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "separate core flake inputs",
+      "matchManagers": [
+        "nix"
+      ],
+      "matchDepNames": [
+        "nixpkgs",
+        "home-manager"
+      ],
+      "groupName": "Core Flake Inputs",
+      "automerge": false
+    }
+  ],
+  "postUpgradeTasks": {
+    "commands": [
+      "nix fmt"
+    ],
+    "executionMode": "branch"
+  }
+}
