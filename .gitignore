@@ -1,0 +1,9 @@
+.direnv/
+.ruff_cache/
+.pre-commit-config.yaml
+
+result
+*.qcow2
+
+# nixago: ignore-linked-files
+/.editorconfig
