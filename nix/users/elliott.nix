@@ -13,7 +13,6 @@ in
     };
     roles.default.machines = {
       "lima".settings.user = "elliott";
-      "soy".settings.user = "elliott";
     };
   };
 
@@ -23,7 +22,8 @@ in
     imports = with modules; [
       nixos."greeter/tuigreet"
       nixos."desktop/hyprland"
-      nixos."file-manager/nemo"
+      nixos."programs/nemo"
+      nixos."programs/vscode"
     ];
 
     users.users.elliott = {
@@ -73,19 +73,11 @@ in
   flake.modules.homeManager."users/elliott" = { config, ... }: {
     imports = with modules; [
       homeManager."desktop/hyprland"
-      homeManager."file-manager/nemo"
-      homeManager."terminal/kitty"
-      homeManager."editor/vscode"
-      homeManager."web-browser/firefox"
+      homeManager."programs/nemo"
+      homeManager."programs/vscode"
+      homeManager."programs/zen"
+      homeManager."programs/kitty"
     ];
-
-    programs = {
-      discord.enable = true;
-      libreoffice.enable = true;
-      minecraft.enable = true;
-      obsidian.enable = true;
-      zotero.enable = true;
-    };
 
     wayland.windowManager.hyprland.settings = {
       exec-once = [

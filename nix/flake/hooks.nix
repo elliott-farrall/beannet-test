@@ -4,7 +4,7 @@
   imports = with inputs; [ git-hooks-nix.flakeModule ];
 
   perSystem = { pkgs, config, self', ... }: {
-    make-shells."beannet".inputsFrom = [ config.pre-commit.devShell ];
+    make-shells."bean".inputsFrom = [ config.pre-commit.devShell ];
 
     pre-commit.settings = {
       excludes = [
@@ -34,8 +34,6 @@
         check-vcs-permalinks.enable = true;
 
         # Git
-        gitlint.enable = true;
-        convco.enable = true;
         check-added-large-files.enable = true;
 
         # All

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."components/waybar" = { lib, pkgs, config, ... }:
+  flake.modules.homeManager."desktop/components/waybar" = { lib, pkgs, config, ... }:
     let
       inherit (config.stylix) fonts;
       inherit (config.lib.stylix) colors;

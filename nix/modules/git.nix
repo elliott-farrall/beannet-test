@@ -11,16 +11,6 @@
         persist = true;
       };
     };
-
-    clan.core.vars.generators."azure" = {
-      share = true;
-
-      prompts."key" = {
-        description = "Azure ssh key";
-        type = "multiline-hidden";
-        persist = true;
-      };
-    };
   };
 
   flake.modules.homeManager."default" = { nixosConfig, ... }: {
@@ -36,7 +26,6 @@
 
     programs.ssh.matchBlocks = {
       "github.com".identityFile = nixosConfig.clan.core.vars.generators."github".files."key".path;
-      "dev.azure.com".identityFile = nixosConfig.clan.core.vars.generators."azure".files."key".path;
     };
   };
 }

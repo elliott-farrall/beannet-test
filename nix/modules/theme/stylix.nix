@@ -26,25 +26,25 @@
 
         fonts = {
           serif = {
-            name = "Ubuntu Nerd Font";
-            package = pkgs.nerd-fonts.ubuntu;
+            name = "JetBrainsMono Nerd Font";
+            package = pkgs.nerd-fonts.jetbrains-mono;
           };
           sansSerif = {
-            name = "Ubuntu Nerd Font";
-            package = pkgs.nerd-fonts.ubuntu;
+            name = "JetBrainsMono Nerd Font";
+            package = pkgs.nerd-fonts.jetbrains-mono;
           };
           monospace = {
-            name = "UbuntuMono Nerd Font";
-            package = pkgs.nerd-fonts.ubuntu-mono;
+            name = "JetBrainsMono Nerd Font";
+            package = pkgs.nerd-fonts.jetbrains-mono;
           };
           emoji = {
             name = "Noto Color Emoji";
             package = pkgs.noto-fonts-color-emoji;
           };
           sizes = {
-            applications = 10;
-            desktop = 10;
-            popups = 10;
+            applications = 11;
+            desktop = 11;
+            popups = 11;
             terminal = 11;
           };
         };
@@ -57,7 +57,9 @@
     imports = with inputs; [ stylix.homeModules.stylix ];
 
     stylix = {
-      inherit (nixosConfig.stylix) enable base16Scheme image polarity cursor; # FIXME - inherit fonts in stylix config
+      inherit (nixosConfig.stylix) enable base16Scheme image polarity cursor;
+
+      fonts = { inherit (nixosConfig.stylix.fonts) serif sansSerif monospace emoji sizes; };
 
       iconTheme = {
         enable = true;

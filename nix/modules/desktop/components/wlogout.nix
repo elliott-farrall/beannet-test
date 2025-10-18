@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."components/wlogout" = { pkgs, config, ... }:
+  flake.modules.homeManager."desktop/components/wlogout" = { pkgs, config, ... }:
     let
       inherit (config.lib.stylix) colors;
       inherit (config) catppuccin;

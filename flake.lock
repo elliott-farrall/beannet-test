@@ -647,6 +647,27 @@
         "type": "github"
       }
     },
+    "home-manager_2": {
+      "inputs": {
+        "nixpkgs": [
+          "zen-browser",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752603129,
+        "narHash": "sha256-S+wmHhwNQ5Ru689L2Gu8n1OD6s9eU9n9mD827JNR+kw=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "e8c19a3cec2814c754f031ab3ae7316b64da085b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "import-tree": {
       "locked": {
         "lastModified": 1752730890,
@@ -982,7 +1003,8 @@
         "terranix": "terranix",
         "terranix-hcloud": "terranix-hcloud",
         "treefmt-nix": "treefmt-nix_2",
-        "vpn-confinement": "vpn-confinement"
+        "vpn-confinement": "vpn-confinement",
+        "zen-browser": "zen-browser"
       }
     },
     "rust-overlay": {
@@ -1226,6 +1248,27 @@
       "original": {
         "owner": "Maroka-chan",
         "repo": "VPN-Confinement",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "home-manager": "home-manager_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760818795,
+        "narHash": "sha256-dOpzApjgTFlBTWmb1AFtV2W41H1xpNzEMD2OHVMs6rM=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "b121d5d8212364b90757fd17d9c75c50f9e824da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

@@ -4,7 +4,7 @@
   imports = with inputs; [ clan-core.flakeModules.default ];
 
   perSystem = { inputs', ... }: {
-    make-shells."beannet".packages = with inputs'.clan-core.packages; [
+    make-shells."bean".packages = with inputs'.clan-core.packages; [
       clan-app
       clan-cli
       clan-vm-manager # Seems broken
@@ -13,7 +13,7 @@
   };
 
   flake.clan = {
-    meta.name = "beannet";
+    meta.name = "beans";
     pkgsForSystem = system: withSystem system (builtins.getAttr "pkgs");
     specialArgs = { inherit (config.flake) lib; inherit (inputs) self; };
   };

@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  flake.modules.nixos."shell/zsh" = { ... }: {
+  flake.modules.nixos."shell/bash" = { ... }: {
     home-manager.sharedModules = with config.flake.modules; [ homeManager."shell/bash" ];
   };
 

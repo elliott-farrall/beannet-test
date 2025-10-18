@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."components/swaync" = { lib, config, ... }:
+  flake.modules.homeManager."desktop/components/swaync" = { lib, config, ... }:
     let
       inherit (config.lib.stylix) colors;
       accent = colors.${config.catppuccin.accentBase16};

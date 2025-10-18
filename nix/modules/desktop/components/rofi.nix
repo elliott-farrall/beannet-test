@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."components/rofi" = { lib, pkgs, config, ... }:
+  flake.modules.homeManager."desktop/components/rofi" = { lib, pkgs, config, ... }:
     let
       # TODO - Move to overlay
       package = pkgs.symlinkJoin {
