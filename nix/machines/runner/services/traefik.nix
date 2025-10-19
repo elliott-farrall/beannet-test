@@ -51,7 +51,7 @@
       };
     };
 
-    preservation.preserveAt.state.directories = [
+    environment.persistence.state.directories = [
       config.services.traefik.dataDir
     ];
 

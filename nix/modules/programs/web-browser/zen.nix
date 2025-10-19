@@ -28,5 +28,7 @@
     programs.waybar.settings.mainBar."hyprland/workspaces".window-rewrite = lib.mkIf config.programs.waybar.enable {
       "zen" = "󰖟";
     };
+
+    home.persistence.state.directories = [ ".zen" ];
   };
 }

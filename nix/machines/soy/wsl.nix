@@ -12,6 +12,8 @@
     programs.nix-ld.enable = true;
 
     # FIXME - Need better fix for WSL file system
-    preservation.enable = lib.mkForce false;
+    environment.persistence.data.enable = lib.mkForce false;
+    environment.persistence.state.enable = lib.mkForce false;
+    environment.persistence.log.enable = lib.mkForce false;
   };
 }

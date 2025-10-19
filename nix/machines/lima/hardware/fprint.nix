@@ -2,7 +2,7 @@
 
 {
   flake.clan.machines."lima" = { ... }: {
-    preservation.preserveAt.state.directories = [
+    environment.persistence.state.directories = [
       "/var/lib/fprint"
     ];
   };

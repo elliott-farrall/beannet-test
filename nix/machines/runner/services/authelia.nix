@@ -81,7 +81,7 @@
       runtimeInputs = with pkgs; [ openssl ];
     };
 
-    preservation.preserveAt.state.directories = [
+    environment.persistence.state.directories = [
       "/var/lib/authelia-auth"
     ];
   };

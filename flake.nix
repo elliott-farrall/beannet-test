@@ -54,8 +54,8 @@ rec {
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
     };
-    preservation = {
-      url = "github:nix-community/preservation";
+    impermanence = {
+      url = "github:nix-community/impermanence";
     };
     terranix-hcloud = {
       url = "github:elliott-farrall/terranix-hcloud/fix-provisioner";

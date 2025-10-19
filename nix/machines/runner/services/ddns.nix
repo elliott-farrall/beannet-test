@@ -59,7 +59,7 @@
       '';
     };
 
-    preservation.preserveAt.state.directories = [
+    environment.persistence.state.directories = [
       { directory = "/var/lib/private/ddns-updater"; mode = "0700"; }
     ];
   };

@@ -50,7 +50,7 @@
       runtimeInputs = with pkgs; [ openssl ];
     };
 
-    preservation.preserveAt.data.directories = [
+    environment.persistence.data.directories = [
       { directory = "/var/lib/private/lldap"; mode = "0700"; }
     ];
   };
