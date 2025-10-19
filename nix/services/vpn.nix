@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.clan.inventory.instances."beannet" = {
+  flake.clan.inventory.instances."beans" = {
     module = {
       name = "zerotier";
       input = "clan-core";

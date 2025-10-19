@@ -7,7 +7,7 @@ let
     (name: _machine: {
       hostname = "${name}.bean";
       user = "root";
-      identityFile = "~/.ssh/credentials/${name}";
+      identityFile = "~/.ssh/credentials/root";
       proxyJump = "beanbag";
     })
     machines;
@@ -29,9 +29,15 @@ in
         beanbag = {
           hostname = "ssh.bean.directory";
           user = "root";
-          identityFile = "~/.ssh/credentials/runner";
+          identityFile = "~/.ssh/credentials/root";
         };
       };
+    };
+
+    sops.secrets."root-private-key" = {
+      sopsFile = "${config.clan.directory}/vars/shared/root/private-key/secret";
+      path = ".ssh/credentials/root";
+      format = "binary";
     };
   };
 }

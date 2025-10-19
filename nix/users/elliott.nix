@@ -46,20 +46,6 @@ in
     };
 
     home-manager.users.elliott.imports = with modules; [ homeManager."users/elliott" ];
-
-    # system.activationScripts = lib.mapAttrs'
-    #   (name: machine: {
-    #     name = "ssh-root-key-${name}";
-    #     value = ''
-    #       [[ -d /home/elliott/.ssh/credentials ]] || /home/elliott/.ssh/credentials
-    #       chown elliott:users /home/elliott/.ssh/credentials
-    #       chmod 700 /home/elliott/.ssh/credentials
-    #       cp ${machine.config.clan.core.vars.generators."root".files."private-key".path} /home/elliott/.ssh/credentials/${name}
-    #       chown elliott:users /home/elliott/.ssh/credentials/${name}
-    #       chmod 600 /home/elliott/.ssh/credentials/${name}
-    #     '';
-    #   })
-    #   machines; # TODO - Come up with better way to generate keys in user area
   };
 
   flake.modules.homeManager."users/elliott" = { config, ... }: {
