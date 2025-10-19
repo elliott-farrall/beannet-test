@@ -3,14 +3,28 @@
 let
   machines = config.flake.clan.nixosConfigurations;
 
-  beanBlocks = lib.mapAttrs
+  beanBlocks = lib.mapAttrs'
     (name: _machine: {
-      hostname = "${name}.bean";
-      user = "root";
-      identityFile = "~/.ssh/credentials/root";
-      proxyJump = "beanbag";
+      name = "${name}.bean";
+      value = {
+        hostname = "${name}.bean";
+        user = "root";
+        identityFile = "~/.ssh/credentials/root";
+        proxyJump = "beanbag";
+      };
     })
     machines;
+
+  vpnBlocks = lib.mapAttrs'
+    (_name: machine: {
+      name = machine.config.clan.core.vars.generators.zerotier.files.zerotier-ip.value;
+      value = {
+        user = "root";
+        identityFile = "~/.ssh/credentials/root";
+      };
+    })
+    machines;
+
 in
 {
   flake.modules.nixos."default" = { lib, ... }: {
@@ -25,8 +39,8 @@ in
 
     programs.ssh = {
       enable = true;
-      matchBlocks = beanBlocks // {
-        beanbag = {
+      matchBlocks = beanBlocks // vpnBlocks // {
+        "beanbag" = {
           hostname = "ssh.bean.directory";
           user = "root";
           identityFile = "~/.ssh/credentials/root";

@@ -11,7 +11,7 @@
 
         settings = {
           server = [ "1.1.1.1" "1.0.0.1" ];
-          address = lib.mapAttrsToList (name: machine: "/${name}.bean/${machine.config.clan.core.vars.generators.zerotier.files.zerotier-ip.value}") machines;
+          host-record = lib.mapAttrsToList (name: machine: "${name},${name}.bean,${machine.config.clan.core.vars.generators.zerotier.files.zerotier-ip.value}") machines;
         };
       };
 
