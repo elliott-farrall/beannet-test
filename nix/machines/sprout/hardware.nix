@@ -1,7 +1,17 @@
-{ ... }:
+{ inputs, config, ... }:
 
+with inputs.nixos-hardware.nixosModules;
 {
   flake.clan.machines."sprout" = { ... }: {
+    imports = with config.flake.modules; [
+      common-pc
+      common-pc-ssd
+      common-cpu-intel-cpu-only
+      nixos."disks/zfs"
+    ];
+
+    disko.devices.disk."main".device = "/dev/disk/by-id/ata-NGFF_2280_512GB_SSD_20241017101421";
+
     systemd.network.links = {
       "10-ont" = {
         linkConfig.Name = "ont";

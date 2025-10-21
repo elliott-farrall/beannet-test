@@ -3,7 +3,8 @@
 {
   flake.clan.machines."sprout" = { lib, ... }: {
     imports = with config.flake.modules; [
-      nixos."machines/_server"
+      nixos."default"
+      nixos."shell/zsh"
       nixos."machines/sprout"
     ];
 

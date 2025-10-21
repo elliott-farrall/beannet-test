@@ -3,7 +3,9 @@
 {
   flake.clan.machines."lima" = { ... }: {
     imports = with config.flake.modules; [
-      nixos."machines/_workstation"
+      nixos."default"
+      nixos."shell/zsh"
+      nixos."users/elliott"
     ];
 
     clan.core.deployment.requireExplicitUpdate = true;

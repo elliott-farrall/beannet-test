@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos."machines/soy" = { lib, ... }: {
+  flake.clan.machines."soy" = { lib, ... }: {
     imports = with inputs; [ nixos-wsl.nixosModules.default ];
 
     wsl = {
