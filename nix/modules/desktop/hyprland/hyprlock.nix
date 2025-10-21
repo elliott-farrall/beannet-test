@@ -86,6 +86,7 @@ in
         };
       };
 
+      catppuccin.hyprlock.useDefaultConfig = false;
       stylix.targets.hyprlock.useWallpaper = false;
     };
 }
