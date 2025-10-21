@@ -6,10 +6,15 @@
       name = "zerotier";
       input = "clan-core";
     };
-    roles = {
-      controller.machines."runner" = { };
-      peer.tags."all" = { };
-      moon = { };
+
+    roles.controller = {
+      machines."runner" = { };
     };
+
+    roles.peer = {
+      tags."all" = { };
+    };
+
+    roles.moon = { };
   };
 }
