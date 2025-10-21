@@ -3,12 +3,12 @@
 {
   flake.modules.nixos."default" = { lib, config, ... }:
     let
-      cfg = config.display;
+      cfg = config.devices.display;
       inherit (cfg) width height scale;
     in
     {
       options = {
-        display = {
+        devices.display = {
           enable = lib.mkEnableOption "display configuration";
           output = lib.mkOption {
             description = "Output of the display.";
@@ -48,7 +48,7 @@
 
   flake.modules.homeManager."default" = { lib, config, nixosConfig, ... }:
     let
-      cfg = nixosConfig.display;
+      cfg = nixosConfig.devices.display;
       inherit (cfg) output width height refresh scale;
     in
     {

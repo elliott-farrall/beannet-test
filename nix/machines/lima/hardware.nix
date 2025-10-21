@@ -6,14 +6,15 @@ with inputs.nixos-hardware.nixosModules;
     imports = with config.flake.modules; [
       framework-12th-gen-intel
       nixos."disks/zfs"
-      nixos."devices/audio"
-      nixos."devices/bluetooth"
-      nixos."devices/printing"
     ];
 
     disko.devices.disk."main".device = "/dev/disk/by-id/nvme-Samsung_SSD_970_PRO_512GB_S463NF0K800096J";
 
-    display = {
+    devices.audio.enable = true;
+    devices.bluetooth.enable = true;
+    devices.printing.enable = true;
+
+    devices.display = {
       enable = true;
       output = "eDP-1";
 
