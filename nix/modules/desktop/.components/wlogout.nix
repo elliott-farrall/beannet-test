@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."desktop/components/wlogout" = { pkgs, config, ... }:
+  flake.modules.homeManager."default" = { lib, pkgs, config, ... }:
     let
       inherit (config.lib.stylix) colors;
       inherit (config) catppuccin;
@@ -16,69 +16,75 @@
       icons = "${repo}/icons/wlogout/${catppuccin.flavor}/${catppuccin.accent}";
     in
     {
-      programs.wlogout = {
-        enable = true;
-
-        style = /*css*/''
-          @define-color accent #${accent};
-
-          @define-color mantle ${colors.withHashtag.base01};
-          @define-color surface0 ${colors.withHashtag.base02};
-          @define-color text ${colors.withHashtag.base05};
-
-          * {
-            background-image: none;
-            box-shadow: none;
-          }
-
-          window {
-            background-color: rgba(36, 39, 58, 0.90);
-          }
-
-          button {
-            border-radius: 0;
-            border-color: @accent;
-            text-decoration-color: @text;
-            color: @text;
-            background-color: @mantle;
-            border-style: solid;
-            border-width: 1px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 25%;
-          }
-
-          button:focus, button:active, button:hover {
-            background-color: @surface0;
-            outline-style: none;
-          }
-
-          #lock {
-            background-image: url("${icons}/lock.svg");
-          }
-
-          #logout {
-            background-image: url("${icons}/logout.svg");
-          }
-
-          #suspend {
-            background-image: url("${icons}/suspend.svg");
-          }
-
-          #hibernate {
-            background-image: url("${icons}/hibernate.svg");
-          }
-
-          #shutdown {
-            background-image: url("${icons}/shutdown.svg");
-          }
-
-          #reboot {
-            background-image: url("${icons}/reboot.svg");
-          }
-        '';
+      options = {
+        desktop.components.wlogout.enable = lib.mkEnableOption "the wlogout desktop component";
       };
 
-      catppuccin.wlogout.enable = false;
+      config = lib.mkIf config.desktop.components.wlogout.enable {
+        programs.wlogout = {
+          enable = true;
+
+          style = /*css*/''
+            @define-color accent #${accent};
+
+            @define-color mantle ${colors.withHashtag.base01};
+            @define-color surface0 ${colors.withHashtag.base02};
+            @define-color text ${colors.withHashtag.base05};
+
+            * {
+              background-image: none;
+              box-shadow: none;
+            }
+
+            window {
+              background-color: rgba(36, 39, 58, 0.90);
+            }
+
+            button {
+              border-radius: 0;
+              border-color: @accent;
+              text-decoration-color: @text;
+              color: @text;
+              background-color: @mantle;
+              border-style: solid;
+              border-width: 1px;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: 25%;
+            }
+
+            button:focus, button:active, button:hover {
+              background-color: @surface0;
+              outline-style: none;
+            }
+
+            #lock {
+              background-image: url("${icons}/lock.svg");
+            }
+
+            #logout {
+              background-image: url("${icons}/logout.svg");
+            }
+
+            #suspend {
+              background-image: url("${icons}/suspend.svg");
+            }
+
+            #hibernate {
+              background-image: url("${icons}/hibernate.svg");
+            }
+
+            #shutdown {
+              background-image: url("${icons}/shutdown.svg");
+            }
+
+            #reboot {
+              background-image: url("${icons}/reboot.svg");
+            }
+          '';
+        };
+
+        catppuccin.wlogout.enable = false;
+      };
     };
 }

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."profiles/uos" = { lib, pkgs, config, ... }: {
+  flake.modules.nixos."extensions/uos" = { lib, pkgs, config, ... }: {
     networking.networkmanager.ensureProfiles = lib.mkIf config.networking.networkmanager.enable {
       environmentFiles = [ config.clan.core.vars.generators."uos".files."env".path ];
       profiles.eduroam = {

@@ -16,6 +16,10 @@
     meta.name = "beans";
     pkgsForSystem = system: withSystem system (builtins.getAttr "pkgs");
     specialArgs = { inherit (config.flake) lib; inherit (inputs) self; };
+
+    inventory.tags = {
+      laptop = [ "lima" ];
+    };
   };
 
   # TODO - Come up with better fix for pkgs inheritance
