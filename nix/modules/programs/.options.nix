@@ -4,7 +4,7 @@
   flake.modules.homeManager."default" = { lib, config, ... }: {
     options = {
       desktop.wmIcons = lib.mkOption {
-        type = lib.types.attrsOf lib.types.string;
+        type = lib.types.attrsOf lib.types.str;
         description = "Icons for window manager workspace indicators.";
         default = { };
       };
