@@ -15,14 +15,12 @@
     };
   };
 
-  flake.modules.homeManager."programs/nemo" = { lib, pkgs, config, ... }: {
+  flake.modules.homeManager."programs/nemo" = { pkgs, ... }: {
     home.packages = with pkgs; [
       nemo-with-extensions
       nemo-fileroller
     ];
 
-    programs.waybar.settings.mainBar."hyprland/workspaces".window-rewrite = lib.mkIf config.programs.waybar.enable {
-      "nemo" = "󰪶";
-    };
+    desktop.wmIcons."nemo" = "󰪶";
   };
 }

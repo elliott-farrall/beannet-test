@@ -13,7 +13,10 @@
       }
     ];
 
-    home.sessionVariables.NIXOS_OZONE_WL = 1;
+    wayland.windowManager.hyprland.extraConfig = ''
+      env = NIXOS_OZONE_WL, 1
+      env = ELECTRON_OZONE_PLATFORM_HINT, auto
+    '';
 
     xdg.portal = {
       enable = true;

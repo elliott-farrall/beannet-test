@@ -18,12 +18,10 @@ in
       Default=1
     '';
 
+    desktop.wmIcons."zotero" = "󰰸";
+
     wayland.windowManager.hyprland.settings.windowrulev2 = lib.mkIf config.wayland.windowManager.hyprland.enable [
       "float, class:(Zotero), title:(Progress)"
     ];
-
-    programs.waybar.settings.mainBar."hyprland/workspaces".window-rewrite = lib.mkIf config.programs.waybar.enable {
-      "zotero" = "󰰸";
-    };
   };
 }

@@ -1,13 +1,11 @@
 { ... }:
 
 {
-  flake.modules.homeManager."programs/obsidian" = { lib, config, ... }: {
-    xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "obsidian.desktop" [
-      "text/markdown"
-    ];
+  flake.modules.homeManager."programs/obsidian" = { lib, ... }: {
+    programs.obsidian.enable = true;
 
-    programs.waybar.settings.mainBar."hyprland/workspaces".window-rewrite = lib.mkIf config.programs.waybar.enable {
-      "obsidian" = "";
-    };
+    xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "obsidian.desktop" builtins.fromJSON.associations.json.notes;
+
+    desktop.wmIcons."obsidian" = "";
   };
 }

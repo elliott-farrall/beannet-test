@@ -22,10 +22,6 @@
       powerOnBoot = true;
     };
 
-    /* ---------------------------------- Games --------------------------------- */
-
-    programs.steam.enable = true;
-
     /* -------------------------------- Printing -------------------------------- */
 
     services.printing.enable = true;

@@ -8,9 +8,9 @@
 
     home-manager = {
       useGlobalPkgs = true;
-      useUserPackages = true;
       extraSpecialArgs = specialArgs;
       sharedModules = with config.flake.modules; [ homeManager."default" ];
+      backupFileExtension = "hmbak";
     };
   };
 

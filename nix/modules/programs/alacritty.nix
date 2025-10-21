@@ -6,8 +6,6 @@
 
     home.sessionVariables.TERMINAL = lib.getExe config.programs.alacritty.package;
 
-    programs.waybar.settings.mainBar."hyprland/workspaces".window-rewrite = lib.mkIf config.programs.waybar.enable {
-      "alacritty" = "󰆍";
-    };
+    desktop.wmIcons."alacritty" = "󰆍";
   };
 }
