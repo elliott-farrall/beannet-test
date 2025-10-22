@@ -1,8 +1,8 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
-    clan.core.settings.state-version.enable = true;
+  flake.modules.nixos."default" = { lib, ... }: {
+    clan.core.settings.state-version.enable = lib.mkDefault true;
   };
 
   flake.modules.homeManager."default" = { nixosConfig, ... }: {

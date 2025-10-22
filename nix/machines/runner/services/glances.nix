@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/runner" = { config, ... }: {
+  flake.clan.machines."runner" = { config, ... }: {
     beannet.services."glances" = {
       port = 61208;
     };

@@ -5,7 +5,7 @@ let
   inherit (config.flake) modules;
 in
 {
-  flake.clan.inventory.instances."elliott-user" = {
+  flake.clan.inventory.instances."elliott" = {
     module = {
       name = "users";
       input = "clan-core";

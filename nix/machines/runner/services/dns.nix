@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  flake.modules.nixos."machines/runner" = { lib, ... }:
+  flake.clan.machines."runner" = { lib, ... }:
     let
       machines = config.flake.clan.nixosConfigurations;
     in

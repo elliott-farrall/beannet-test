@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/sprout" = { lib, config, ... }: {
+  flake.clan.machines."sprout" = { lib, config, ... }: {
     services.pppd = {
       enable = true;
       peers."isp".enable = true;

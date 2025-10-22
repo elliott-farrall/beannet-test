@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/runner" = { lib, pkgs, config, ... }: {
+  flake.clan.machines."runner" = { lib, pkgs, config, ... }: {
     beannet.services."lldap" = {
       port = 17170;
     };

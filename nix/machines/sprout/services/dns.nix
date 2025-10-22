@@ -4,7 +4,7 @@ let
   subnet = "10.0.0";
 in
 {
-  flake.modules.nixos."machines/sprout" = { ... }: {
+  flake.clan.machines."sprout" = { ... }: {
     services.dnsmasq = {
       enable = true;
 

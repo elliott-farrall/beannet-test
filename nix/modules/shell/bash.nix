@@ -1,11 +1,23 @@
 { config, ... }:
 
 {
-  flake.modules.nixos."shell/bash" = { ... }: {
-    home-manager.sharedModules = with config.flake.modules; [ homeManager."shell/bash" ];
+  flake.modules.nixos."default" = { lib, ... }: {
+    imports = with config.flake.modules; [ nixos."shell/bash" ];
+
+    options = {
+      shell.bash.enable = lib.mkEnableOption "bash";
+    };
+  };
+
+  flake.modules.nixos."shell/bash" = { lib, config, ... }: {
+    config = lib.mkIf config.shell.bash.enable {
+      home-manager.sharedModules = with config.flake.modules; [ homeManager."shell/bash" ];
+    };
   };
 
   flake.modules.homeManager."shell/bash" = { ... }: {
-    programs.bash.enable = true;
+    config = {
+      programs.bash.enable = true;
+    };
   };
 }

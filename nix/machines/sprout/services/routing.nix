@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/sprout" = { ... }: {
+  flake.clan.machines."sprout" = { ... }: {
     networking = {
       firewall.enable = true;
 

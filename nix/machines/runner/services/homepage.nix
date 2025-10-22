@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/runner" = { lib, config, ... }: {
+  flake.clan.machines."runner" = { lib, config, ... }: {
     beannet.services."homepage" = {
       port = 8082;
     };

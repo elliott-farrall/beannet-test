@@ -18,7 +18,10 @@
     specialArgs = { inherit (config.flake) lib; inherit (inputs) self; };
 
     inventory.tags = {
+      installer = [ "kidney" ];
       laptop = [ "lima" ];
+      server = [ "runner" "sprout" "broad" ];
+      wsl = [ "soy" ];
     };
   };
 

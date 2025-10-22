@@ -1,19 +1,34 @@
 { config, ... }:
 
+let
+  inherit (config.flake) modules;
+in
 {
-  flake.modules.nixos."shell/zsh" = { pkgs, ... }: {
-    home-manager.sharedModules = with config.flake.modules; [ homeManager."shell/zsh" ];
+  flake.modules.nixos."default" = { lib, ... }: {
+    imports = with modules; [ nixos."shell/zsh" ];
 
-    users.defaultUserShell = pkgs.zsh;
+    options = {
+      shell.zsh.enable = lib.mkEnableOption "zsh";
+    };
+  };
 
-    programs.zsh.enable = true;
-    environment.pathsToLink = [ "/share/zsh" ]; # Allows completion for system packages
+  flake.modules.nixos."shell/zsh" = { lib, pkgs, config, ... }: {
+    config = lib.mkIf config.shell.zsh.enable {
+      home-manager.sharedModules = with modules; [ homeManager."shell/zsh" ];
+
+      users.defaultUserShell = pkgs.zsh;
+
+      programs.zsh.enable = true;
+      environment.pathsToLink = [ "/share/zsh" ]; # Allows completion for system packages
+    };
   };
 
   flake.modules.homeManager."shell/zsh" = { ... }: {
-    programs.zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
+    config = {
+      programs.zsh = {
+        enable = true;
+        syntaxHighlighting.enable = true;
+      };
     };
   };
 }

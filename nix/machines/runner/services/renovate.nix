@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/runner" = { lib, pkgs, config, ... }: {
+  flake.clan.machines."runner" = { lib, pkgs, config, ... }: {
     services.renovate = {
       enable = false; # FIXME - currently broken
       package = pkgs.renovate.overrideAttrs (attrs: rec {

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."machines/sprout" = { config, ... }: {
+  flake.clan.machines."sprout" = { config, ... }: {
     services.hostapd = {
       enable = false; # Not needed when using mesh
 

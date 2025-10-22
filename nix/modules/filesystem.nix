@@ -38,7 +38,7 @@
       allowOther = true;
       persistentStoragePath = "/pst/data/home/${config.home.username}";
 
-      directories = [ "Downloads" ];
+      directories = [{ directory = "Downloads"; method = "symlink"; }];
     };
 
     home.persistence.state = {
