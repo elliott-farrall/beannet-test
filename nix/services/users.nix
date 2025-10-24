@@ -16,7 +16,6 @@ in
 
       settings = {
         user = "elliott";
-        share = true;
         prompt = true;
 
         groups = [

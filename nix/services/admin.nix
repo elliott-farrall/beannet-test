@@ -14,14 +14,20 @@
 
       extraModules = [
         {
-          clan.core.vars.generators."root" = {
-            share = true;
-
+          clan.core.vars.generators."root-ssh-key" = {
             prompts."private-key" = {
               description = "root user private ssh key";
               type = "multiline-hidden";
               persist = true;
             };
+            files."private-key".secret = true;
+
+            prompts."public-key" = {
+              description = "root user public ssh key";
+              type = "line";
+              persist = true;
+            };
+            files."public-key".secret = false;
           };
         }
       ];
