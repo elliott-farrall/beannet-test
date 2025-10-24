@@ -54,6 +54,7 @@ in
       applications.nemo.enable = true;
       applications.vscode.enable = true;
 
+      wsl.defaultUser = "elliott";
       home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
     };
   };
