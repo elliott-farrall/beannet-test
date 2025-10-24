@@ -3,24 +3,35 @@
 let
   machines = config.flake.clan.nixosConfigurations;
 
+  root-private-keys = lib.mapAttrs'
+    (name: _machine: {
+      name = "${name}-root-private-key";
+      value = {
+        sopsFile = "${config.clan.directory}/vars/per-machine/${name}/root-ssh-key/private-key/secret";
+        path = ".ssh/credentials/${name}-root";
+        format = "binary";
+      };
+    })
+    machines;
+
   beanBlocks = lib.mapAttrs'
     (name: _machine: {
       name = "${name}.bean";
       value = {
         hostname = "${name}.bean";
         user = "root";
-        identityFile = "~/.ssh/credentials/root";
+        identityFile = "~/.ssh/credentials/${name}-root";
         proxyJump = "beanbag";
       };
     })
     machines;
 
   vpnBlocks = lib.mapAttrs'
-    (_name: machine: {
+    (name: machine: {
       name = machine.config.clan.core.vars.generators.zerotier.files.zerotier-ip.value;
       value = {
         user = "root";
-        identityFile = "~/.ssh/credentials/root";
+        identityFile = "~/.ssh/credentials/${name}-root";
       };
     })
     machines;
@@ -43,15 +54,11 @@ in
         "beanbag" = {
           hostname = "ssh.bean.directory";
           user = "root";
-          identityFile = "~/.ssh/credentials/root";
+          identityFile = "~/.ssh/credentials/runner-root";
         };
       };
     };
 
-    sops.secrets."root-private-key" = {
-      sopsFile = "${config.clan.directory}/vars/shared/root/private-key/secret";
-      path = ".ssh/credentials/root";
-      format = "binary";
-    };
+    sops.secrets = root-private-keys;
   };
 }
