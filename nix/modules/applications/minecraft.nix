@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }: {
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }: {
     options = {
       applications.minecraft.enable = pkgs.lib.mkEnableOption "the Minecraft application";
     };

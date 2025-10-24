@@ -27,14 +27,14 @@ let
 
 in
 {
-  flake.modules.nixos."default" = { lib, ... }: {
+  flake.modules.nixos.default = { lib, ... }: {
     services.openssh.settings = {
       PermitRootLogin = "yes";
       PasswordAuthentication = lib.mkForce true;
     };
   };
 
-  flake.modules.homeManager."default" = { ... }: {
+  flake.modules.homeManager.default = { ... }: {
     services.ssh-agent.enable = true;
 
     programs.ssh = {

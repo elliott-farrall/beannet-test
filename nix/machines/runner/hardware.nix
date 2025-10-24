@@ -1,10 +1,11 @@
 { inputs, config, ... }:
 
 with inputs.nixos-hardware.nixosModules;
+with config.flake.modules.nixos;
 {
   flake.clan.machines."runner" = { lib, ... }: {
-    imports = with config.flake.modules; [
-      nixos."disks/zfs"
+    imports = [
+      disks-zfs
     ];
 
     disko.devices.disk."main".device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_101411942";

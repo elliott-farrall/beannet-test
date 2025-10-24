@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
+  flake.modules.nixos.default = { ... }: {
     imports = with inputs; [ impermanence.nixosModules.impermanence ];
 
     programs.fuse.userAllowOther = true; # Enables --allow-other in mounts;
@@ -28,7 +28,7 @@
     };
   };
 
-  flake.modules.homeManager."default" = { config, ... }: {
+  flake.modules.homeManager.default = { config, ... }: {
     imports = with inputs; [ impermanence.homeManagerModules.impermanence ];
 
     programs.rclone.enable = true;

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     options = {
       applications.foot.enable = lib.mkEnableOption "the Foot application";
     };

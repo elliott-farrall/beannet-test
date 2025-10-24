@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     options = {
       desktop.components.swayosd.enable = lib.mkEnableOption "the swayosd desktop component";
     };

@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos."disks/zfs" = { pkgs, config, ... }: {
+  flake.modules.nixos.disks-zfs = { pkgs, config, ... }: {
     imports = with inputs; [ chaotic.nixosModules.zfs-impermanence-on-shutdown ];
 
     networking.hostId = builtins.substring 0 8 (builtins.hashString "md5" config.system.name);

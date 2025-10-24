@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }: {
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }: {
     options = {
       applications.davinci-resolve.enable = pkgs.lib.mkEnableOption "the DaVinci Resolve application";
     };

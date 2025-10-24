@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     options = {
       applications.kitty.enable = lib.mkEnableOption "the Kitty application";
     };

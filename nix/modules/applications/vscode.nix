@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos."default" = { lib, config, ... }: {
+  flake.modules.nixos.default = { lib, config, ... }: {
     options = {
       applications.vscode.enable = lib.mkEnableOption "the Visual Studio Code application";
     };
@@ -15,7 +15,7 @@
     };
   };
 
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }:
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }:
     let
       inherit (config.catppuccin) flavor;
     in

@@ -4,7 +4,7 @@ let
   toBytesString = gb: toString (gb * 1024 * 1024 * 1024);
 in
 {
-  flake.modules.nixos."default" = { lib, ... }: {
+  flake.modules.nixos.default = { lib, ... }: {
     documentation.nixos.enable = false;
 
     nix = {

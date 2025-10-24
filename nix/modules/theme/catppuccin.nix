@@ -13,7 +13,7 @@ let
   };
 in
 {
-  flake.modules.nixos."default" = { lib, config, ... }: {
+  flake.modules.nixos.default = { lib, config, ... }: {
     imports = with inputs; [ catppuccin.nixosModules.catppuccin ];
 
     options.catppuccin = {
@@ -32,7 +32,7 @@ in
     };
   };
 
-  flake.modules.homeManager."default" = { lib, config, nixosConfig, ... }: {
+  flake.modules.homeManager.default = { lib, config, nixosConfig, ... }: {
     imports = with inputs; [ catppuccin.homeModules.catppuccin ];
 
     options.catppuccin = {

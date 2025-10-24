@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, pkgs, config, ... }:
+  flake.modules.nixos.default = { lib, pkgs, config, ... }:
     let
       inherit (config.clan.core.vars.generators."dockerhub") files;
 

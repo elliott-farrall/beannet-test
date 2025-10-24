@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
+  flake.modules.nixos.default = { ... }: {
     console.useXkbConfig = true;
     services.kmscon.useXkbConfig = true;
 

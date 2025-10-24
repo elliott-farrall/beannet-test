@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
+  flake.modules.nixos.default = { ... }: {
     services.kmscon.enable = true;
   };
 }

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }:
+  flake.modules.homeManager.default = { lib, config, ... }:
     let
       entryDirectory = "${config.home.homeDirectory}/.local/state/nix/profile/share/applications";
     in

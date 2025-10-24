@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, pkgs, config, ... }: {
+  flake.modules.nixos.default = { lib, pkgs, config, ... }: {
     options = {
       applications.nemo.enable = pkgs.lib.mkEnableOption "the Nemo application";
     };
@@ -21,7 +21,7 @@
     };
   };
 
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }: {
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }: {
     options = {
       applications.nemo.enable = pkgs.lib.mkEnableOption "the Nemo application";
     };

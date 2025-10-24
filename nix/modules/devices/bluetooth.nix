@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, config, ... }: {
+  flake.modules.nixos.default = { lib, config, ... }: {
     options = {
       devices.bluetooth.enable = lib.mkEnableOption "bluetooth";
     };

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     options = {
       applications.wezterm.enable = lib.mkEnableOption "the WezTerm application";
     };

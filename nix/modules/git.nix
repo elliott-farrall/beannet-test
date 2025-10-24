@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
+  flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."github" = {
       share = true;
 
@@ -13,7 +13,7 @@
     };
   };
 
-  flake.modules.homeManager."default" = { nixosConfig, ... }: {
+  flake.modules.homeManager.default = { nixosConfig, ... }: {
     programs.git = {
       enable = true;
       userName = "Elliott Farrall";

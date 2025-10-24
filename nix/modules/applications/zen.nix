@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     imports = with inputs; [ zen-browser.homeModules.default ];
 
     options = {

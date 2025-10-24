@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { ... }: {
+  flake.modules.nixos.default = { ... }: {
     boot = {
       kernelParams = [ "boot.shell_on_fail" ];
 

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, config, ... }:
+  flake.modules.nixos.default = { lib, config, ... }:
     let
       cfg = config.devices.display;
       inherit (cfg) width height scale;
@@ -46,7 +46,7 @@
       };
     };
 
-  flake.modules.homeManager."default" = { lib, config, nixosConfig, ... }:
+  flake.modules.homeManager.default = { lib, config, nixosConfig, ... }:
     let
       cfg = nixosConfig.devices.display;
       inherit (cfg) output width height refresh scale;

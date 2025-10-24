@@ -4,7 +4,7 @@ let
   id = "tvqk3odd";
 in
 {
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }: {
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }: {
     options = {
       applications.zotero.enable = pkgs.lib.mkEnableOption "the Zotero application";
     };

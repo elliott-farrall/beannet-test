@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }: {
+  flake.modules.homeManager.default = { lib, config, ... }: {
     options = {
       desktop.wmIcons = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;

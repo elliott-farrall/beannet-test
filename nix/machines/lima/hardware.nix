@@ -1,11 +1,12 @@
 { inputs, config, ... }:
 
 with inputs.nixos-hardware.nixosModules;
+with config.flake.modules.nixos;
 {
   flake.clan.machines."lima" = { ... }: {
-    imports = with config.flake.modules; [
+    imports = [
       framework-12th-gen-intel
-      nixos."disks/zfs"
+      disks-zfs
     ];
 
     disko.devices.disk."main".device = "/dev/disk/by-id/nvme-Samsung_SSD_970_PRO_512GB_S463NF0K800096J";

@@ -1,13 +1,14 @@
 { inputs, config, ... }:
 
 with inputs.nixos-hardware.nixosModules;
+with config.flake.modules.nixos;
 {
   flake.clan.machines."sprout" = { ... }: {
-    imports = with config.flake.modules; [
+    imports = [
       common-pc
       common-pc-ssd
       common-cpu-intel-cpu-only
-      nixos."disks/zfs"
+      disks-zfs
     ];
 
     disko.devices.disk."main".device = "/dev/disk/by-id/ata-NGFF_2280_512GB_SSD_20241017101421";

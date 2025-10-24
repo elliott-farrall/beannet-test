@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, config, ... }:
+  flake.modules.homeManager.default = { lib, config, ... }:
     let
       inherit (config.lib.stylix) colors;
       accent = colors.${config.catppuccin.accentBase16};

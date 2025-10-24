@@ -1,11 +1,11 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, ... }: {
+  flake.modules.nixos.default = { lib, ... }: {
     clan.core.settings.state-version.enable = lib.mkDefault true;
   };
 
-  flake.modules.homeManager."default" = { nixosConfig, ... }: {
+  flake.modules.homeManager.default = { nixosConfig, ... }: {
     home = { inherit (nixosConfig.system) stateVersion; };
   };
 }

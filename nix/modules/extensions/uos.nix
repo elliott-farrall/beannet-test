@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."extensions/uos" = { lib, pkgs, config, ... }: {
+  flake.modules.nixos.extensions-uos = { lib, pkgs, config, ... }: {
     networking.networkmanager.ensureProfiles = lib.mkIf config.networking.networkmanager.enable {
       environmentFiles = [ config.clan.core.vars.generators."uos".files."env".path ];
       profiles.eduroam = {
@@ -96,7 +96,7 @@
     };
   };
 
-  flake.modules.homeManager."profiles/uos" = { nixosConfig, ... }: {
+  flake.modules.homeManager.extensions-uos = { nixosConfig, ... }: {
     programs.ssh.matchBlocks = {
       AccessEPS = {
         hostname = "access.eps.surrey.ac.uk";

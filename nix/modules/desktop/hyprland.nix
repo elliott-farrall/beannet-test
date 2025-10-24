@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, config, ... }: {
+  flake.modules.nixos.default = { lib, config, ... }: {
     options = {
       desktop.environments.hyprland.enable = lib.mkEnableOption "the Hyprland desktop environment";
     };
@@ -15,7 +15,7 @@
     };
   };
 
-  flake.modules.homeManager."default" = { lib, pkgs, config, nixosConfig, ... }:
+  flake.modules.homeManager.default = { lib, pkgs, config, nixosConfig, ... }:
     let
       inherit (config.lib.stylix) colors;
       inherit (config.stylix) fonts;

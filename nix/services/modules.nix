@@ -16,12 +16,12 @@
     };
   };
 
-  flake.clan.outputs.moduleForMachine = with config.flake.modules; {
-    broad = nixos."default";
-    kidney = nixos."default";
-    lima = nixos."default";
-    runner = nixos."default";
-    soy = nixos."default";
-    sprout = nixos."default";
+  flake.clan.outputs.moduleForMachine = with config.flake.modules.nixos; {
+    broad = default;
+    kidney = default;
+    lima = default;
+    runner = default;
+    soy = default;
+    sprout = default;
   };
 }

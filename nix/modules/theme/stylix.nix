@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos."default" = { lib, pkgs, config, ... }:
+  flake.modules.nixos.default = { lib, pkgs, config, ... }:
     let
       inherit (config.catppuccin) flavor accent;
     in
@@ -53,7 +53,7 @@
       };
     };
 
-  flake.modules.homeManager."default" = { pkgs, config, nixosConfig, ... }: {
+  flake.modules.homeManager.default = { pkgs, config, nixosConfig, ... }: {
     imports = with inputs; [ stylix.homeModules.stylix ];
 
     stylix = {

@@ -37,15 +37,15 @@ in
     };
   };
 
-  flake.modules.nixos."default" = { lib, ... }: {
-    imports = with modules; [ nixos."users/elliott" ];
+  flake.modules.nixos.default = { lib, ... }: {
+    imports = with modules.nixos; [ users-elliott ];
 
     options = {
       profiles.elliott.enable = lib.mkEnableOption "the Elliott user profile";
     };
   };
 
-  flake.modules.nixos."users/elliott" = { lib, config, ... }: {
+  flake.modules.nixos.users-elliott = { lib, config, ... }: {
     config = lib.mkIf config.profiles.elliott.enable {
       greeter.tuigreet.enable = true;
 
@@ -54,11 +54,11 @@ in
       applications.nemo.enable = true;
       applications.vscode.enable = true;
 
-      home-manager.users.elliott.imports = with modules; [ homeManager."users/elliott" ];
+      home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
     };
   };
 
-  flake.modules.homeManager."users/elliott" = { config, ... }: {
+  flake.modules.homeManager.users-elliott = { config, ... }: {
     config = {
       desktop.environments.hyprland.enable = true;
 

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.nixos."default" = { lib, config, ... }:
+  flake.modules.nixos.default = { lib, config, ... }:
     let
       inherit (config.services.displayManager.sessionData) desktops;
     in

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager."default" = { lib, pkgs, config, ... }:
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }:
     let
       inherit (config.stylix) fonts;
       inherit (config.lib.stylix) colors;
