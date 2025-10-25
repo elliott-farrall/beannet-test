@@ -13,6 +13,7 @@ in
 
     roles.default = {
       tags."laptop" = { };
+      tags."wsl" = { };
 
       settings = {
         user = "elliott";
@@ -36,44 +37,55 @@ in
     };
   };
 
-  flake.modules.nixos.default = { lib, ... }: {
+  flake.modules.nixos.default = { lib, config, ... }: {
     imports = with modules.nixos; [ users-elliott ];
 
     options = {
-      profiles.elliott.enable = lib.mkEnableOption "the Elliott user profile";
-    };
-  };
-
-  flake.modules.nixos.users-elliott = { lib, config, ... }: {
-    config = lib.mkIf config.profiles.elliott.enable {
-      greeter.tuigreet.enable = true;
-
-      desktop.environments.hyprland.enable = true;
-
-      applications.nemo.enable = true;
-      applications.vscode.enable = true;
-
-      wsl.defaultUser = "elliott";
-      home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
-    };
-  };
-
-  flake.modules.homeManager.users-elliott = { config, ... }: {
-    config = {
-      desktop.environments.hyprland.enable = true;
-
-      applications.nemo.enable = true;
-      applications.vscode.enable = true;
-      applications.zen.enable = true;
-      applications.kitty.enable = true;
-
-      wayland.windowManager.hyprland.settings = {
-        exec-once = [
-          "[workspace 1 silent] ${config.home.sessionVariables.VISUAL or ""}"
-          "[workspace 2 silent] ${config.home.sessionVariables.BROWSER or ""}"
-          "[workspace special:terminal silent] ${config.home.sessionVariables.TERMINAL or ""}"
-        ];
+      profiles.elliott = {
+        enable = lib.mkEnableOption "the Elliott user profile";
+        gui = lib.mkEnableOption "GUI features" // { default = !config.wsl.enable; };
       };
     };
   };
+
+  flake.modules.nixos.users-elliott = { lib, config, ... }:
+    let
+      cfg = config.profiles.elliott;
+    in
+    {
+      config = lib.mkIf cfg.enable {
+        greeter.tuigreet.enable = true;
+
+        desktop.environments.hyprland.enable = lib.mkIf cfg.gui true;
+
+        applications.nemo.enable = lib.mkIf cfg.gui true;
+        applications.vscode.enable = lib.mkIf cfg.gui true;
+
+        wsl.defaultUser = "elliott";
+        home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
+      };
+    };
+
+  flake.modules.homeManager.users-elliott = { lib, config, nixosConfig, ... }:
+    let
+      cfg = nixosConfig.profiles.elliott;
+    in
+    {
+      config = lib.mkIf cfg.gui {
+        desktop.environments.hyprland.enable = true;
+
+        applications.nemo.enable = true;
+        applications.vscode.enable = true;
+        applications.zen.enable = true;
+        applications.kitty.enable = true;
+
+        wayland.windowManager.hyprland.settings = {
+          exec-once = [
+            "[workspace 1 silent] ${config.home.sessionVariables.VISUAL or ""}"
+            "[workspace 2 silent] ${config.home.sessionVariables.BROWSER or ""}"
+            "[workspace special:terminal silent] ${config.home.sessionVariables.TERMINAL or ""}"
+          ];
+        };
+      };
+    };
 }
