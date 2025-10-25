@@ -5,6 +5,8 @@
     imports = with inputs; [ nixos-wsl.nixosModules.default ];
 
     config = lib.mkIf config.wsl.enable {
+      wsl.defaultUser = lib.mkDefault "bean";
+
       programs.nix-ld.enable = true; # Allows vscode remote access
 
       environment.persistence = {
