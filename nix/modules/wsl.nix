@@ -16,4 +16,14 @@
       };
     };
   };
+
+  flake.modules.homeManager.default = { lib, nixosConfig, ... }: {
+    config = lib.mkIf nixosConfig.wsl.enable {
+      home.persistence = {
+        data.enable = lib.mkForce false;
+        state.enable = lib.mkForce false;
+        log.enable = lib.mkForce false;
+      };
+    };
+  };
 }
