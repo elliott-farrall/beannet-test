@@ -1,13 +1,20 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 
-let
-  inherit (inputs.clan-core.clan.machines) flash-installer;
-  flashInstallerModule = builtins.elemAt (builtins.elemAt (builtins.elemAt flash-installer.imports 0).imports 0).imports 0;
-in
+with inputs.clan-core.nixosModules;
+with config.flake.modules.nixos;
 {
   flake.clan.machines."kidney" = { lib, ... }: {
-    imports = [ flashInstallerModule ];
+    imports = [
+      installer
+      disks-flash
+    ];
+
+    disko.devices.disk."main".device = "/dev/null";
 
     boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+
+    nixpkgs.hostPlatform.system = "x86_64-linux";
+
+    users.users.root.initialHashedPassword = lib.mkForce null;
   };
 }
