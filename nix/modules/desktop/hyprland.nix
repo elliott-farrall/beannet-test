@@ -7,6 +7,8 @@
     };
 
     config = lib.mkIf config.desktop.environments.hyprland.enable {
+      services.gnome.gnome-keyring.enable = true;
+
       programs.hyprland.enable = true;
 
       programs.hyprlock.enable = true;
@@ -43,11 +45,11 @@
 
         assertions = [
           {
-            assertion = nixosConfig.services.pipewire.enable or true;
+            assertion = nixosConfig.services.pipewire.enable;
             message = "Hyprland requires PipeWire to be enabled for screensharing";
           }
           {
-            assertion = nixosConfig.services.pipewire.wireplumber.enable or true;
+            assertion = nixosConfig.services.pipewire.wireplumber.enable;
             message = "Hyprland requires WirePlumber to be enabled for screensharing";
           }
         ];
@@ -62,6 +64,9 @@
           extraPortals = with pkgs; [ xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ];
           configPackages = with pkgs; [ hyprland ];
         };
+
+        services.gnome-keyring.enable = true;
+        home.persistence.state.directories = [ ".local/share/keyrings" ];
 
         /* -------------------------------- Hyprland -------------------------------- */
 

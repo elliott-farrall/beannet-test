@@ -136,7 +136,10 @@
 
         desktop.wmIcons."code-insiders" = "󰨞";
 
-        home.persistence.state.directories = [ ".config/Code - Insiders" ];
+        home.persistence.state = {
+          directories = [ ".config/Code - Insiders" ];
+          files = [ ".vscode-insiders/argv.json" ];
+        };
 
         catppuccin.vscode.profiles.default = {
           enable = true;
