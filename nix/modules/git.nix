@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   flake.modules.nixos.default = { ... }: {
@@ -11,9 +11,18 @@
         persist = true;
       };
     };
+    clan.core.vars.generators."azure" = {
+      share = true;
+
+      prompts."key" = {
+        description = "Azure DevOps ssh key";
+        type = "multiline-hidden";
+        persist = true;
+      };
+    };
   };
 
-  flake.modules.homeManager.default = { nixosConfig, ... }: {
+  flake.modules.homeManager.default = { ... }: {
     programs.git = {
       enable = true;
       userName = "Elliott Farrall";
@@ -25,7 +34,21 @@
     };
 
     programs.ssh.matchBlocks = {
-      "github.com".identityFile = nixosConfig.clan.core.vars.generators."github".files."key".path;
+      "github.com".identityFile = "~/.ssh/credentials/services/github";
+      "ssh.dev.azure.com".identityFile = "~/.ssh/credentials/services/azure";
+    };
+
+    sops.secrets = {
+      "github" = {
+        sopsFile = "${config.clan.directory}/vars/shared/github/key/secret";
+        path = ".ssh/credentials/services/github";
+        format = "binary";
+      };
+      "azure" = {
+        sopsFile = "${config.clan.directory}/vars/shared/azure/key/secret";
+        path = ".ssh/credentials/services/azure";
+        format = "binary";
+      };
     };
   };
 }
