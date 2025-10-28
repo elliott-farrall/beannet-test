@@ -16,7 +16,7 @@
         services.greetd = {
           enable = true;
 
-          #FIXME - Incorrect resolutions on multi-monitor setups
+          # FIXME - Incorrect resolutions on multi-monitor setups
           settings.default_session.command = ''${lib.getExe pkgs.tuigreet} \
             --remember \
             --remember-session \

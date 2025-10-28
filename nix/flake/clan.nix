@@ -25,6 +25,8 @@
     };
   };
 
-  # TODO - Come up with better fix for pkgs inheritance
+  # REVIEW - Needed until these are resolved:
+  # - https://git.clan.lol/clan/clan-core/issues/4141
+  # - https://git.clan.lol/clan/clan-core/issues/5647
   flake.nixosConfigurations = lib.mkForce inputs.self.clanInternals.machines.x86_64-linux;
 }

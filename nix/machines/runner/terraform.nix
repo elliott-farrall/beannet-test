@@ -1,5 +1,7 @@
 { inputs, ... }:
 
+# TODO - Refactor to remove dependency on hcloud module
+
 let
   privateKeyFile = "root-ssh.key";
 in
@@ -25,7 +27,7 @@ in
         }
         terranix-hcloud.terranixModule
         {
-          users.admins.root.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKUjxl1444qMm7/Xp2MTZIoU31m1j/UsThn5a3ql1lD2"; # TODO - Inherit this from root user
+          users.admins.root.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKUjxl1444qMm7/Xp2MTZIoU31m1j/UsThn5a3ql1lD2";
           provisioner = { inherit privateKeyFile; };
 
           hcloud.nixserver."runner" = {

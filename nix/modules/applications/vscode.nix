@@ -90,6 +90,8 @@
 
               "diffEditor.ignoreTrimWhitespace" = false;
 
+              "commentAnchors.workspace.excludeFiles" = "**/{.direnv,.git,out}/**/*";
+
               /* ----------------------------------- Git ---------------------------------- */
 
               "git.defaultCloneDirectory" = config.xdg.userDirs.extraConfig.XDG_REPO_DIR or "";

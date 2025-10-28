@@ -55,7 +55,7 @@
             margin-left = 10;
             margin-right = 10;
 
-            modules-left = [ "hyprland/workspaces" ]; #FIXME - Waybar media module broken
+            modules-left = [ "hyprland/workspaces" ]; # FIXME - Waybar media module broken
             modules-center = [ "clock" ];
             modules-right = [ "group/system" "group/status" "group/menu" ];
 

@@ -5,7 +5,7 @@
     boot = {
       kernelParams = [ "boot.shell_on_fail" ];
 
-      # TODO - Do we need this?
+      # REVIEW - This may not be necessary
       initrd.kernelModules = [ "i915" ]; # Early KMS
     };
   };
