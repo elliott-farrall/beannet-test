@@ -110,6 +110,9 @@
               touchpad.natural_scroll = true;
             };
 
+            gesture = [
+              "3, horizontal, workspace"
+            ];
             bindr = [
               "SUPER, SUPER_L, exec, pkill rofi || ${config.programs.rofi.finalPackage}/bin/rofi -show drun"
 
