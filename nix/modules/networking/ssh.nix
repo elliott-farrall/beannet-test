@@ -60,5 +60,7 @@ in
     };
 
     sops.secrets = root-private-keys;
+
+    home.persistence.state.files = [ ".ssh/known_hosts" ];
   };
 }

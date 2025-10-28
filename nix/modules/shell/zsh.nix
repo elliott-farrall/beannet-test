@@ -29,6 +29,8 @@ in
         enable = true;
         syntaxHighlighting.enable = true;
       };
+
+      home.persistence.state.files = [ ".zsh_history" ];
     };
   };
 }
