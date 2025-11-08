@@ -6,6 +6,6 @@
   };
 
   flake.modules.homeManager.default = { ... }: {
-    home.persistence.state.files = [ ".terraform.d/credentials.tfrc.json" ];
+    home.persistence.state.directories = [ ".terraform.d" ];
   };
 }
