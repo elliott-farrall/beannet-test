@@ -95,7 +95,7 @@
 
               /* ----------------------------------- Git ---------------------------------- */
 
-              "git.defaultCloneDirectory" = config.xdg.userDirs.extraConfig.XDG_REPO_DIR or "";
+              "git.defaultCloneDirectory" = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh_repositories";
               "githubRepositoryManager.alwaysCloneToDefaultDirectory" = true;
 
               "git.autofetch" = true;

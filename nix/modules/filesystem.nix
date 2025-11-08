@@ -33,12 +33,20 @@
 
     programs.rclone.enable = true;
 
+    xdg.userDirs = {
+      enable = true;
+      extraConfig.XDG_REPO_DIR = "${config.home.homeDirectory}/Repositories";
+    };
+
     home.persistence.data = {
       enable = true;
       allowOther = true;
       persistentStoragePath = "/pst/data/home/${config.home.username}";
 
-      directories = [{ directory = "Downloads"; method = "symlink"; }];
+      directories = [
+        { directory = "Downloads"; method = "symlink"; }
+        { directory = "Repositories"; method = "symlink"; }
+      ];
     };
 
     home.persistence.state = {
