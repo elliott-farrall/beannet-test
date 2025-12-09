@@ -59,6 +59,7 @@
               tamasfe.even-better-toml # TOML
               samuelcolvin.jinjahtml # Jinja
               hashicorp.terraform # Terraform
+              astro-build.astro-vscode # Astro
             ];
 
             userSettings = {
