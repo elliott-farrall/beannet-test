@@ -53,6 +53,7 @@
               bierner.markdown-preview-github-styles
               bierner.markdown-checkbox
               bierner.markdown-emoji
+              esbenp.prettier-vscode
               # Languages
               jnoortheen.nix-ide # Nix
               redhat.vscode-yaml # YAML
