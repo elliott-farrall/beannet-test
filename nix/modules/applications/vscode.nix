@@ -10,7 +10,7 @@
       nixpkgs.overlays = with inputs; [
         code-insiders.overlays.default
         nix-vscode-extensions.overlays.default
-        nix4vscode.overlays.forVscode
+        # nix4vscode.overlays.forVscode
       ];
     };
   };

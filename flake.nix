@@ -139,7 +139,6 @@ rec {
     };
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
-      inputs.flake-utils.follows = "dep_flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix4vscode = {
