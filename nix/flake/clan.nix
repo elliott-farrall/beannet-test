@@ -13,7 +13,11 @@
   };
 
   flake.clan = {
-    meta.name = "beans";
+    meta = {
+      name = "beans";
+      domain = "bean.directory";
+    };
+
     pkgsForSystem = system: withSystem system (builtins.getAttr "pkgs");
     specialArgs = { inherit (config.flake) lib; inherit (inputs) self; };
 
