@@ -998,7 +998,6 @@
         "stylix": "stylix",
         "systems": "systems_2",
         "terranix": "terranix",
-        "terranix-hcloud": "terranix-hcloud",
         "treefmt-nix": "treefmt-nix_2",
         "vpn-confinement": "vpn-confinement",
         "zen-browser": "zen-browser"
@@ -1162,33 +1161,6 @@
       "original": {
         "owner": "terranix",
         "repo": "terranix",
-        "type": "github"
-      }
-    },
-    "terranix-hcloud": {
-      "inputs": {
-        "flake-utils": [
-          "dep_flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "terranix": [
-          "terranix"
-        ]
-      },
-      "locked": {
-        "lastModified": 1754056760,
-        "narHash": "sha256-bSiUlnSS2P3FSltA0iHh0jgrkYi0w7RRdjPZDL49KcE=",
-        "owner": "elliott-farrall",
-        "repo": "terranix-hcloud",
-        "rev": "fe2c9fbd8cc6aa1ba74879d1cc33e2d5f288ba7f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "elliott-farrall",
-        "ref": "fix-provisioner",
-        "repo": "terranix-hcloud",
         "type": "github"
       }
     },

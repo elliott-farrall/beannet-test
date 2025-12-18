@@ -57,12 +57,6 @@ rec {
     impermanence = {
       url = "github:nix-community/impermanence";
     };
-    terranix-hcloud = {
-      url = "github:elliott-farrall/terranix-hcloud/fix-provisioner";
-      inputs.flake-utils.follows = "dep_flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.terranix.follows = "terranix";
-    };
     vpn-confinement = {
       url = "github:Maroka-chan/VPN-Confinement";
     };
