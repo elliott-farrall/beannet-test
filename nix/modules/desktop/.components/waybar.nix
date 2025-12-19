@@ -453,7 +453,7 @@
 
         stylix.targets.waybar = {
           font = "sansSerif";
-          addCss = false;
+          addCss = false; # Managed by Catppuccin
         };
       };
     };

@@ -117,7 +117,7 @@
 
             dpi = 120;
             show-icons = true;
-            icon-theme = config.stylix.iconTheme.${config.stylix.polarity};
+            icon-theme = config.stylix.icons.${config.stylix.polarity};
             drun-display-format = "{name}";
 
             hover-select = true;

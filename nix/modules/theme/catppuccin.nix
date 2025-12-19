@@ -16,8 +16,7 @@
 
     catppuccin = {
       inherit (nixosConfig.catppuccin) enable flavor accent;
-      gtk.icon.enable = false;
-      kvantum.enable = false;
+      gtk.icon.enable = false; # Managed by Stylix
     };
   };
 }

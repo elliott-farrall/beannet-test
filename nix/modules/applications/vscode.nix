@@ -80,20 +80,6 @@
           directories = [ ".config/Code - Insiders" ];
           files = [ ".vscode-insiders/argv.json" ];
         };
-
-        catppuccin.vscode.profiles.default = {
-          enable = true;
-          settings = {
-            boldKeywords = true;
-            italicComments = true;
-            italicKeywords = true;
-            colorOverrides = { };
-            customUIColors = { };
-            workbenchMode = "default";
-            bracketMode = "rainbow";
-            extraBordersEnabled = false;
-          };
-        };
       };
     };
 }

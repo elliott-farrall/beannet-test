@@ -15,8 +15,6 @@
       home.sessionVariables.TERMINAL = lib.getExe config.programs.kitty.package;
 
       desktop.wmIcons."kitty" = "󰆍";
-
-      stylix.targets.kitty.enable = false;
     };
   };
 }

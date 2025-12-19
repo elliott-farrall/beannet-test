@@ -51,7 +51,7 @@
 
   flake.modules.homeManager.default = { pkgs, config, ... }: {
     stylix = {
-      iconTheme = {
+      icons = {
         enable = true;
         dark = "Papirus-Dark";
         light = "Papirus-Light";

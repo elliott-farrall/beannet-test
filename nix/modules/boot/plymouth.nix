@@ -2,8 +2,6 @@
 
 {
   flake.modules.nixos.default = { ... }: {
-    stylix.targets.plymouth.enable = false;
-
     boot = {
       plymouth.enable = true;
 
@@ -27,5 +25,7 @@
       useXkbConfig = true;
       earlySetup = false;
     };
+
+    stylix.targets.plymouth.enable = false; # Managed by Catppuccin
   };
 }

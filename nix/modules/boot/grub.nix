@@ -2,6 +2,6 @@
 
 {
   flake.modules.nixos.default = { ... }: {
-    stylix.targets.grub.enable = false;
+    stylix.targets.grub.enable = false; # Managed by Catppuccin
   };
 }
