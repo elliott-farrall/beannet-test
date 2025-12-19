@@ -1,0 +1,56 @@
+{
+    "update.mode": "none",
+
+    /* -------------------------------- Interface ------------------------------- */
+
+    "window.customTitleBarVisibility": "never",
+    "window.menuBarVisibility": "compact",
+    "window.titleBarStyle": "native",
+    "window.menuStyle": "custom",
+    "window.commandCenter": false,
+    "workbench.layoutControl.enabled": false,
+
+    "workbench.startupEditor": "none",
+    "editor.minimap.enabled": false,
+
+    "explorer.compactFolders": false,
+
+    /* --------------------------------- Editor --------------------------------- */
+
+    "files.autoSave": "afterDelay",
+
+    "direnv.restart.automatic": true,
+
+    "editor.acceptSuggestionOnEnter": "off",
+    "github.copilot.editor.enableAutoCompletions": true,
+
+    "diffEditor.ignoreTrimWhitespace": false,
+
+    "commentAnchors.workspace.excludeFiles": "**/{.direnv,.git,out}/**/*",
+
+    /* ----------------------------------- Git ---------------------------------- */
+
+    "git.defaultCloneDirectory": "{{gh_repo_dir}}",
+    "githubRepositoryManager.alwaysCloneToDefaultDirectory": true,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.allowForcePush": true,
+    "git.replaceTagsWhenPull": true,
+    "git.ignoreRebaseWarning": true,
+
+    "git-graph.showStatusBarItem": false,
+
+    /* ----------------------------------- Nix ---------------------------------- */
+
+    "nix.enableLanguageServer": true,
+    "nix.serverPath": "nixd",
+    "nix.formatterPath": [ "nix", "fmt", "--", "-" ],
+    "nix.serverSettings": {
+        "nil": {
+            "diagnostics": {
+                "ignored": [ "unused_binding", "unused_with" ]
+            }
+        }
+    }
+}

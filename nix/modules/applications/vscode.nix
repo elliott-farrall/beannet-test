@@ -10,7 +10,6 @@
       nixpkgs.overlays = with inputs; [
         code-insiders.overlays.default
         nix-vscode-extensions.overlays.default
-        # nix4vscode.overlays.forVscode
       ];
     };
   };
@@ -18,6 +17,14 @@
   flake.modules.homeManager.default = { lib, pkgs, config, ... }:
     let
       inherit (config.catppuccin) flavor;
+
+      mkSettings = file: data: builtins.fromJSON (
+        lib.buildMustache "vscode-settings.json"
+          (
+            lib.stripJSONC (builtins.readFile file)
+          )
+          data
+      );
     in
     {
       options = {
@@ -33,95 +40,23 @@
           profiles.default = {
             enableExtensionUpdateCheck = false;
 
-            extensions = with pkgs.vscode-marketplace; [
-              # Core
-              github.copilot
-              github.copilot-chat
-              ms-vscode.remote-explorer
-              ms-vscode.remote-server
-              ms-vscode-remote.remote-ssh
-              ms-vscode-remote.remote-ssh-edit
-              ms-vscode-remote.remote-containers
-              ms-vscode.remote-repositories
-              # Environment
-              henriquebruno.github-repository-manager
-              mhutchie.git-graph
-              mkhl.direnv
-              # Editor
-              exodiusstudios.comment-anchors
-              stackbreak.comment-divider
-              bierner.markdown-preview-github-styles
-              bierner.markdown-checkbox
-              bierner.markdown-emoji
-              esbenp.prettier-vscode
-              # Languages
-              jnoortheen.nix-ide # Nix
-              redhat.vscode-yaml # YAML
-              tamasfe.even-better-toml # TOML
-              samuelcolvin.jinjahtml # Jinja
-              hashicorp.terraform # Terraform
-              astro-build.astro-vscode # Astro
+            extensions = builtins.map
+              (ext:
+                let
+                  author = builtins.elemAt (lib.splitString "." ext) 0;
+                  name = builtins.elemAt (lib.splitString "." ext) 1;
+                in
+                pkgs.vscode-marketplace.${author}.${name})
+              (lib.readYAML ./editor/extensions.yaml);
+
+            userSettings = lib.mkMerge [
+              (mkSettings ./editor/settings.jsonc {
+                gh_repo_dir = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh_repositories";
+              })
+              {
+                "workbench.colorTheme" = lib.mkForce "Catppuccin ${lib.capitalise flavor}";
+              }
             ];
-
-            userSettings = {
-              "update.mode" = "none";
-
-              "workbench.colorTheme" = lib.mkForce "Catppuccin ${lib.capitalise flavor}";
-
-              /* -------------------------------- Interface ------------------------------- */
-
-              "window.customTitleBarVisibility" = "never";
-              "window.menuBarVisibility" = "compact";
-              "window.titleBarStyle" = "native";
-              "window.menuStyle" = "custom";
-              "window.commandCenter" = false;
-              "workbench.layoutControl.enabled" = false;
-
-              "workbench.startupEditor" = "none";
-              "editor.minimap.enabled" = false;
-
-              "explorer.compactFolders" = false;
-
-              /* --------------------------------- Editor --------------------------------- */
-
-              "files.autoSave" = "afterDelay";
-
-              "direnv.restart.automatic" = true;
-
-              "editor.acceptSuggestionOnEnter" = "off";
-              "github.copilot.editor.enableAutoCompletions" = true;
-
-              "diffEditor.ignoreTrimWhitespace" = false;
-
-              "commentAnchors.workspace.excludeFiles" = "**/{.direnv,.git,out}/**/*";
-
-              /* ----------------------------------- Git ---------------------------------- */
-
-              "git.defaultCloneDirectory" = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh_repositories";
-              "githubRepositoryManager.alwaysCloneToDefaultDirectory" = true;
-
-              "git.autofetch" = true;
-              "git.enableSmartCommit" = true;
-              "git.confirmSync" = false;
-              "git.allowForcePush" = true;
-              "git.replaceTagsWhenPull" = true;
-              "git.ignoreRebaseWarning" = true;
-
-              "git-graph.showStatusBarItem" = false;
-
-              /* ----------------------------------- Nix ---------------------------------- */
-
-              "nix.enableLanguageServer" = true;
-              "nix.serverPath" = "nixd";
-              "nix.formatterPath" = [ "nix" "fmt" "--" "-" ];
-              "nix.serverSettings" = {
-                "nil" = {
-                  "diagnostics" = {
-                    "ignored" = [ "unused_binding" "unused_with" ];
-                  };
-                };
-              };
-            };
           };
         };
 

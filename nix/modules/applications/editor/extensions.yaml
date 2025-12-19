@@ -1,0 +1,27 @@
+# Core
+- github.copilot
+- github.copilot-chat
+- ms-vscode.remote-explorer
+- ms-vscode.remote-server
+- ms-vscode-remote.remote-ssh
+- ms-vscode-remote.remote-ssh-edit
+- ms-vscode-remote.remote-containers
+- ms-vscode.remote-repositories
+# Environment
+- henriquebruno.github-repository-manager
+- mhutchie.git-graph
+- mkhl.direnv
+# Editor
+- exodiusstudios.comment-anchors
+- stackbreak.comment-divider
+- bierner.markdown-preview-github-styles
+- bierner.markdown-checkbox
+- bierner.markdown-emoji
+- esbenp.prettier-vscode
+# Languages
+- jnoortheen.nix-ide # Nix
+- redhat.vscode-yaml # YAML
+- tamasfe.even-better-toml # TOML
+- samuelcolvin.jinjahtml # Jinja
+- hashicorp.terraform # Terraform
+- astro-build.astro-vscode # Astro

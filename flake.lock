@@ -647,27 +647,6 @@
         "type": "github"
       }
     },
-    "home-manager_2": {
-      "inputs": {
-        "nixpkgs": [
-          "zen-browser",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1752603129,
-        "narHash": "sha256-S+wmHhwNQ5Ru689L2Gu8n1OD6s9eU9n9mD827JNR+kw=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "e8c19a3cec2814c754f031ab3ae7316b64da085b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
     "impermanence": {
       "locked": {
         "lastModified": 1737831083,
@@ -813,29 +792,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "type": "github"
-      }
-    },
-    "nix4vscode": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1760234122,
-        "narHash": "sha256-kv97eR/A7Lsj7A4zu2XCzpkTcp7dCE4sk4K1VPDJblU=",
-        "owner": "nix-community",
-        "repo": "nix4vscode",
-        "rev": "2c06b453e91b0ae059931a1d9bc6e7ef324a1881",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix4vscode",
         "type": "github"
       }
     },
@@ -991,7 +947,6 @@
         "nix-index-database": "nix-index-database",
         "nix-schemas": "nix-schemas",
         "nix-vscode-extensions": "nix-vscode-extensions",
-        "nix4vscode": "nix4vscode",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
@@ -999,6 +954,7 @@
         "systems": "systems_2",
         "terranix": "terranix",
         "treefmt-nix": "treefmt-nix_2",
+        "utils": "utils",
         "vpn-confinement": "vpn-confinement",
         "zen-browser": "zen-browser"
       }
@@ -1205,6 +1161,26 @@
         "type": "github"
       }
     },
+    "utils": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766153263,
+        "narHash": "sha256-rG1tyUs9kzWJlDkFKy8Sksy8duK5oBTX+wfXopvEtcM=",
+        "owner": "elliott-farrall",
+        "repo": "utils.nix",
+        "rev": "5650f969f31554cb19d346e57ef18265d7cb8aaf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "elliott-farrall",
+        "repo": "utils.nix",
+        "type": "github"
+      }
+    },
     "vpn-confinement": {
       "locked": {
         "lastModified": 1759956062,
@@ -1222,7 +1198,9 @@
     },
     "zen-browser": {
       "inputs": {
-        "home-manager": "home-manager_2",
+        "home-manager": [
+          "home-manager"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]

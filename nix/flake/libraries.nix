@@ -5,15 +5,17 @@
     let
       inherit (final)
         genAttrs
-        stringLength
-        substring
-        toUpper
         ;
     in
     {
       inherit (inputs.home-manager.lib) hm;
 
-      capitalise = str: (toUpper (substring 0 1 str)) + (substring 1 (stringLength str) str);
+      inherit (inputs.utils.lib)
+        capitalise
+        readYAML
+        stripJSONC
+        buildMustache
+        ;
 
       mkDefaultApplications = app: mimes: genAttrs mimes (_mime: app);
     }
