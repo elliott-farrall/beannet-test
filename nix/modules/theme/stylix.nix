@@ -11,10 +11,8 @@
       stylix = {
         enable = true;
         base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-${flavor}.yaml";
-        image = pkgs.fetchurl {
-          url = "https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?cs=srgb&dl=pexels-umkreisel-app-1146134.jpg&fm=jpg&_gl=1*mfkk8u*_ga*MTM5OTI0MTA4Ni4xNzUyMjYzNjYx*_ga_8JE65Q40S6*czE3NTIyNjM2NjEkbzEkZzEkdDE3NTIyNjM2NzEkajUwJGwwJGgw";
-          hash = "sha256-VPDDQkgqbOn/oOoFcdgPGwjLCaIQJBalgCH+zVG8jGA=";
-        };
+
+        image = "${inputs.wallpapers}/os/nix-black-4k.png";
 
         polarity = if flavor == "latte" then "light" else "dark";
 
@@ -48,19 +46,11 @@
             terminal = 11;
           };
         };
-
-        homeManagerIntegration.autoImport = false;
       };
     };
 
-  flake.modules.homeManager.default = { pkgs, config, nixosConfig, ... }: {
-    imports = with inputs; [ stylix.homeModules.stylix ];
-
+  flake.modules.homeManager.default = { pkgs, config, ... }: {
     stylix = {
-      inherit (nixosConfig.stylix) enable base16Scheme image polarity cursor;
-
-      fonts = { inherit (nixosConfig.stylix.fonts) serif sansSerif monospace emoji sizes; };
-
       iconTheme = {
         enable = true;
         dark = "Papirus-Dark";

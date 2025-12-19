@@ -5,8 +5,8 @@
     let
       inherit (config.stylix) fonts;
       inherit (config.lib.stylix) colors;
-      inherit (config) catppuccin;
-      accent = colors.withHashtag.${catppuccin.accentBase16};
+      inherit (config.catppuccin) accent;
+      accent' = colors.withHashtag.${lib.accentToBase16 accent};
       text = colors.withHashtag.base05;
       surface2 = colors.withHashtag.base04;
 
@@ -259,7 +259,7 @@
                   weeks = "<span font='${fonts.monospace.name}' color='${text}'>{}</span>";
                   days = "<span font='${fonts.monospace.name}' color='${text}'>{}</span>";
                   weekdays = "<span font='${fonts.monospace.name}' color='${surface2}'>{}</span>";
-                  today = "<span font='${fonts.monospace.name}' color='${accent}'><b>{}</b></span>";
+                  today = "<span font='${fonts.monospace.name}' color='${accent'}'><b>{}</b></span>";
                 };
               };
               actions = {
@@ -281,7 +281,7 @@
           };
 
           style = /*css*/''
-            @define-color accent ${accent};
+            @define-color accent ${accent'};
 
             @define-color base @base00;
             @define-color surface0 @base02;

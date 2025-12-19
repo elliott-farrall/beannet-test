@@ -4,8 +4,8 @@
   flake.modules.homeManager.default = { lib, pkgs, config, ... }:
     let
       inherit (config.lib.stylix) colors;
-      inherit (config) catppuccin;
-      accent = colors.${catppuccin.accentBase16};
+      inherit (config.catppuccin) flavor accent;
+      accent' = colors.${lib.accentToBase16 accent};
 
       repo = pkgs.fetchFromGitHub {
         owner = "catppuccin";
@@ -13,7 +13,7 @@
         rev = "main";
         hash = "sha256-QUSDx5M+BG7YqI4MBsOKFPxvZHQtCa8ibT0Ln4FPQ7I=";
       };
-      icons = "${repo}/icons/wlogout/${catppuccin.flavor}/${catppuccin.accent}";
+      icons = "${repo}/icons/wlogout/${flavor}/${accent}";
     in
     {
       options = {
@@ -25,7 +25,7 @@
           enable = true;
 
           style = /*css*/''
-            @define-color accent #${accent};
+            @define-color accent #${accent'};
 
             @define-color mantle ${colors.withHashtag.base01};
             @define-color surface0 ${colors.withHashtag.base02};

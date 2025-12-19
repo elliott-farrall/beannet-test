@@ -17,6 +17,21 @@
         buildMustache
         ;
 
+      accentToBase16 = accentName:
+        let
+          map = {
+            red = "red";
+            peach = "orange";
+            yellow = "yellow";
+            green = "green";
+            teal = "cyan";
+            blue = "blue";
+            mauve = "magenta";
+            flamingo = "brown";
+          };
+        in
+        map.${accentName};
+
       mkDefaultApplications = app: mimes: genAttrs mimes (_mime: app);
     }
   );

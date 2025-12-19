@@ -6,7 +6,8 @@
       inherit (config.lib.formats.rasi) mkLiteral;
       inherit (config.lib.stylix) colors;
       inherit (config.stylix) fonts;
-      accent = colors.${config.catppuccin.accentBase16};
+      inherit (config.catppuccin) accent;
+      accent' = colors.${lib.accentToBase16 accent};
     in
     {
       options = {
@@ -23,7 +24,7 @@
 
           theme = {
             "*" = {
-              accent = mkLiteral "#${accent}";
+              accent = mkLiteral "#${accent'}";
 
               selected-normal-background = lib.mkForce (mkLiteral "@background");
               selected-active-background = lib.mkForce (mkLiteral "@background");

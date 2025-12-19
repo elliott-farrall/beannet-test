@@ -4,7 +4,8 @@
   flake.modules.homeManager.default = { lib, config, ... }:
     let
       inherit (config.lib.stylix) colors;
-      accent = colors.${config.catppuccin.accentBase16};
+      inherit (config.catppuccin) accent;
+      accent' = colors.${lib.accentToBase16 accent};
     in
     {
       options = {
@@ -71,7 +72,7 @@
           style = lib.mkAfter /*css*/''
             /* Colours */
 
-            @define-color accent #${accent};
+            @define-color accent #${accent'};
 
             @define-color base @base00;
             @define-color crust @base01;

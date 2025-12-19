@@ -956,6 +956,7 @@
         "treefmt-nix": "treefmt-nix_2",
         "utils": "utils",
         "vpn-confinement": "vpn-confinement",
+        "wallpapers": "wallpapers",
         "zen-browser": "zen-browser"
       }
     },
@@ -1193,6 +1194,22 @@
       "original": {
         "owner": "Maroka-chan",
         "repo": "VPN-Confinement",
+        "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661293434,
+        "narHash": "sha256-h+cFlTXvUVJPRMpk32jYVDDhHu1daWSezFcvhJqDpmU=",
+        "owner": "zhichaoh",
+        "repo": "catppuccin-wallpapers",
+        "rev": "1023077979591cdeca76aae94e0359da1707a60e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zhichaoh",
+        "repo": "catppuccin-wallpapers",
         "type": "github"
       }
     },

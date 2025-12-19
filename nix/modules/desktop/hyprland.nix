@@ -21,7 +21,8 @@
     let
       inherit (config.lib.stylix) colors;
       inherit (config.stylix) fonts;
-      accent = colors.${config.catppuccin.accentBase16};
+      inherit (config.catppuccin) accent;
+      accent' = colors.${lib.accentToBase16 accent};
 
       layout = false;
       time = true;
@@ -89,7 +90,7 @@
               gaps_in = 10;
               gaps_out = 10;
               resize_on_border = true;
-              "col.active_border" = lib.mkForce "rgb(${accent})";
+              "col.active_border" = lib.mkForce "rgb(${accent'})";
             };
             decoration = {
               rounding = 10;
@@ -98,10 +99,10 @@
               fullscreen_opacity = config.stylix.opacity.applications;
             };
             group = {
-              "col.border_active" = lib.mkForce "rgb(${accent})";
+              "col.border_active" = lib.mkForce "rgb(${accent'})";
 
               groupbar = {
-                "col.active" = lib.mkForce "rgb(${accent})";
+                "col.active" = lib.mkForce "rgb(${accent'})";
               };
             };
 
@@ -151,6 +152,11 @@
               "SUPER, mouse:272, movewindow"
               "SUPER, mouse:273, resizewindow"
             ];
+
+            ecosystem = {
+              no_update_news = true;
+              no_donation_nag = true;
+            };
 
             misc = {
               disable_hyprland_logo = true;
@@ -218,9 +224,9 @@
               dots_spacing = 0.2;
               dots_center = true;
               fade_on_empty = false;
-              placeholder_text = "<span foreground=\"##${colors.base05}\"><i>󰌾 Logged in as </i><span foreground=\"##${accent}\">$USER</span></span>";
+              placeholder_text = "<span foreground=\"##${colors.base05}\"><i>󰌾 Logged in as </i><span foreground=\"##${accent'}\">$USER</span></span>";
               hide_input = false;
-              check_color = lib.mkForce "rgb(${accent})";
+              check_color = lib.mkForce "rgb(${accent'})";
               fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
               capslock_color = colors.yellow;
               position = "0, -47";

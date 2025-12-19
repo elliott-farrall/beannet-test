@@ -5,7 +5,8 @@
     let
       inherit (config.services.displayManager.sessionData) desktops;
 
-      inherit (config.catppuccin) accentBase16;
+      inherit (config.catppuccin) accent;
+      accent' = lib.accentToBase16 accent;
     in
     {
       options = {
@@ -24,7 +25,7 @@
             --session-wrapper '${pkgs.execline}/bin/exec > /dev/null' \
             --sessions ${desktops}/share/wayland-sessions \
             --xsessions ${desktops}/share/xsessions \
-            --theme 'border=${accentBase16};prompt=${accentBase16};action=${accentBase16}'
+            --theme 'border=${accent'};prompt=${accent'};action=${accent'}'
           '';
         };
       };
