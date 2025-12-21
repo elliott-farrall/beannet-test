@@ -2,6 +2,9 @@
 
 {
   flake.modules.nixos.default = { ... }: {
-    services.kmscon.enable = true;
+    services.kmscon = {
+      enable = true;
+      hwRender = true;
+    };
   };
 }
