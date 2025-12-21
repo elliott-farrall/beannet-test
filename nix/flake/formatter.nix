@@ -9,6 +9,7 @@
         "sops/**"
         "vars/**"
         "**/facter.json"
+        "inventory.json"
       ];
 
       programs = {

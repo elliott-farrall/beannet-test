@@ -66,12 +66,10 @@
         };
 
         xdg.mimeApps.defaultApplications = lib.mkMerge [
-          lib.mkDefaultApplications
-          "code-insiders.desktop"
-          builtins.fromJSON.associations.json.editor
-          lib.mkDefaultApplications
-          "code-insiders-url-handler.desktop"
-          builtins.fromJSON.associations.json.editor-url
+          (lib.mkDefaultApplications "code-insiders.desktop"
+            (lib.readYAML ./desktop/associations.yaml).editor)
+          (lib.mkDefaultApplications "code-insiders-url-handler.desktop"
+            (lib.readYAML ./desktop/associations.yaml).editor-url)
         ];
 
         desktop.wmIcons."code-insiders" = "󰨞";
