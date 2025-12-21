@@ -677,6 +677,29 @@
         "type": "github"
       }
     },
+    "lidm": {
+      "inputs": {
+        "flake-utils": [
+          "dep_flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765658278,
+        "narHash": "sha256-rKT40TnWs+1wjCYjsSENi/8kjyiZGwrpefFzlJpuuMk=",
+        "owner": "javalsai",
+        "repo": "lidm",
+        "rev": "a7a1f42f0a248a461ba280d9d3441c2630b3afa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "javalsai",
+        "repo": "lidm",
+        "type": "github"
+      }
+    },
     "make-shell": {
       "inputs": {
         "flake-compat": [
@@ -943,6 +966,7 @@
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
+        "lidm": "lidm",
         "make-shell": "make-shell",
         "nix-index-database": "nix-index-database",
         "nix-schemas": "nix-schemas",

@@ -135,6 +135,11 @@ rec {
       url = "github:iosmanthus/code-insiders-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lidm = {
+      url = "github:javalsai/lidm";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "dep_flake-utils";
+    };
     nix-schemas = {
       url = "github:DeterminateSystems/nix-src/flake-schemas";
       # TODO - Override nix package and configure dependencies

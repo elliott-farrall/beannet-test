@@ -54,8 +54,6 @@ in
     in
     {
       config = lib.mkIf cfg.enable {
-        greeter.tuigreet.enable = true;
-
         desktop.environments.hyprland.enable = lib.mkIf cfg.gui true;
 
         applications.nemo.enable = lib.mkIf cfg.gui true;
