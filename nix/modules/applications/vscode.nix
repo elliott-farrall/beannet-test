@@ -1,17 +1,26 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos.default = { lib, config, ... }: {
-    options = {
-      applications.vscode.enable = lib.mkEnableOption "the Visual Studio Code application";
-    };
+  flake.modules.nixos.default = { ... }: {
+    nixpkgs.overlays = with inputs; [
+      code-insiders.overlays.default
+      nix-vscode-extensions.overlays.default
 
-    config = lib.mkIf config.applications.vscode.enable {
-      nixpkgs.overlays = with inputs; [
-        code-insiders.overlays.default
-        nix-vscode-extensions.overlays.default
-      ];
-    };
+      (final: prev: {
+        vscode-insiders = final.stdenv.mkDerivation {
+          inherit (prev.vscode-insiders) pname version;
+
+          phases = [ "installPhase" ];
+
+          installPhase = ''
+            cp -R ${prev.vscode-insiders} $out
+            chmod +w $out/share/applications
+            substituteInPlace $out/share/applications/code-insiders.desktop \
+              --replace-warn "Name=Visual Studio Code - Insiders" "Name=VS Code"
+          '';
+        };
+      })
+    ];
   };
 
   flake.modules.homeManager.default = { lib, pkgs, config, ... }:

@@ -59,7 +59,7 @@ in
         desktop.environments.hyprland.enable = lib.mkIf cfg.gui true;
 
         applications.nemo.enable = lib.mkIf cfg.gui true;
-        applications.vscode.enable = lib.mkIf cfg.gui true;
+        # applications.vscode.enable = lib.mkIf cfg.gui true;
 
         wsl.defaultUser = "elliott";
         home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
