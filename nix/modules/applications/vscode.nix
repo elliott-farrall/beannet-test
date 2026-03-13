@@ -60,7 +60,7 @@
 
             userSettings = lib.mkMerge [
               (mkSettings ./editor/settings.jsonc {
-                gh_repo_dir = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh_repositories";
+                gh_repo_dir = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh-repositories";
               })
               {
                 "workbench.colorTheme" = lib.mkForce "Catppuccin ${lib.capitalise flavor}";
