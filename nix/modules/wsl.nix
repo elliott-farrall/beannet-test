@@ -5,8 +5,8 @@
     imports = with inputs; [ nixos-wsl.nixosModules.default ];
 
     config = lib.mkIf config.wsl.enable {
-      wsl.wslConf.network.generateResolvConf = false;
-      networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
+      # wsl.wslConf.network.generateResolvConf = false;
+      # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
 
       programs.nix-ld.enable = true; # Allows vscode remote access
 

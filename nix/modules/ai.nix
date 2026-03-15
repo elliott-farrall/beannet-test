@@ -3,7 +3,7 @@
 {
   flake.modules.nixos.default = { ... }: {
     services.ollama = {
-      enable = true;
+      enable = false;
       loadModels = [ "qwen3:1.7b" ];
     };
   };
