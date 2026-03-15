@@ -29,6 +29,12 @@ in
           ProxyJump beanbag
       '') machines)}
       ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
+        Host ${vars.generators.zerotier.files.zerotier-ip.value}
+          User root
+          IdentityFile ${vars.generators.root-ssh-key.files.private-key.path}
+          ProxyJump beanbag
+      '') machines)}
+      ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
         Host ${vars.generators.yggdrasil.files.address.value}
           User root
           IdentityFile ${vars.generators.root-ssh-key.files.private-key.path}
@@ -53,6 +59,12 @@ in
 
         ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
           Host ${name}.${settings.domain}
+            User root
+            IdentityFile ~/${secrets."${name}-root-private-key".path}
+            ProxyJump beanbag
+        '') machines)}
+        ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
+          Host ${vars.generators.zerotier.files.zerotier-ip.value}
             User root
             IdentityFile ~/${secrets."${name}-root-private-key".path}
             ProxyJump beanbag
