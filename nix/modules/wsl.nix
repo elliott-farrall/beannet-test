@@ -6,8 +6,7 @@
 
     config = lib.mkIf config.wsl.enable {
       wsl.wslConf.network.generateResolvConf = false;
-      services.resolved.enable = lib.mkForce false;
-      networking.networkmanager.enable = lib.mkForce false;
+      networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
 
       programs.nix-ld.enable = true; # Allows vscode remote access
 
