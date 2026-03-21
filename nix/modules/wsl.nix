@@ -8,7 +8,10 @@
       # wsl.wslConf.network.generateResolvConf = false;
       # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
       networking = {
-        defaultGateway = "172.23.16.1";
+        defaultGateway = {
+          address  = "172.23.16.1";
+          interface = "eth0";
+        };
         interfaces."eth0" = {
           useDHCP = false;
           ipv4.addresses = [
