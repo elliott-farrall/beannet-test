@@ -7,6 +7,7 @@
     };
 
     roles.peer = {
+      tags."all" = { };
     };
 
     roles.moon = { };
