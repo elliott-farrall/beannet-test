@@ -9,6 +9,12 @@
       # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
       networking.interfaces."eth0" = {
         useDHCP = false;
+        ipv4.addresses = [
+          {
+            address = "172.23.16.1";
+            prefixLength = 20;
+          }
+        ];
         mtu = 1400;
       };
 
