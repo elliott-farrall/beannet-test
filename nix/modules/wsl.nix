@@ -7,15 +7,18 @@
     config = lib.mkIf config.wsl.enable {
       # wsl.wslConf.network.generateResolvConf = false;
       # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
-      networking.interfaces."eth0" = {
-        useDHCP = false;
-        ipv4.addresses = [
-          {
-            address = "172.23.16.1";
-            prefixLength = 20;
-          }
-        ];
-        mtu = 1400;
+      networking = {
+        defaultGateway = "172.23.16.1";
+        interfaces."eth0" = {
+          useDHCP = false;
+          ipv4.addresses = [
+            {
+              address = "172.23.16.2";
+              prefixLength = 20;
+            }
+          ];
+          mtu = 1400;
+        };
       };
 
       programs.nix-ld.enable = true; # Allows vscode remote access
