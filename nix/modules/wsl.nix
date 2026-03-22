@@ -7,7 +7,7 @@
     config = lib.mkIf config.wsl.enable {
       # wsl.wslConf.network.generateResolvConf = false;
       # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
-      systmed.network.networks."10-eth0" = {
+      systemd.network.networks."10-eth0" = {
         matchConfig.Name = "eth0";
         linkConfig.MTUBytes = "1400";
       };
