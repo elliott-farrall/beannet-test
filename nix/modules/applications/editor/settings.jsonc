@@ -15,6 +15,9 @@
 
     "explorer.compactFolders": false,
 
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.claudeProcessWrapper": "{{claude_path}}",
+
     /* --------------------------------- Editor --------------------------------- */
 
     "files.autoSave": "afterDelay",
