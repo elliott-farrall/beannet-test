@@ -61,7 +61,6 @@
             userSettings = lib.mkMerge [
               (mkSettings ./editor/settings.jsonc {
                 gh_repo_dir = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh-repositories";
-                claude_path = builtins.unsafeDiscardStringContext (lib.getExe pkgs.claude-code);
               })
               {
                 "workbench.colorTheme" = lib.mkForce "Catppuccin ${lib.capitalise flavor}";

@@ -9,8 +9,6 @@
       services.resolved.enable = lib.mkForce false;
       networking.networkmanager.enable = lib.mkForce false;
 
-      programs.nix-ld.enable = true; # Allows vscode remote access
-
       environment.persistence = {
         data.enable = lib.mkForce false;
         state.enable = lib.mkForce false;

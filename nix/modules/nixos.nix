@@ -21,5 +21,7 @@ in
         min-free = toBytesString 2;
       };
     };
+
+    programs.nix-ld.enable = true;
   };
 }
