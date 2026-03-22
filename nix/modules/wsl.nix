@@ -7,12 +7,16 @@
     config = lib.mkIf config.wsl.enable {
       # wsl.wslConf.network.generateResolvConf = false;
       # networking.nameservers = [ "1.1.1.1" "9.9.9.9" ];
-      systemd.network = {
-        enable = true;
+      networking = {
+        defaultGateway = {
+          address  = "172.23.16.1";
+          interface = "eth0";
+        };
 
-        networks."10-eth0" = {
-          matchConfig.Name = "eth0";
-          linkConfig.MTUBytes = "1400";
+        interfaces."eth0" = {
+          useDHCP = false;
+          ipv4.addresses = [{ address = "172.23.16.2"; prefixLength = 20; }];
+          mtu = 1400;
         };
       };
 
