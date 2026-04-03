@@ -19,7 +19,7 @@
 
       accentToBase16 = accentName:
         let
-          map = {
+          accentMap = {
             red = "red";
             peach = "orange";
             yellow = "yellow";
@@ -30,7 +30,7 @@
             flamingo = "brown";
           };
         in
-        map.${accentName};
+        accentMap.${accentName};
 
       mkDefaultApplications = app: mimes: genAttrs mimes (_mime: app);
     }

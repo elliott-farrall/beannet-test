@@ -72,8 +72,8 @@
 
           settings = {
             xwayland.force_zero_scaling = true;
-            windowrulev2 = [
-              "bordercolor rgb(${colors.base0A}), xwayland:1"
+            windowrule = [
+              "border_color rgb(${colors.base0A}), match:xwayland 1"
             ];
 
             dwindle = {

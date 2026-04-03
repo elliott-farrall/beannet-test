@@ -35,7 +35,8 @@
 
     xdg.userDirs = {
       enable = true;
-      extraConfig.XDG_REPO_DIR = "${config.home.homeDirectory}/Repositories";
+      setSessionVariables = true;
+      extraConfig.REPO = "${config.home.homeDirectory}/Repositories";
     };
 
     home.persistence.data = {

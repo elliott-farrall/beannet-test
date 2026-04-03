@@ -25,8 +25,8 @@ in
 
       desktop.wmIcons."zotero" = "󰰸";
 
-      wayland.windowManager.hyprland.settings.windowrulev2 = lib.mkIf config.wayland.windowManager.hyprland.enable [
-        "float, class:(Zotero), title:(Progress)"
+      wayland.windowManager.hyprland.settings.windowrule = lib.mkIf config.wayland.windowManager.hyprland.enable [
+        "float 1, match:class Zotero match:title Progress"
       ];
     };
   };

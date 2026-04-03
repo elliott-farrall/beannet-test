@@ -37,7 +37,7 @@ rec {
     /* -------------------------------------------------------------------------- */
 
     nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
+      url = "github:nixos/nixpkgs/nixpkgs-unstable";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -103,7 +103,6 @@ rec {
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nur.follows = "dep_nur";
       inputs.systems.follows = "systems";
-      inputs.tinted-foot.follows = "dep_tinted-foot";
       inputs.tinted-kitty.follows = "dep_tinted-kitty";
       inputs.tinted-schemes.follows = "dep_tinted-schemes";
       inputs.tinted-tmux.follows = "dep_tinted-tmux";

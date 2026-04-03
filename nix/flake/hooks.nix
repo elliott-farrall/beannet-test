@@ -11,6 +11,7 @@
         "sops.*$"
         "vars.*$"
         ".*facter\\.json$"
+        "inventory.json"
       ];
 
       hooks = {
@@ -30,7 +31,7 @@
         check-toml.enable = true;
 
         # Docs
-        markdownlint.enable = true;
+        markdownlint.enable = true; #REVIEW - Broken due to removal nodePackages
         check-vcs-permalinks.enable = true;
 
         # Git

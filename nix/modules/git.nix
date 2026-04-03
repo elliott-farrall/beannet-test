@@ -25,8 +25,8 @@
   flake.modules.homeManager.default = { ... }: {
     programs.git = {
       enable = true;
-      userName = "Elliott Farrall";
-      userEmail = "dev@elliott-farrall.phd";
+      settings.user.name = "Elliott Farrall";
+      settings.user.email = "dev@elliott-farrall.phd";
     };
 
     programs.gh = {
@@ -40,12 +40,12 @@
 
     sops.secrets = {
       "github" = {
-        sopsFile = "${config.clan.directory}/vars/shared/github/key/secret";
+        sopsFile = "${config.flake.clan.directory}/vars/shared/github/key/secret";
         path = ".ssh/credentials/services/github";
         format = "binary";
       };
       "azure" = {
-        sopsFile = "${config.clan.directory}/vars/shared/azure/key/secret";
+        sopsFile = "${config.flake.clan.directory}/vars/shared/azure/key/secret";
         path = ".ssh/credentials/services/azure";
         format = "binary";
       };

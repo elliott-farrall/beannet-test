@@ -7,7 +7,6 @@
     make-shells."bean".packages = with inputs'.clan-core.packages; [
       clan-app
       clan-cli
-      clan-vm-manager # Seems broken
       editor # Check nix language sever settings here, might be useful
     ];
   };

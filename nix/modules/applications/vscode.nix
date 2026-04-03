@@ -49,7 +49,7 @@
           profiles.default = {
             enableExtensionUpdateCheck = false;
 
-            extensions = builtins.map
+            extensions = map
               (ext:
                 let
                   author = builtins.elemAt (lib.splitString "." ext) 0;
@@ -60,7 +60,7 @@
 
             userSettings = lib.mkMerge [
               (mkSettings ./editor/settings.jsonc {
-                gh_repo_dir = "${config.xdg.userDirs.extraConfig.XDG_REPO_DIR}/gh-repositories";
+                gh_repo_dir = "${config.xdg.userDirs.extraConfig.REPO}/gh-repositories";
               })
               {
                 "workbench.colorTheme" = lib.mkForce "Catppuccin ${lib.capitalise flavor}";

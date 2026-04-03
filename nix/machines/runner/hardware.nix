@@ -3,7 +3,7 @@
 with inputs.nixos-hardware.nixosModules;
 with config.flake.modules.nixos;
 let
-  public_key = builtins.readFile "${config.clan.directory}/vars/per-machine/runner/root-ssh-key/public-key/value";
+  public_key = builtins.readFile "${config.flake.clan.directory}/vars/per-machine/runner/root-ssh-key/public-key/value";
 in
 {
   flake.clan.machines."runner" = { lib, ... }: {
