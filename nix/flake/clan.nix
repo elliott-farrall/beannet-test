@@ -3,7 +3,15 @@
 {
   imports = with inputs; [ clan-core.flakeModules.default ];
 
-  perSystem = { inputs', ... }: {
+  perSystem = { pkgs, inputs', ... }: {
+    legacyPackages.runner.install = pkgs.writeShellScriptBin "runner-install" ''
+      exec ${inputs'.clan-core.packages.clan-cli}/bin/clan machines install runner "$@"
+    '';
+
+    legacyPackages.runner.update = pkgs.writeShellScriptBin "runner-update" ''
+      exec ${inputs'.clan-core.packages.clan-cli}/bin/clan machines update runner "$@"
+    '';
+
     make-shells."bean".packages = with inputs'.clan-core.packages; [
       clan-app
       clan-cli
@@ -17,7 +25,7 @@
       domain = "bean.directory";
     };
 
-    pkgsForSystem = system: withSystem system (builtins.getAttr "pkgs");
+    pkgsForSystem = system: withSystem system ({ pkgs, ... }: pkgs);
     specialArgs = { inherit (config.flake) lib; inherit (inputs) self; };
 
     inventory.tags = {

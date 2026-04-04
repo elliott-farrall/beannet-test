@@ -3,7 +3,7 @@
 with inputs.nixos-hardware.nixosModules;
 with config.flake.modules.nixos;
 let
-  public_key = builtins.readFile "${config.flake.clan.directory}/vars/per-machine/runner/root-ssh-key/public-key/value";
+  public_key = builtins.readFile "${config.flake.clan.directory}/vars/per-machine/runner/openssh/ssh.id_ed25519.pub/value";
 in
 {
   flake.clan.machines."runner" = { lib, ... }: {
@@ -50,8 +50,9 @@ in
             #cloud-config
 
             runcmd:
-            - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=hetznercloud NIX_CHANNEL=nixos-23.05 bash 2>&1 | tee /tmp/infect.log
-            - shutdown -r +1
+            - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=hetznercloud NIX_CHANNEL=nixos-24.05 bash 2>&1 | tee /tmp/infect.log
+            - shutdown -r 0
+            - nix run github:elliott-farrall/beannet-test#runner.update --target-host localhost
           '';
         };
 

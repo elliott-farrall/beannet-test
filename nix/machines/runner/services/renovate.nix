@@ -14,7 +14,8 @@
           hash = "sha256-ACeZ0RAIplcaRKyoEXFCwA/zu96CaLxTwjV0ok3TQ8w=";
         };
 
-        pnpmDeps = pkgs.pnpm_10.fetchDeps {
+        pnpmDeps = pkgs.fetchPnpmDeps {
+          pnpm = pkgs.pnpm_10;
           inherit (attrs) pname;
           inherit src version;
           fetcherVersion = 1;

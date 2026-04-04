@@ -10,6 +10,7 @@
 
     services.lldap = {
       enable = true;
+      silenceForceUserPassResetWarning = true;
 
       settings = {
         http_url = config.beannet.services."lldap".href;
