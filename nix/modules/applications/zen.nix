@@ -15,7 +15,7 @@
                 --replace-warn "Name=Zen Browser (Beta)" "Name=Zen"
             '';
 
-            meta.mainProgram = "zen";
+            meta.mainProgram = "zen-beta";
           })
           { };
       })
@@ -33,6 +33,7 @@
       programs.zen-browser = {
         enable = true;
         package = pkgs.zen-browser;
+        profiles.default = { };
       };
 
       home.sessionVariables.BROWSER = lib.getExe config.programs.zen-browser.package;
@@ -43,7 +44,7 @@
 
       stylix.targets.zen-browser.profileNames = [ "default" ];
 
-      home.persistence.state.directories = [ ".zen" ];
+      home.persistence.state.directories = [ ".config/zen" ];
     };
   };
 }

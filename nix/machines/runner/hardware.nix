@@ -3,7 +3,7 @@
 with inputs.nixos-hardware.nixosModules;
 with config.flake.modules.nixos;
 let
-  public_key = builtins.readFile "${config.flake.clan.directory}/vars/per-machine/runner/openssh/ssh.id_ed25519.pub/value";
+  public_key = builtins.readFile "${config.flake.clan.directory}/vars/per-machine/runner/sshd-root-key/id_ed25519.pub/value";
 in
 {
   flake.clan.machines."runner" = { lib, ... }: {
@@ -11,7 +11,7 @@ in
       disks-zfs
     ];
 
-    disko.devices.disk."main".device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_108482631";
+    disko.devices.disk."main".device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_115217896";
 
     boot.loader = {
       grub.efiSupport = lib.mkForce false;
@@ -52,7 +52,6 @@ in
             runcmd:
             - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=hetznercloud NIX_CHANNEL=nixos-24.05 bash 2>&1 | tee /tmp/infect.log
             - shutdown -r 0
-            - nix run github:elliott-farrall/beannet-test#runner.update --target-host localhost
           '';
         };
 

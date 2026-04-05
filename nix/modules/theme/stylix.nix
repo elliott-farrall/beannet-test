@@ -66,14 +66,6 @@
         popups = 1.0;
         terminal = 0.9;
       };
-
-      # FIXME - https://github.com/nix-community/stylix/issues/1560#issuecomment-3663030523
-      targets.gnome.enable = false;
-      targets.gtk.extraCss = ''
-        .dialog-action-area > .text-button {
-          color: @dialog_fg_color;
-        }
-      '';
     };
   };
 }

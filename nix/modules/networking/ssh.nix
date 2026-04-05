@@ -3,7 +3,7 @@
 let
   machines = config.flake.clan.nixosConfigurations;
 
-  getKey = machine: "${config.flake.clan.directory}/vars/per-machine/${machine}/openssh/ssh.id_ed25519/secret";
+  getKey = machine: "${config.flake.clan.directory}/vars/per-machine/${machine}/sshd-root-key/id_ed25519/secret";
 in
 {
   flake.modules.nixos.default = { lib, ... }: {
@@ -19,25 +19,25 @@ in
         Host beanbag
           Hostname ssh.${settings.domain}
           User root
-          IdentityFile ${vars.generators.openssh.files."ssh.id_ed25519".path}
+          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
       ''}
 
       ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
         Host ${name}.${settings.domain}
           User root
-          IdentityFile ${vars.generators.openssh.files."ssh.id_ed25519".path}
+          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
           ProxyJump beanbag
       '') machines)}
       ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
         Host ${vars.generators.zerotier.files.zerotier-ip.value}
           User root
-          IdentityFile ${vars.generators.openssh.files."ssh.id_ed25519".path}
+          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
           ProxyJump beanbag
       '') machines)}
       ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
         Host ${vars.generators.yggdrasil.files.address.value}
           User root
-          IdentityFile ${vars.generators.openssh.files."ssh.id_ed25519".path}
+          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
           ProxyJump beanbag
       '') machines)}
     '';
