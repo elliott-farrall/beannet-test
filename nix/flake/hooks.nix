@@ -31,7 +31,7 @@
         check-toml.enable = true;
 
         # Docs
-        markdownlint.enable = true; #REVIEW - Broken due to removal nodePackages
+        markdownlint.enable = true;
         check-vcs-permalinks.enable = true;
 
         # Git

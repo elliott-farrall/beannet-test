@@ -6,7 +6,7 @@
 
     programs.zsh.enable = true;
     environment.pathsToLink = [ "/share/zsh" ]; # Allows completion for system packages
-    system.userActivationScripts.zshrc = "touch .zshrc"; # Prevents initial dialogue
+    system.userActivationScripts.zshrc = "[ -e .zshrc ] || touch .zshrc"; # Prevents initial dialogue
   };
 
   flake.modules.homeManager.default = { ... }: {
