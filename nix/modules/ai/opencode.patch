@@ -1,0 +1,35 @@
+--- a/packages/tui/src/context/local.tsx
++++ b/packages/tui/src/context/local.tsx
+@@ -520,14 +520,4 @@
+     }
+
+-    createEffect(() => {
+-      const value = agent.current()
+-      if (!value?.model) return
+-      if (isModelValid(value.model)) return
+-      toast.show({
+-        variant: "warning",
+-        message: `Agent ${value.name}'s configured model ${value.model.providerID}/${value.model.modelID} is not valid`,
+-        duration: 3000,
+-      })
+-    })
+
+     const result = {
+--- a/packages/tui/src/feature-plugins/sidebar/footer.tsx
++++ b/packages/tui/src/feature-plugins/sidebar/footer.tsx
+@@ -66,5 +66,4 @@ function View(props: { api: TuiPluginApi; sessionID: string }) {
+       </Show>
+       <text>
+-        <span style={{ fg: theme().textMuted }}>{path().parent}/</span>
+         <span style={{ fg: theme().text }}>{path().name}</span>
+       </text>
+--- a/packages/tui/src/feature-plugins/home/footer.tsx
++++ b/packages/tui/src/feature-plugins/home/footer.tsx
+@@ -14,6 +14,6 @@ function Directory(props: { api: TuiPluginApi }) {
+   const dir = createMemo(() => {
+     const selected = destination?.destination()
+     if (!selected || selected.type === "new") return
+-    const out = abbreviateHome(selected.directory, paths.home)
++    const out = abbreviateHome(selected.directory, paths.home).split("/").at(-1) ?? ""
+     const branch =
+       selected.directory === (props.api.state.path.directory || paths.cwd) ? props.api.state.vcs?.branch : undefined

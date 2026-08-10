@@ -11,9 +11,11 @@
 - mkhl.direnv
 # AI
 - anthropic.claude-code
+- kwickramasekara.opencode-chat-unofficial
 - ms-windows-ai-studio.windows-ai-studio
 - ms-azuretools.vscode-azure-mcp-server
 # Editor
+- ruschaaf.extended-embedded-languages
 - exodiusstudios.comment-anchors
 - stackbreak.comment-divider
 - bierner.markdown-preview-github-styles

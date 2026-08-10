@@ -24,7 +24,7 @@
     };
 
     roles.server = {
-      tags."all" = { };
+      tags = [ "all" ];
 
       settings.generateRootKey = true;
     };

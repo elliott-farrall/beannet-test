@@ -83,6 +83,12 @@
 
         desktop.wmIcons."code-insiders" = "󰨞";
 
+        # programs.vscode hardcodes stable paths; bridge to Insiders paths declaratively.
+        home.file.".vscode-insiders/extensions".source =
+          config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.vscode/extensions";
+        xdg.configFile."Code - Insiders/User/settings.json".source =
+          config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/Code/User/settings.json";
+
         home.persistence.state = {
           directories = [ ".config/Code - Insiders" ];
           files = [ ".vscode-insiders/argv.json" ];

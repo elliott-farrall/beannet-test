@@ -4,7 +4,7 @@
   flake.modules.nixos.default = { ... }: {
     services.kmscon = {
       enable = true;
-      hwRender = true;
+      config.hwaccel = true;
     };
   };
 }

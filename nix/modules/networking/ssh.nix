@@ -28,8 +28,8 @@ in
           IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
           ProxyJump beanbag
       '') machines)}
-      ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
-        Host ${vars.generators.zerotier.files.zerotier-ip.value}
+      ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
+        Host ${vars.generators."zerotier-ip-${name}-zerotier".files.ip.value}
           User root
           IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
           ProxyJump beanbag
@@ -74,7 +74,7 @@ in
           machines
         // lib.mapAttrs'
           (name: machine:
-            lib.nameValuePair machine.config.clan.core.vars.generators.zerotier.files.zerotier-ip.value {
+            lib.nameValuePair machine.config.clan.core.vars.generators."zerotier-ip-${name}-zerotier".files.ip.value {
               user = "root";
               identityFile = "~/${secrets."${name}-root-private-key".path}";
               proxyJump = "beanbag";

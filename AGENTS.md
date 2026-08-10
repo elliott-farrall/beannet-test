@@ -133,6 +133,41 @@ Currently minimal. The repository is hosted on GitHub and uses pre-commit hooks
 as the primary automated quality gate. A move to Azure DevOps is under
 consideration. Do not assume any particular CI pipeline is active.
 
+## NixOS environment
+
+Machines in this project run NixOS. When working in this repo on a NixOS
+machine, be aware of the following.
+
+**Read-only paths**: `/nix/store` and all nix-managed paths are immutable.
+Many files under `~/.config` and `~/.local` are symlinks into the nix store —
+do not attempt to write to them. Use `readlink -f <path>` to check.
+
+**Impermanence**: The root filesystem is ephemeral and reset on reboot.
+Persistent data lives under `/pst`:
+
+| Path | Purpose |
+| ------------------------- | ---------- |
+| `/pst/data/home/<user>/` | User data |
+| `/pst/state/home/<user>/` | User state |
+| `/pst/log/home/<user>/` | User logs |
+
+When adding state or config that must survive reboots, declare it in
+`home.persistence.data.directories` or `home.persistence.state.directories`
+inside the relevant home-manager module.
+
+**Running tools**: Not all tools are globally installed. Use `comma` or
+`nix shell` to run tools ephemerally:
+
+```sh
+, <tool>                                   # comma (finds package automatically)
+nix shell nixpkgs#<pkg> --command <tool>   # explicit nix shell
+```
+
+Further reading:
+[NixOS manual](https://nixos.org/manual/nixos/stable/) ·
+[home-manager manual](https://nix-community.github.io/home-manager/) ·
+[impermanence module](https://github.com/nix-community/impermanence)
+
 ## Things to avoid
 
 - Do not edit `sops/`, `vars/`, `machines/` (facter.json), or `inventory.json`

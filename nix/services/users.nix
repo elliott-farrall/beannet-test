@@ -12,8 +12,7 @@ in
     };
 
     roles.default = {
-      tags."laptop" = { };
-      tags."wsl" = { };
+      tags = [ "laptop" "wsl" ];
 
       settings = {
         user = "elliott";

@@ -11,7 +11,7 @@ rec {
     };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "dep_nixpkgs-lib";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
     clan-core = {
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
@@ -233,11 +233,9 @@ rec {
 
   nixConfig = {
     extra-substituters = [
-      "https://cache.garnix.io"
       "https://nix-community.cachix.org"
     ];
     extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };

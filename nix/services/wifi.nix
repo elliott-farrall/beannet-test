@@ -8,7 +8,7 @@
     };
 
     roles.default = {
-      tags."laptop" = { };
+      tags = [ "laptop" ];
 
       settings = {
         networks."beannet" = { };

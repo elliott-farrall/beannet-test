@@ -18,15 +18,16 @@
           enable = true;
 
           # FIXME - Incorrect resolutions on multi-monitor setups
-          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} \
-            --remember \
-            --remember-session \
-            --user-menu \
-            --session-wrapper '${pkgs.execline}/bin/exec > /dev/null' \
-            --sessions ${desktops}/share/wayland-sessions \
-            --xsessions ${desktops}/share/xsessions \
-            --theme 'border=${accent'};prompt=${accent'};action=${accent'}'
-          '';
+          settings.default_session.command = lib.concatStringsSep " " [
+            (lib.getExe pkgs.tuigreet)
+            "--remember"
+            "--remember-session"
+            "--user-menu"
+            "--session-wrapper '${pkgs.execline}/bin/exec > /dev/null'"
+            "--sessions ${desktops}/share/wayland-sessions"
+            "--xsessions ${desktops}/share/xsessions"
+            "--theme 'border=${accent'};prompt=${accent'};action=${accent'}'"
+          ];
         };
       };
     };

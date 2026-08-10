@@ -7,7 +7,7 @@
     };
 
     roles.peer = {
-      tags."all" = { };
+      tags = [ "all" ];
     };
 
     roles.moon = { };
@@ -15,7 +15,7 @@
 
   flake.clan.inventory.instances.yggdrasil = {
     roles.default = {
-      tags.all = { };
+      tags = [ "all" ];
     };
   };
 }

@@ -13,7 +13,6 @@
     '';
 
     make-shells."bean".packages = with inputs'.clan-core.packages; [
-      clan-app
       clan-cli
       editor # Check nix language sever settings here, might be useful
     ];

@@ -50,8 +50,6 @@
     };
 
   flake.modules.homeManager.default = { pkgs, config, ... }: {
-    gtk.gtk4.theme = config.gtk.theme;
-
     stylix = {
       icons = {
         enable = true;

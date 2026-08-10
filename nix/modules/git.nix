@@ -5,16 +5,16 @@
     clan.core.vars.generators."github" = {
       share = true;
 
-      prompts."key" = {
-        description = "GitHub ssh key";
+      prompts."ssh" = {
+        description = "GitHub SSH key";
         type = "multiline-hidden";
         persist = true;
       };
     };
-    clan.core.vars.generators."azure" = {
+    clan.core.vars.generators."azure-devops" = {
       share = true;
 
-      prompts."key" = {
+      prompts."ssh" = {
         description = "Azure DevOps ssh key";
         type = "multiline-hidden";
         persist = true;
@@ -40,12 +40,12 @@
 
     sops.secrets = {
       "github" = {
-        sopsFile = "${config.flake.clan.directory}/vars/shared/github/key/secret";
+        sopsFile = "${config.flake.clan.directory}/vars/shared/github/ssh/secret";
         path = ".ssh/credentials/services/github";
         format = "binary";
       };
       "azure" = {
-        sopsFile = "${config.flake.clan.directory}/vars/shared/azure/key/secret";
+        sopsFile = "${config.flake.clan.directory}/vars/shared/azure-devops/ssh/secret";
         path = ".ssh/credentials/services/azure";
         format = "binary";
       };

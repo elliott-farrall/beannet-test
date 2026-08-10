@@ -8,9 +8,7 @@
     };
 
     roles.default = {
-      tags."installer" = { };
-      tags."laptop" = { };
-      tags."wsl" = { };
+      tags = [ "installer" "laptop" "wsl" ];
 
       extraModules = [{ clan.core.deployment.requireExplicitUpdate = true; }];
     };
