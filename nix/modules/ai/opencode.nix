@@ -52,7 +52,10 @@
 
         settings = {
           enabled_providers = [ "openrouter" ];
-          plugin = [ "oh-my-openagent" "opencode-mem" ];
+          plugin = [ "oh-my-opencode-slim" "opencode-mem" "opencode-direnv" "opencode-quotes-plugin" ];
+
+          agent.build.disable = true;
+          agent.plan.disable = true;
 
           provider.openrouter.options.baseURL = "http://127.0.0.1:8787/v1"; # Headroom Proxy
 
@@ -185,24 +188,33 @@
         '';
       };
 
-      home.file.".omo/omo.jsonc".text = builtins.toJSON {
-        # Root-level keys are validated by OmoConfigLayerSchema (strict).
-        # telemetry/team_mode belong in [opencode]; agents here use OmoAgentDefSchema.
-        agents = {
-          sisyphus.model = "openrouter/anthropic/claude-opus-5";
-          hephaestus.model = "openrouter/openai/gpt-5.6-sol";
-          prometheus.model = "openrouter/anthropic/claude-fable-5";
-          metis.model = "openrouter/anthropic/claude-opus-5";
-          oracle.model = "openrouter/openai/gpt-5.6-sol";
-          momus.model = "openrouter/openai/gpt-5.6-terra";
-          atlas.model = "openrouter/anthropic/claude-sonnet-5";
-          librarian.model = "openrouter/openai/gpt-5.6-luna";
-          explore.model = "openrouter/openai/gpt-5.6-luna";
-          "multimodal-looker".model = "openrouter/openai/gpt-5.6-sol";
-        };
-        "[opencode]" = {
-          telemetry = false;
-          team_mode.enabled = false;
+      xdg.configFile."opencode/oh-my-opencode-slim.json".text = builtins.toJSON {
+        "\$schema" = "https://unpkg.com/oh-my-opencode-slim@latest/oh-my-opencode-slim.schema.json";
+        preset = "openrouter";
+        presets.openrouter = {
+          orchestrator = {
+            model = "openrouter/qwen/qwen3.7-plus";
+            skills = [ "*" ];
+            mcps = [ "*" ];
+          };
+          oracle = {
+            model = "openrouter/qwen/qwen3-max";
+            skills = [ "simplify" ];
+            mcps = [ ];
+          };
+          librarian = {
+            model = "openrouter/deepseek/deepseek-v4-flash";
+            mcps = [ "context7" ];
+          };
+          explorer = {
+            model = "openrouter/deepseek/deepseek-v4-flash";
+          };
+          designer = {
+            model = "openrouter/moonshotai/kimi-k2.7-code";
+          };
+          fixer = {
+            model = "openrouter/deepseek/deepseek-v4-flash";
+          };
         };
       };
 
@@ -212,9 +224,11 @@
         autoCaptureEnabled = true;
         webServerEnabled = false;
         memory.defaultScope = "project";
+        opencodeProvider = "openrouter";
+        opencodeModel = "openrouter/qwen/qwen3-30b-a3b-instruct-2507";
       };
 
       home.persistence.state.directories = [ ".local/share/opencode" ];
-      home.persistence.data.directories = [ ".opencode-mem" ".omo" ];
+      home.persistence.data.directories = [ ".opencode-mem" ];
     };
 }
