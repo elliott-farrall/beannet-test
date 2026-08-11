@@ -52,7 +52,7 @@
 
         settings = {
           enabled_providers = [ "openrouter" ];
-          plugin = [ "oh-my-opencode-slim" "opencode-mem" "opencode-direnv" "opencode-quotes-plugin" ];
+          plugin = [ "oh-my-opencode-slim" "opencode-mem" "opencode-direnv" ];
 
           agent.build.disable = true;
           agent.plan.disable = true;
