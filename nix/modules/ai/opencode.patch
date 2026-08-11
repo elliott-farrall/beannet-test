@@ -55,6 +55,16 @@
 +    const out = abbreviateHome(selected.directory, paths.home).split("/").at(-1) ?? ""
      const branch =
        selected.directory === (props.api.state.path.directory || paths.cwd) ? props.api.state.vcs?.branch : undefined
+--- a/packages/tui/src/component/prompt/index.tsx
++++ b/packages/tui/src/component/prompt/index.tsx
+@@ -1644,6 +1644,6 @@ export function Prompt(props: PromptProps) {
+                 <Show when={props.sessionID}>
+                   <box marginLeft={1}>
+-                    <text fg={theme.textMuted}>{location()?.directory ?? paths.cwd}</text>
++                    <text fg={theme.textMuted}>{(location()?.directory ?? paths.cwd).split("/").at(-1) ?? ""}{sync.data.vcs?.branch ? ":" + sync.data.vcs.branch : ""}</text>
+                   </box>
+                 </Show>
+               )}
 --- a/packages/opencode/src/cli/cmd/run/runtime.lifecycle.ts
 +++ b/packages/opencode/src/cli/cmd/run/runtime.lifecycle.ts
 @@ -140,10 +140,3 @@
