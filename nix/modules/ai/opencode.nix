@@ -51,7 +51,6 @@
         };
 
         settings = {
-          model = "openrouter/qwen/qwen3.7-flash";
           enabled_providers = [ "openrouter" ];
           plugin = [ "oh-my-openagent" "opencode-mem" ];
 
@@ -187,21 +186,23 @@
       };
 
       home.file.".omo/omo.jsonc".text = builtins.toJSON {
-        telemetry = false;
-        team_mode.enabled = false;
-
+        # Root-level keys are validated by OmoConfigLayerSchema (strict).
+        # telemetry/team_mode belong in [opencode]; agents here use OmoAgentDefSchema.
         agents = {
-          # Translate models to OpenRouter
-          "sisyphus".model = "openrouter/anthropic/claude-opus-5";
-          "hephaestus".model = "openrouter/openai/gpt-5.6-sol";
-          "prometheus".model = "openrouter/anthropic/claude-fable-5";
-          "metis".model = "openrouter/anthropic/claude-opus-5";
-          "oracle".model = "openrouter/openai/gpt-5.6-sol";
-          "momus".model = "openrouter/openai/gpt-5.6-terra";
-          "atlas".model = "openrouter/anthropic/claude-sonnet-5";
-          "librarian".model = "openrouter/openai/gpt-5.6-luna";
-          "explore".model = "openrouter/openai/gpt-5.6-luna";
+          sisyphus.model = "openrouter/anthropic/claude-opus-5";
+          hephaestus.model = "openrouter/openai/gpt-5.6-sol";
+          prometheus.model = "openrouter/anthropic/claude-fable-5";
+          metis.model = "openrouter/anthropic/claude-opus-5";
+          oracle.model = "openrouter/openai/gpt-5.6-sol";
+          momus.model = "openrouter/openai/gpt-5.6-terra";
+          atlas.model = "openrouter/anthropic/claude-sonnet-5";
+          librarian.model = "openrouter/openai/gpt-5.6-luna";
+          explore.model = "openrouter/openai/gpt-5.6-luna";
           "multimodal-looker".model = "openrouter/openai/gpt-5.6-sol";
+        };
+        "[opencode]" = {
+          telemetry = false;
+          team_mode.enabled = false;
         };
       };
 
