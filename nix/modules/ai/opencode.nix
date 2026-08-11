@@ -225,7 +225,7 @@
         webServerEnabled = false;
         memory.defaultScope = "project";
         opencodeProvider = "openrouter";
-        opencodeModel = "openrouter/qwen/qwen3-30b-a3b-instruct-2507";
+        opencodeModel = "qwen/qwen3-30b-a3b-instruct-2507";
       };
 
       home.persistence.state.directories = [ ".local/share/opencode" ];

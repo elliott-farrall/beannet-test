@@ -15,8 +15,30 @@
 -    })
 
      const result = {
+--- a/packages/tui/src/feature-plugins/home/tips.tsx
++++ b/packages/tui/src/feature-plugins/home/tips.tsx
+@@ -42,9 +42,9 @@ const tui: TuiPlugin = async (api) => {
+         const connected = createMemo(() =>
+           api.state.provider.some(
+             (item) => item.id !== "opencode" || Object.values(item.models).some((model) => model.cost?.input !== 0),
+           ),
+         )
+-        const show = createMemo(() => (!first() || !connected()) && !hidden())
++        const show = createMemo(() => !connected() && !hidden())
+         return <View api={api} hidden={hidden()} show={show()} connected={connected()} />
+       },
+     },
 --- a/packages/tui/src/feature-plugins/sidebar/footer.tsx
 +++ b/packages/tui/src/feature-plugins/sidebar/footer.tsx
+@@ -20,7 +20,7 @@ function View(props: { api: TuiPluginApi; sessionID: string }) {
+     const session = props.api.state.session.get(props.sessionID)
+     const dir = session?.directory || props.api.state.path.directory || paths.cwd
+     const out = abbreviateHome(dir, paths.home)
+-    const branch = session?.directory === props.api.state.path.directory ? props.api.state.vcs?.branch : undefined
++    const branch = props.api.state.vcs?.branch
+     const text = branch ? out + ":" + branch : out
+     const list = text.split("/")
+     return {
 @@ -66,5 +66,4 @@ function View(props: { api: TuiPluginApi; sessionID: string }) {
        </Show>
        <text>
@@ -33,3 +55,17 @@
 +    const out = abbreviateHome(selected.directory, paths.home).split("/").at(-1) ?? ""
      const branch =
        selected.directory === (props.api.state.path.directory || paths.cwd) ? props.api.state.vcs?.branch : undefined
+--- a/packages/opencode/src/cli/cmd/run/runtime.lifecycle.ts
++++ b/packages/opencode/src/cli/cmd/run/runtime.lifecycle.ts
+@@ -140,10 +140,3 @@
+ function directoryLabel(directory: string) {
+-  const resolved = path.resolve(directory)
+-  const display =
+-    resolved === Global.Path.home
+-      ? "~"
+-      : resolved.startsWith(`${Global.Path.home}${path.sep}`)
+-        ? resolved.replace(Global.Path.home, "~")
+-        : resolved
+-  return display.replaceAll("\\", "/")
++  return path.basename(path.resolve(directory))
+ }
