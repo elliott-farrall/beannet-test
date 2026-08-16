@@ -43,9 +43,6 @@
           text = ''
             OPENROUTER_API_KEY=$(< ${config.sops.secrets."openrouter/api-key".path})
             export OPENROUTER_API_KEY
-            # codegraph ships its own node binary linked against libstdc++
-            LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-            export LD_LIBRARY_PATH
             exec opencode "$@"
           '';
         };
@@ -57,18 +54,32 @@
           agent.build.disable = true;
           agent.plan.disable = true;
 
-          provider.openrouter.options.baseURL = "http://127.0.0.1:8787/v1"; # Headroom Proxy
+          provider.openrouter.models = {
+            "qwen/qwen3.7-plus" = { name = "Qwen 3.7 Plus"; };
+            "qwen/qwen3-max" = { name = "Qwen 3 Max"; };
+            "deepseek/deepseek-v4-flash" = { name = "DeepSeek V4 Flash"; };
+            "moonshotai/kimi-k2.7-code" = { name = "Kimi K2.7 Code"; };
+          };
+
+          provider.openrouter.options.baseURL = "http://localhost:8787/v1"; # Headroom Proxy
 
           permission = {
             read = "allow";
             glob = "allow";
             grep = "allow";
             list = "allow";
-            edit = "allow";
-            write = "allow";
+            edit = {
+              "*" = "deny";
+              "/pst/**" = "ask";
+              "/home/**" = "ask";
+              "/tmp/**" = "allow";
+            };
             webfetch = "allow";
             websearch = "allow";
             lsp = "allow";
+            external_directory = {
+              "*" = "allow";
+            };
 
             bash = {
               # Deny catastrophic/irreversible operations
