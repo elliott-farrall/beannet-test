@@ -12,6 +12,7 @@ with config.flake.modules.nixos;
     disko.devices.disk."main".device = "/dev/null";
 
     boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+    console.earlySetup = lib.mkForce true;
 
     nixpkgs.hostPlatform.system = "x86_64-linux";
 
