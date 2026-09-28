@@ -23,6 +23,7 @@ in
 
           "adbusers"
           "docker"
+          "kvm"
           "lpadmin"
           "networkmanager"
           "openrazer"
@@ -75,6 +76,7 @@ in
 
         applications.nemo.enable = true;
         applications.vscode.enable = true;
+        applications.zed.enable = true;
         applications.zen.enable = true;
         applications.kitty.enable = true;
 

@@ -3,10 +3,11 @@
 {
   flake.modules.nixos.default = { lib, pkgs, config, ... }:
     let
-      inherit (config.clan.core.vars.generators."dockerhub") files;
+      inherit (config.flake.lib) capitalise;
+      inherit (config.clan.core.vars.generators."docker") files;
 
       mkLoginService = backend: {
-        description = "${lib.capitalise backend} Login Service";
+        description = "${capitalise backend} Login Service";
         after = [ "network-online.target" ];
         requires = [ "network-online.target" ];
 
@@ -28,20 +29,6 @@
       systemd.services = {
         docker-login = lib.mkIf config.virtualisation.docker.enable (mkLoginService "docker");
         podman-login = lib.mkIf config.virtualisation.podman.enable (mkLoginService "podman");
-      };
-
-      clan.core.vars.generators."dockerhub" = {
-        share = true;
-
-        prompts."username" = {
-          description = "DockerHub username";
-          persist = true;
-        };
-        prompts."password" = {
-          description = "DockerHub password";
-          type = "hidden";
-          persist = true;
-        };
       };
     };
 }
