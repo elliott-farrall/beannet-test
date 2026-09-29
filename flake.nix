@@ -130,17 +130,9 @@ rec {
     /*                                  Packages                                  */
     /* -------------------------------------------------------------------------- */
 
-    code-insiders = {
-      url = "github:iosmanthus/code-insiders-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-schemas = {
       url = "github:DeterminateSystems/nix-src/flake-schemas";
       # TODO - Override nix package and configure dependencies
-    };
-    nix-vscode-extensions = {
-      url = "github:nix-community/nix-vscode-extensions";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

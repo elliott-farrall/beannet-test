@@ -76,26 +76,6 @@
         "url": "https://git.clan.lol/clan/clan-core/archive/main.tar.gz"
       }
     },
-    "code-insiders": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786151741,
-        "narHash": "sha256-TAyzMkQTyhPa09wEUyMbA/Jg+P3qqdimCA7PU5ypcZw=",
-        "owner": "iosmanthus",
-        "repo": "code-insiders-flake",
-        "rev": "704683faa3647412fd69e44508a72fcc7c3bb557",
-        "type": "github"
-      },
-      "original": {
-        "owner": "iosmanthus",
-        "repo": "code-insiders-flake",
-        "type": "github"
-      }
-    },
     "data-mesher": {
       "inputs": {
         "flake-parts": [
@@ -771,26 +751,6 @@
         "url": "https://git.clan.lol/clan/nix-select/archive/main.tar.gz"
       }
     },
-    "nix-vscode-extensions": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786154646,
-        "narHash": "sha256-MDOvpk7B1eImC2TQbz4KoqKtYnnXOznGHx+2KaTLJBE=",
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "rev": "7c0ca0a27c2e7338e2c7d61599c0de4873081d7c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-vscode-extensions",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1760106635,
@@ -898,7 +858,6 @@
         "catppuccin": "catppuccin",
         "chaotic": "chaotic",
         "clan-core": "clan-core",
-        "code-insiders": "code-insiders",
         "dep_base16": "dep_base16",
         "dep_base16-fish": "dep_base16-fish",
         "dep_base16-helix": "dep_base16-helix",
@@ -927,7 +886,6 @@
         "make-shell": "make-shell",
         "nix-index-database": "nix-index-database",
         "nix-schemas": "nix-schemas",
-        "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",

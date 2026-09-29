@@ -59,7 +59,6 @@ in
         desktop.environments.hyprland.enable = lib.mkIf cfg.gui true;
 
         applications.nemo.enable = lib.mkIf cfg.gui true;
-        # applications.vscode.enable = lib.mkIf cfg.gui true;
 
         wsl.defaultUser = "elliott";
         home-manager.users.elliott.imports = with modules.homeManager; [ users-elliott ];
@@ -75,14 +74,12 @@ in
         desktop.environments.hyprland.enable = true;
 
         applications.nemo.enable = true;
-        applications.vscode.enable = true;
-        applications.zed.enable = true;
         applications.zen.enable = true;
 
         wayland.windowManager.hyprland = lib.mkIf config.wayland.windowManager.hyprland.enable {
           extraConfig =
             let
-              editor = "${config.programs.vscode.package}/bin/code-insiders";
+              editor = lib.getExe config.programs.zed-editor.package;
               browser = config.home.sessionVariables.BROWSER or "";
               terminal = config.home.sessionVariables.TERMINAL or "";
             in
@@ -97,7 +94,7 @@ in
             '';
 
           settings.window_rule = [
-            { match = { class = "code-insiders"; }; workspace = "1"; }
+            { match = { class = "dev.zed.Zed"; }; workspace = "1"; }
             { match = { class = "zen-beta"; }; workspace = "2"; }
             { match = { class = "kitty"; }; workspace = "special:terminal"; }
           ];
