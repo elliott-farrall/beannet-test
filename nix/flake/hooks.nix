@@ -43,14 +43,6 @@
         trim-trailing-whitespace.enable = true;
         ripsecrets.enable = true;
 
-        flake = {
-          enable = true;
-          entry = "nix --extra-experimental-features 'nix-command flakes' flake lock";
-          files = "^flake\\.lock$";
-          pass_filenames = false;
-          extraPackages = with pkgs; [ nix ];
-        };
-
         renovate = {
           enable = true;
           entry = "renovate-config-validator";
