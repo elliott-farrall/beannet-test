@@ -121,7 +121,6 @@
             drun-display-format = "{name}";
 
             hover-select = true;
-            click-to-exit = true; # Broken
             steal-focus = true;
           };
         };
