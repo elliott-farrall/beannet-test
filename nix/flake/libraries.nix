@@ -30,7 +30,7 @@
             flamingo = "brown";
           };
         in
-        accentMap.${accentName};
+          accentMap.${accentName} or (throw "Unknown accent '${accentName}'. Valid accents: ${final.concatStringsSep ", " (final.attrNames accentMap)}");
 
       mkDefaultApplications = app: mimes: genAttrs mimes (_mime: app);
     }
