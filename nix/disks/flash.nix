@@ -7,7 +7,7 @@
         content = {
           type = "gpt";
 
-          partitions ."boot" = {
+          partitions."boot" = {
             type = "EF02";
             size = "1M";
             priority = 1;
