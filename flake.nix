@@ -240,10 +240,14 @@ rec {
     ];
   };
 
-  outputs = inputs: with inputs.nixpkgs.lib; inputs.flake-parts.lib.mkFlake
-    {
-      inputs = filterAttrs (name: _value: ! hasPrefix "dep_" name) inputs;
-      specialArgs = { inherit nixConfig; };
-    }
-    (inputs.import-tree ./nix);
+  outputs = inputs:
+    let
+      inherit (inputs.nixpkgs.lib) filterAttrs hasPrefix;
+    in
+    inputs.flake-parts.lib.mkFlake
+      {
+        inputs = filterAttrs (name: _value: ! hasPrefix "dep_" name) inputs;
+        specialArgs = { inherit nixConfig; };
+      }
+      (inputs.import-tree ./nix);
 }
