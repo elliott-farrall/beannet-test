@@ -80,11 +80,27 @@ in
         applications.zen.enable = true;
         applications.kitty.enable = true;
 
-        wayland.windowManager.hyprland.settings = {
-          exec-once = [
-            "[workspace 1 silent] ${config.home.sessionVariables.VISUAL or ""}"
-            "[workspace 2 silent] ${config.home.sessionVariables.BROWSER or ""}"
-            "[workspace special:terminal silent] ${config.home.sessionVariables.TERMINAL or ""}"
+        wayland.windowManager.hyprland = lib.mkIf config.wayland.windowManager.hyprland.enable {
+          extraConfig =
+            let
+              editor = "${config.programs.vscode.package}/bin/code-insiders";
+              browser = config.home.sessionVariables.BROWSER or "";
+              terminal = config.home.sessionVariables.TERMINAL or "";
+            in
+            ''
+              hl.on("hyprland.start", function()
+                hl.exec_cmd("${editor}", { workspace = "1 silent" })
+                ${lib.optionalString (browser != "") ''hl.exec_cmd("${browser}", { workspace = "2 silent" })''}
+                ${lib.optionalString (terminal != "") ''hl.exec_cmd("${terminal}", { workspace = "special:terminal silent" })''}
+
+                hl.dispatch(hl.dsp.focus({ workspace = "1" }))
+              end)
+            '';
+
+          settings.window_rule = [
+            { match = { class = "code-insiders"; }; workspace = "1"; }
+            { match = { class = "zen-beta"; }; workspace = "2"; }
+            { match = { class = "kitty"; }; workspace = "special:terminal"; }
           ];
         };
       };

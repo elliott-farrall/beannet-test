@@ -54,8 +54,18 @@
     {
       config = lib.mkIf cfg.enable {
         wayland.windowManager.hyprland.settings.monitor = lib.mkIf config.wayland.windowManager.hyprland.enable [
-          "${output}, ${toString width}x${toString height}@${toString refresh}, auto, ${toString scale}"
-          ", preferred, auto, auto"
+          {
+            inherit output;
+            mode = "${toString width}x${toString height}@${toString refresh}";
+            position = "auto";
+            inherit scale;
+          }
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = "auto";
+          }
         ];
       };
     };

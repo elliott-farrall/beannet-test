@@ -25,6 +25,8 @@
               show_zen_models = false;
             };
           };
+
+          agent.tool_permissions.default = "allow";
         };
       };
 

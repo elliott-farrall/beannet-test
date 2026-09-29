@@ -22,6 +22,9 @@
       inherit (config.lib.stylix) colors;
       inherit (config.catppuccin) accent;
       accent' = colors.${lib.accentToBase16 accent};
+
+      mkBind = key: action: opts: { _args = [ key (lib.generators.mkLuaInline action) ] ++ lib.optional (opts != { }) opts; };
+      mkBind' = key: action: mkBind key action { };
     in
     {
       options = {
@@ -50,11 +53,6 @@
           }
         ];
 
-        wayland.windowManager.hyprland.extraConfig = ''
-          env = NIXOS_OZONE_WL, 1
-          env = ELECTRON_OZONE_PLATFORM_HINT, auto
-        '';
-
         xdg.portal = {
           enable = true;
           extraPortals = with pkgs; [ xdg-desktop-portal-hyprland xdg-desktop-portal-gtk ];
@@ -69,93 +67,99 @@
         wayland.windowManager.hyprland = {
           enable = true;
           xwayland.enable = true;
+          configType = "lua";
 
           settings = {
-            xwayland.force_zero_scaling = true;
-            windowrule = [
-              "border_color rgb(${colors.base0A}), match:xwayland 1"
-            ];
+            config = {
+              xwayland.force_zero_scaling = true;
 
-            dwindle = {
-              preserve_split = true;
-            };
+              dwindle = {
+                preserve_split = true;
+              };
 
-            general = {
-              gaps_in = 10;
-              gaps_out = 10;
-              resize_on_border = true;
-              "col.active_border" = lib.mkForce "rgb(${accent'})";
-            };
-            decoration = {
-              rounding = 10;
-              active_opacity = config.stylix.opacity.applications;
-              inactive_opacity = config.stylix.opacity.applications;
-              fullscreen_opacity = config.stylix.opacity.applications;
-            };
-            group = {
-              "col.border_active" = lib.mkForce "rgb(${accent'})";
+              general = {
+                gaps_in = 10;
+                gaps_out = 10;
+                resize_on_border = true;
+                "col.active_border" = lib.mkForce "rgb(${accent'})";
+              };
+              decoration = {
+                rounding = 10;
+                active_opacity = config.stylix.opacity.applications;
+                inactive_opacity = config.stylix.opacity.applications;
+                fullscreen_opacity = config.stylix.opacity.applications;
+              };
+              group = {
+                "col.border_active" = lib.mkForce "rgb(${accent'})";
 
-              groupbar = {
-                "col.active" = lib.mkForce "rgb(${accent'})";
+                groupbar = {
+                  "col.active" = lib.mkForce "rgb(${accent'})";
+                };
+              };
+
+              input = {
+                kb_layout = "gb";
+                touchpad.natural_scroll = true;
+              };
+
+              ecosystem = {
+                no_update_news = true;
+                no_donation_nag = true;
+              };
+
+              misc = {
+                disable_hyprland_logo = true;
+                allow_session_lock_restore = true;
               };
             };
 
-            input = {
-              kb_layout = "gb";
-              touchpad.natural_scroll = true;
-            };
-
-            gesture = [
-              "3, horizontal, workspace"
+            env = [
+              { _args = [ "NIXOS_OZONE_WL" "1" ]; }
+              { _args = [ "ELECTRON_OZONE_PLATFORM_HINT" "auto" ]; }
             ];
-            bindr = [
-              "SUPER, SUPER_L, exec, pkill rofi || ${config.programs.rofi.finalPackage}/bin/rofi -show drun"
 
-              "Caps_Lock, Caps_Lock, exec, ${pkgs.swayosd}/bin/swayosd-client --caps-lock"
-              ", Scroll_Lock, exec, ${pkgs.swayosd}/bin/swayosd-client --scroll-lock"
-              ", Num_Lock, exec, ${pkgs.swayosd}/bin/swayosd-client --num-lock"
-            ];
+            gesture = [{
+              fingers = 3;
+              direction = "horizontal";
+              action = "workspace";
+            }];
+
+            window_rule = [{
+              match = { xwayland = 1; };
+              border_color = "rgb(${colors.base0A})";
+            }];
+
             bind = [
-              "SUPER, ESCAPE, exit,"
-              "SUPER, X, killactive,"
-              "SUPER, F, togglefloating, c"
+              (mkBind' "SUPER + ESCAPE" "hl.dsp.exit()")
+              (mkBind' "SUPER + X" "hl.dsp.window.kill()")
+              (mkBind' "SUPER + F" "hl.dsp.window.float({ action = \"toggle\" })")
 
-              "SUPER, D, workspace, +1"
-              "SUPER, A, workspace, -1"
-              "SUPER, C, togglespecialworkspace, terminal"
+              (mkBind' "SUPER + D" "hl.dsp.focus({ workspace = \"e+1\" })")
+              (mkBind' "SUPER + A" "hl.dsp.focus({ workspace = \"e-1\" })")
+              (mkBind' "SUPER + C" "hl.dsp.workspace.toggle_special(\"terminal\")")
 
-              "SUPER SHIFT, D, movetoworkspace, +1"
-              "SUPER SHIFT, A, movetoworkspace, -1"
+              (mkBind' "SUPER + SHIFT + D" "hl.dsp.window.move({ workspace = \"e+1\" })")
+              (mkBind' "SUPER + SHIFT + A" "hl.dsp.window.move({ workspace = \"e-1\" })")
 
-              ", XF86AudioMute, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
-              ", XF86AudioLowerVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume lower"
-              ", XF86AudioRaiseVolume, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume raise"
-              ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
-              ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-              ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
-              ", XF86MonBrightnessDown, exec, ${pkgs.swayosd}/bin/swayosd-client --brightness lower"
-              ", XF86MonBrightnessUp, exec, ${pkgs.swayosd}/bin/swayosd-client --brightness raise"
-              # Super_L+p         -> Presentation mode
-              # XF86RFKill        -> Airplane mode
-              # Print             -> Screenshot
-              # XF86AudioMedia    -> Settings?
+              (mkBind' "XF86AudioMute" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle\")")
+              (mkBind' "XF86AudioLowerVolume" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --output-volume lower\")")
+              (mkBind' "XF86AudioRaiseVolume" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --output-volume raise\")")
+              (mkBind' "XF86AudioPrev" "hl.dsp.exec_cmd(\"${pkgs.playerctl}/bin/playerctl previous\")")
+              (mkBind' "XF86AudioPlay" "hl.dsp.exec_cmd(\"${pkgs.playerctl}/bin/playerctl play-pause\")")
+              (mkBind' "XF86AudioNext" "hl.dsp.exec_cmd(\"${pkgs.playerctl}/bin/playerctl next\")")
+              (mkBind' "XF86MonBrightnessDown" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --brightness lower\")")
+              (mkBind' "XF86MonBrightnessUp" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --brightness raise\")")
 
-              "SUPER, PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot -m window"
+              (mkBind' "SUPER + PRINT" "hl.dsp.exec_cmd(\"${pkgs.hyprshot}/bin/hyprshot -m window\")")
+
+              (mkBind "SUPER + mouse:272" "hl.dsp.window.drag()" { mouse = true; })
+              (mkBind "SUPER + mouse:273" "hl.dsp.window.resize()" { mouse = true; })
+
+              (mkBind "SUPER + SUPER_L" "hl.dsp.exec_cmd(\"${config.programs.rofi.finalPackage}/bin/rofi -show drun\")" { release = true; })
+              (mkBind "Caps_Lock" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --caps-lock\")" { release = true; })
+              (mkBind "Scroll_Lock" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --scroll-lock\")" { release = true; })
+              (mkBind "Num_Lock" "hl.dsp.exec_cmd(\"${pkgs.swayosd}/bin/swayosd-client --num-lock\")" { release = true; })
             ];
-            bindm = [
-              "SUPER, mouse:272, movewindow"
-              "SUPER, mouse:273, resizewindow"
-            ];
-
-            ecosystem = {
-              no_update_news = true;
-              no_donation_nag = true;
-            };
-
-            misc = {
-              disable_hyprland_logo = true;
-              allow_session_lock_restore = true;
-            };
           };
         };
 
