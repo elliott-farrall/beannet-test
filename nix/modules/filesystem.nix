@@ -28,7 +28,7 @@
     };
   };
 
-  flake.modules.homeManager.default = { config, ... }: {
+  flake.modules.homeManager.default = { config, lib, ... }: {
     imports = with inputs; [ impermanence.homeManagerModules.impermanence ];
 
     programs.rclone.enable = true;
@@ -55,7 +55,7 @@
       allowOther = true;
       persistentStoragePath = "/pst/state/home/${config.home.username}";
 
-      files = [ ".config/sops/age/keys.txt" ];
+      files = [ (lib.removePrefix "${config.home.homeDirectory}/" "${config.xdg.configHome}/sops/age/keys.txt") ];
     };
 
     home.persistence.log = {
