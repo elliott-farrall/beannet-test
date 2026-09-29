@@ -26,11 +26,13 @@
             };
           };
 
+          auto_compact.enabled = true;
+
           agent.tool_permissions.default = "allow";
         };
       };
 
-      desktop.wmIcons."zed" = "󰨞";
+      desktop.wmIcons."zed" = "";
 
       stylix.targets.zed.enable = false; # Managed by Catppuccin
 
