@@ -12,7 +12,6 @@ in
         experimental-features = [ "nix-command" "flakes" ];
         trusted-users = [ "@wheel" ];
 
-        accept-flake-config = true;
         substituters = lib.mkBefore nixConfig.extra-substituters;
         trusted-public-keys = lib.mkBefore nixConfig.extra-trusted-public-keys;
 
