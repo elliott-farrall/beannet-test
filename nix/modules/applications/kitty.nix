@@ -2,11 +2,7 @@
 
 {
   flake.modules.homeManager.default = { lib, config, ... }: {
-    options = {
-      applications.kitty.enable = lib.mkEnableOption "the Kitty application";
-    };
-
-    config = lib.mkIf config.applications.kitty.enable {
+    config = {
       programs.kitty = {
         enable = true;
         settings.confirm_os_window_close = 0;

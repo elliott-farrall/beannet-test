@@ -78,7 +78,6 @@ in
         applications.vscode.enable = true;
         applications.zed.enable = true;
         applications.zen.enable = true;
-        applications.kitty.enable = true;
 
         wayland.windowManager.hyprland = lib.mkIf config.wayland.windowManager.hyprland.enable {
           extraConfig =
