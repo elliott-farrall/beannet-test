@@ -1,50 +1,34 @@
 { inputs, ... }:
 
 {
-  flake.modules.nixos.default = { ... }: {
-    nixpkgs.overlays = [
-      (final: prev: {
-        zen-browser = final.callPackage
-          (_args: final.symlinkJoin {
-            name = inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}.default.pname;
-            paths = [ inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}.default ];
+  flake.modules.homeManager.default = { lib, pkgs, config, ... }:
+    let
+      system = pkgs.stdenv.hostPlatform.system;
+      zenPackage = inputs.zen-browser.packages.${system}.default or (throw "Zen Browser is not supported on ${system}");
+    in
+    {
+      imports = with inputs; [ zen-browser.homeModules.default ];
 
-            postBuild = ''
-              sed -i ";" $out/share/applications/zen-beta.desktop
-              substituteInPlace $out/share/applications/zen-beta.desktop \
-                --replace-warn "Name=Zen Browser (Beta)" "Name=Zen"
-            '';
-
-            meta.mainProgram = "zen-beta";
-          })
-          { };
-      })
-    ];
-  };
-
-  flake.modules.homeManager.default = { lib, pkgs, config, ... }: {
-    imports = with inputs; [ zen-browser.homeModules.default ];
-
-    options = {
-      applications.zen.enable = lib.mkEnableOption "the Zen application";
-    };
-
-    config = lib.mkIf config.applications.zen.enable {
-      programs.zen-browser = {
-        enable = true;
-        package = pkgs.zen-browser;
-        profiles.default = { };
+      options = {
+        applications.zen.enable = lib.mkEnableOption "the Zen application";
       };
 
-      home.sessionVariables.BROWSER = lib.getExe config.programs.zen-browser.package;
+      config = lib.mkIf config.applications.zen.enable {
+        programs.zen-browser = {
+          enable = true;
+          package = zenPackage;
+          profiles.default = { };
+        };
 
-      xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "zen-beta.desktop" (lib.readYAML ./desktop/associations.yaml).browser;
+        home.sessionVariables.BROWSER = lib.getExe config.programs.zen-browser.package;
 
-      desktop.wmIcons."zen" = "󰖟";
+        xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "zen-beta.desktop" (lib.readYAML ./desktop/associations.yaml).browser;
 
-      stylix.targets.zen-browser.profileNames = [ "default" ];
+        desktop.wmIcons."zen" = "󰖟";
 
-      home.persistence.state.directories = [ ".config/zen" ];
+        stylix.targets.zen-browser.profileNames = [ "default" ];
+
+        home.persistence.state.directories = [ ".config/zen" ];
+      };
     };
-  };
 }
