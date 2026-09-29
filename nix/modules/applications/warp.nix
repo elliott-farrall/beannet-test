@@ -9,9 +9,7 @@
     config = lib.mkIf config.applications.warp.enable {
       home.packages = with pkgs; [ warp-terminal ];
 
-      home.sessionVariables.TERMINAL = lib.getExe pkgs.warp-terminal;
-
-      desktop.wmIcons."warp" = "󰆍";
+      desktop.wmIcons."warp" = "󰪶";
     };
   };
 }
