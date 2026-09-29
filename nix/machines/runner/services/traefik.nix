@@ -44,7 +44,10 @@
 
         certificatesResolvers."cloudflare".acme = {
           storage = "${config.services.traefik.dataDir}/acme.json";
-          dnsChallenge.provider = "cloudflare";
+          dnsChallenge = {
+            provider = "cloudflare";
+            resolvers = [ "1.1.1.1:53" "8.8.8.8:53" ];
+          };
         };
 
         log.level = "INFO";

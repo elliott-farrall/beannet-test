@@ -85,7 +85,7 @@
           "Machines" = [
             {
               "Runner" = {
-                href = "https://glances.beannet.io";
+                inherit (config.beannet.services."glances") href;
               };
             }
           ];

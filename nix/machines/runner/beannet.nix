@@ -2,7 +2,7 @@
 
 {
   flake.clan.machines."runner" = { lib, config, ... }: {
-    config.beannet.domain = "beannet.io";
+    config.beannet.domain = "bean.directory";
 
     options.beannet = let config' = config.beannet; in {
       domain = lib.mkOption {
