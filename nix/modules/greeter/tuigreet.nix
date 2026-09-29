@@ -6,7 +6,9 @@
       inherit (config.services.displayManager.sessionData) desktops;
 
       inherit (config.catppuccin) accent;
-      accent' = lib.accentToBase16 accent;
+      accent' = config.lib.stylix.colors.withHashtag.${lib.accentToBase16 accent};
+
+      session-wrapper = pkgs.writeShellScript "tuigreet-session-wrapper" "exec > /dev/null";
     in
     {
       options = {
@@ -23,7 +25,7 @@
             "--remember"
             "--remember-session"
             "--user-menu"
-            "--session-wrapper '${pkgs.execline}/bin/exec > /dev/null'"
+            "--session-wrapper '${session-wrapper}'"
             "--sessions ${desktops}/share/wayland-sessions"
             "--xsessions ${desktops}/share/xsessions"
             "--theme 'border=${accent'};prompt=${accent'};action=${accent'}'"
