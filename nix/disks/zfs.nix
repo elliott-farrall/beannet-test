@@ -79,6 +79,7 @@
     };
 
     fileSystems."/var/lib/sops-nix".neededForBoot = true;
+    fileSystems."/pst/data".neededForBoot = true;
     fileSystems."/pst/state".neededForBoot = true;
   };
 }
