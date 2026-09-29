@@ -11,31 +11,6 @@
       surface2 = colors.withHashtag.base04;
 
       terminal = config.home.sessionVariables.TERMINAL or null;
-
-      get-song = pkgs.writeShellScript "current_song" ''
-        PLAYER_STATUS=$(${pkgs.playerctl}/bin/playerctl -s status 2> /dev/null | tail -n1)
-        ARTIST=$(${pkgs.playerctl}/bin/playerctl metadata artist 2> /dev/null | sed 's/&/+/g')
-        TITLE=$(${pkgs.playerctl}/bin/playerctl metadata title 2> /dev/null | sed 's/&/+/g')
-
-        if [[ $PLAYER_STATUS == "Paused" || $PLAYER_STATUS == "Playing" ]]; then
-          echo "$ARTIST - $TITLE"
-        else
-          echo ""
-        fi
-      '';
-      media-exec = pkgs.writeShellScript "media-exec" ''
-        ${pkgs.zscroll}/bin/zscroll \
-          --delay 0.15 \
-          --length 30 \
-          --match-command "${pkgs.playerctl}/bin/playerctl status 2> /dev/null" \
-          --scroll-padding " | " \
-          --match-text "Paused" "--before-text ' 󰏤 ' --scroll 0" \
-          --match-text "Playing" "--before-text ' 󰐊 ' --scroll 1" \
-          --match-text "^$" "" \
-          --update-check true \
-          ${get-song} &
-        wait
-      '';
     in
     {
       options = {
@@ -55,7 +30,7 @@
             margin-left = 10;
             margin-right = 10;
 
-            modules-left = [ "hyprland/workspaces" ]; # FIXME - Waybar media module broken
+            modules-left = [ "hyprland/workspaces" ];
             modules-center = [ "clock" ];
             modules-right = [ "group/system" "group/status" "group/menu" ];
 
@@ -266,12 +241,6 @@
                 "on-click" = "shift_down";
                 "on-click-right" = "shift_up";
               };
-            };
-
-            "custom/media" = {
-              on-click = "${pkgs.playerctl}/bin/playerctl play-pause";
-              exec = media-exec;
-              hide-empty-text = true;
             };
 
             "hyprland/workspaces" = {
