@@ -167,8 +167,6 @@
 
         programs.hyprlock.enable = true;
 
-        stylix.targets.hyprlock.enable = false; # Managed by Catppuccin
-
         /* -------------------------------- Hypridle -------------------------------- */
 
         services.hypridle = {

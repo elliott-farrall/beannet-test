@@ -16,8 +16,13 @@
 
     catppuccin = {
       inherit (nixosConfig.catppuccin) enable flavor accent;
-      gtk.icon.enable = false; # Managed by Stylix
-      hyprland.enable = false; # Requires lua configType; theming handled by settings
+
+      # Targets managed by Stylix instead of Catppuccin.
+      gtk.icon.enable = false;
+      swaync.enable = false;
+
+      # Themed via direct settings in the Hyprland Lua config.
+      hyprland.enable = false;
     };
   };
 }

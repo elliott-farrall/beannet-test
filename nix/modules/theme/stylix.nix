@@ -64,6 +64,13 @@
         popups = 1.0;
         terminal = 0.9;
       };
+
+      # Targets managed by Catppuccin instead of Stylix.
+      targets = {
+        hyprlock.enable = false;
+        starship.enable = false;
+        zed.enable = false;
+      };
     };
   };
 }

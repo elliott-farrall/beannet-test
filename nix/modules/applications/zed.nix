@@ -29,8 +29,6 @@
 
     desktop.wmIcons."zed" = "";
 
-    stylix.targets.zed.enable = false; # Managed by Catppuccin
-
     home.persistence.state.directories = [
       ".local/share/zed"
     ];

@@ -63,8 +63,6 @@
           };
         };
       };
-
-      catppuccin.swaync.enable = false;
     };
   };
 }
