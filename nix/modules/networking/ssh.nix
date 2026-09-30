@@ -9,8 +9,8 @@ in
   flake.modules.nixos.default = { lib, ... }: {
     services.openssh = {
       settings = {
-        PermitRootLogin = "yes";
-        PasswordAuthentication = lib.mkForce true;
+        PermitRootLogin = lib.mkForce "prohibit-password";
+        PasswordAuthentication = lib.mkForce false;
       };
     };
 
