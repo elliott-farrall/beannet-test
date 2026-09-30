@@ -7,14 +7,15 @@
       peers."isp".enable = true;
     };
 
-    environment.etc = {
-      "ppp/peers/isp".source = lib.mkForce config.clan.core.vars.generators."isp".files."config".path;
-      "ppp/pap-secrets".source = lib.mkForce config.clan.core.vars.generators."isp".files."secrets".path;
-    };
+    environment.etc."ppp/peers/isp".source = lib.mkForce config.clan.core.vars.generators."isp".files."config".path;
+
+    systemd.tmpfiles.rules = [
+      "f /etc/ppp/pap-secrets 0600 root root - ${config.clan.core.vars.generators."isp".files."secrets".path}"
+    ];
 
     clan.core.vars.generators."isp" = {
       files."config" = { };
-      files."secrets" = { };
+      files."secrets" = { secret = true; };
 
       prompts."username" = {
         description = "ISP username";
