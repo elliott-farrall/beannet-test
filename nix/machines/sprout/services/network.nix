@@ -3,7 +3,6 @@
 {
   flake.clan.machines."sprout" = { lib, ... }: {
     networking = {
-      networkmanager.enable = lib.mkForce false;
       useDHCP = false;
 
       bridges."br".interfaces = [ "lan" "wlan" ];

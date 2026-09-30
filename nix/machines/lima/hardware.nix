@@ -11,6 +11,8 @@ with config.flake.modules.nixos;
 
     disko.devices.disk."main".device = "/dev/disk/by-id/nvme-Samsung_SSD_970_PRO_512GB_S463NF0K800096J";
 
+    networking.networkmanager.enable = true;
+
     devices.audio.enable = true;
     devices.bluetooth.enable = true;
     devices.printing.enable = true;

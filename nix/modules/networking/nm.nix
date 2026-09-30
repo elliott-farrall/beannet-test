@@ -1,9 +1,9 @@
 { ... }:
 
 {
-  flake.modules.nixos.default = { ... }: {
-    networking.networkmanager.enable = true;
-
-    environment.persistence.state.directories = [ "/etc/NetworkManager/system-connections" ];
+  flake.modules.nixos.default = { config, lib, ... }: {
+    environment.persistence.state.directories = lib.mkIf config.networking.networkmanager.enable [
+      "/etc/NetworkManager/system-connections"
+    ];
   };
 }

@@ -22,6 +22,8 @@ with config.flake.modules.nixos;
     };
     networking.usePredictableInterfaceNames = false;
 
+    networking.networkmanager.enable = true;
+
     hardware.nvidia.open = false;
   };
 }
