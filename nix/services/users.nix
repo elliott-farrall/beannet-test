@@ -22,7 +22,6 @@ in
           "wheel"
 
           "adbusers"
-          "docker"
           "kvm"
           "lpadmin"
           "networkmanager"
