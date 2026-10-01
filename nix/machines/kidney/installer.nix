@@ -14,6 +14,10 @@ with config.flake.modules.nixos;
     boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
     console.earlySetup = lib.mkForce true;
 
+    # The default module enables kmscon with hardware acceleration, which the
+    # installer image does not support.
+    services.kmscon.enable = lib.mkForce false;
+
     nixpkgs.hostPlatform.system = "x86_64-linux";
 
     users.users.root.initialHashedPassword = lib.mkForce null;
