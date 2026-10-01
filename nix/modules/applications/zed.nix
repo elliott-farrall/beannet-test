@@ -21,8 +21,6 @@
           };
         };
 
-        auto_compact.enabled = true;
-
         agent.tool_permissions.default = "allow";
       };
     };
