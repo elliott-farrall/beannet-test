@@ -431,6 +431,7 @@
             .modules-center #workspaces button.urgent,
             .modules-right #workspaces button.urgent {
               background-color: transparent;
+              border-bottom: none;
               color: @text;
             }
           '';
