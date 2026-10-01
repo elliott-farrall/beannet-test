@@ -1,107 +1,116 @@
 { lib, config, ... }:
 
 let
-  machines = config.flake.clan.nixosConfigurations;
+  inherit (config.flake.clan) directory;
+  inventory = config.flake.clan.inventory;
 
-  getKey = machine: "${config.flake.clan.directory}/vars/per-machine/${machine}/sshd-root-key/id_ed25519/secret";
+  domain = inventory.meta.domain;
+  clanDir = directory;
+
+  machines = lib.filterAttrs (_: m: m.machineClass == "nixos") inventory.machines;
+  machineNames = lib.attrNames machines;
+
+  rootPubKeyFile = name: "${clanDir}/vars/per-machine/${name}/sshd-root-key/id_ed25519.pub/value";
+  rootPrivKeyFile = name: "${clanDir}/vars/per-machine/${name}/sshd-root-key/id_ed25519/secret";
+  zerotierIpFile = name: "${clanDir}/vars/shared/zerotier-ip-${name}-zerotier/ip/value";
+  yggdrasilAddrFile = name: "${clanDir}/vars/per-machine/${name}/yggdrasil/address/value";
+
+  readFileMaybe = path:
+    if builtins.pathExists path
+    then lib.removeSuffix "\n" (builtins.readFile path)
+    else "";
+
+  rootPubKeys = lib.filter (k: k != "") (
+    map (name: readFileMaybe (rootPubKeyFile name)) machineNames
+  );
 in
 {
-  flake.modules.nixos.default = { lib, ... }: {
-    services.openssh = {
-      settings = {
-        PermitRootLogin = lib.mkForce "prohibit-password";
-        PasswordAuthentication = lib.mkForce false;
-      };
+  flake.modules.nixos.default = { config, lib, ... }: {
+    services.openssh.settings = {
+      PermitRootLogin = lib.mkForce "prohibit-password";
+      PasswordAuthentication = lib.mkForce false;
     };
 
-    programs.ssh.extraConfig = ''
-      ${with machines.runner.config.clan.core; ''
-        Host beanbag
-          Hostname ssh.${settings.domain}
-          User root
-          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
-      ''}
+    users.users.root.openssh.authorizedKeys.keys = rootPubKeys;
 
-      ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
-        Host ${name}.${settings.domain}
+    programs.ssh.extraConfig =
+      let
+        identityFile = config.clan.core.vars.generators.sshd-root-key.files."id_ed25519".path;
+      in
+      ''
+        Host beanbag
+          Hostname ssh.${domain}
           User root
-          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
-          ProxyJump beanbag
-      '') machines)}
-      ${lib.concatLines (lib.mapAttrsToList (name: machine: with machine.config.clan.core; ''
-        Host ${vars.generators."zerotier-ip-${name}-zerotier".files.ip.value}
-          User root
-          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
-          ProxyJump beanbag
-      '') machines)}
-      ${lib.concatLines (lib.mapAttrsToList (_name: machine: with machine.config.clan.core; ''
-        Host ${vars.generators.yggdrasil.files.address.value}
-          User root
-          IdentityFile ${vars.generators.sshd-root-key.files."id_ed25519".path}
-          ProxyJump beanbag
-      '') machines)}
-    '';
+          IdentityFile ${identityFile}
+
+        ${lib.concatLines (
+          lib.concatMap (
+            name:
+            let
+              hosts = [ "${name}.${domain}" ]
+                ++ lib.optional (builtins.pathExists (zerotierIpFile name)) (readFileMaybe (zerotierIpFile name))
+                ++ lib.optional (builtins.pathExists (yggdrasilAddrFile name)) (readFileMaybe (yggdrasilAddrFile name));
+            in
+            map (
+              host: ''
+                Host ${host}
+                  User root
+                  IdentityFile ${identityFile}
+                  ProxyJump beanbag
+              ''
+            ) hosts
+          ) machineNames
+        )}
+      '';
 
     services.fail2ban.enable = true;
   };
 
-  flake.modules.homeManager.default = args: {
+  flake.modules.homeManager.default = { config, lib, ... }: {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
 
       matchBlocks =
         let
-          inherit (args.config.sops) secrets;
-          runner = machines.runner.config.clan.core;
+          inherit (config.sops) secrets;
         in
         { "*".userKnownHostsFile = "~/.ssh/hosts/known_hosts"; }
         // {
           beanbag = {
-            hostname = "ssh.${runner.settings.domain}";
+            hostname = "ssh.${domain}";
             user = "root";
             identityFile = "~/${secrets."runner-root-private-key".path}";
           };
         }
-        // lib.mapAttrs'
-          (name: machine:
-            lib.nameValuePair "${name}.${machine.config.clan.core.settings.domain}" {
-              user = "root";
+        // lib.listToAttrs (
+          lib.concatMap (
+            name:
+            let
               identityFile = "~/${secrets."${name}-root-private-key".path}";
-              proxyJump = "beanbag";
-            }
-          )
-          machines
-        // lib.mapAttrs'
-          (name: machine:
-            lib.nameValuePair machine.config.clan.core.vars.generators."zerotier-ip-${name}-zerotier".files.ip.value {
+              hosts = [ "${name}.${domain}" ]
+                ++ lib.optional (builtins.pathExists (zerotierIpFile name)) (readFileMaybe (zerotierIpFile name))
+                ++ lib.optional (builtins.pathExists (yggdrasilAddrFile name)) (readFileMaybe (yggdrasilAddrFile name));
+            in
+            map (host: lib.nameValuePair host {
               user = "root";
-              identityFile = "~/${secrets."${name}-root-private-key".path}";
+              inherit identityFile;
               proxyJump = "beanbag";
-            }
-          )
-          machines
-        // lib.mapAttrs'
-          (name: machine:
-            lib.nameValuePair machine.config.clan.core.vars.generators.yggdrasil.files.address.value {
-              user = "root";
-              identityFile = "~/${secrets."${name}-root-private-key".path}";
-              proxyJump = "beanbag";
-            }
-          )
-          machines;
+            }) hosts
+          ) machineNames
+        );
     };
 
-    sops.secrets = lib.mapAttrs'
-      (name: _machine: {
+    sops.secrets = lib.listToAttrs (
+      map (name: {
         name = "${name}-root-private-key";
         value = {
-          sopsFile = getKey name;
+          sopsFile = rootPrivKeyFile name;
           path = ".ssh/credentials/${name}-root";
           format = "binary";
         };
-      })
-      machines;
+      }) machineNames
+    );
 
     home.persistence.state.directories = [ ".ssh/hosts" ];
   };
