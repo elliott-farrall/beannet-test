@@ -426,6 +426,13 @@
             .modules-right #workspaces button.active {
               border-bottom: none;
             }
+
+            .modules-left #workspaces button.urgent,
+            .modules-center #workspaces button.urgent,
+            .modules-right #workspaces button.urgent {
+              background-color: transparent;
+              color: @text;
+            }
           '';
         };
 
