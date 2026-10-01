@@ -266,7 +266,7 @@
             @define-color blue @base0D;
             @define-color mauve @base0E;
 
-            #waybar {
+            window#waybar {
               background: transparent;
             }
 
@@ -416,6 +416,15 @@
             }
             #workspaces button.active {
               color: @accent;
+            }
+
+            .modules-left #workspaces button.focused,
+            .modules-left #workspaces button.active,
+            .modules-center #workspaces button.focused,
+            .modules-center #workspaces button.active,
+            .modules-right #workspaces button.focused,
+            .modules-right #workspaces button.active {
+              border-bottom: none;
             }
           '';
         };
