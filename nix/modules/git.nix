@@ -33,9 +33,15 @@
       enable = true;
     };
 
-    programs.ssh.matchBlocks = {
-      "github.com".identityFile = "~/.ssh/credentials/services/github";
-      "ssh.dev.azure.com".identityFile = "~/.ssh/credentials/services/azure";
+    programs.ssh.settings = {
+      "github.com" = {
+        user = "git";
+        identityFile = "~/.ssh/credentials/services/github";
+      };
+      "ssh.dev.azure.com" = {
+        user = "git";
+        identityFile = "~/.ssh/credentials/services/azure";
+      };
     };
 
     sops.secrets = {

@@ -6,6 +6,7 @@
 
     catppuccin = {
       enable = true;
+      autoEnable = true;
       flavor = "macchiato";
       accent = "mauve";
     };
@@ -15,7 +16,7 @@
     imports = with inputs; [ catppuccin.homeModules.catppuccin ];
 
     catppuccin = {
-      inherit (nixosConfig.catppuccin) enable flavor accent;
+      inherit (nixosConfig.catppuccin) enable autoEnable flavor accent;
 
       # Targets managed by Stylix instead of Catppuccin.
       gtk.icon.enable = false;
