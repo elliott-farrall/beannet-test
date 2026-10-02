@@ -28,5 +28,9 @@
 
       settings.generateRootKey = true;
     };
+
+    roles.client = {
+      tags = [ "all" ];
+    };
   };
 }

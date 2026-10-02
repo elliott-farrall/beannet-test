@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.clan.machines."sprout" = { lib, ... }: {
+  flake.clan.machines."sprout" = { ... }: {
     networking = {
       useDHCP = false;
 
