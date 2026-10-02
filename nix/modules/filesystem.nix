@@ -6,6 +6,13 @@
 
     programs.fuse.userAllowOther = true; # Enables --allow-other in mounts;
 
+    # systemd DynamicUser services expect /var/lib/private to be 0700.
+    # impermanence can create it earlier with looser permissions, so enforce
+    # the expected mode before those services start.
+    systemd.tmpfiles.rules = [
+      "d /var/lib/private 0700 root root -"
+    ];
+
     environment.persistence.data = {
       enable = true;
       hideMounts = true;

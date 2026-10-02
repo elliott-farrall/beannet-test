@@ -42,6 +42,13 @@ in
               "domain": "$(cat $prompts/domain)",
               "ttl": 1,
               "token": "$(cat $prompts/dns-token)"
+            },
+            {
+              "provider": "cloudflare",
+              "zone_identifier": "$(cat $prompts/zone)",
+              "domain": "*.$(cat $prompts/domain)",
+              "ttl": 1,
+              "token": "$(cat $prompts/dns-token)"
             }
           ]
         }
