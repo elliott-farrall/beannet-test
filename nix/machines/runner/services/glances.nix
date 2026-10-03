@@ -11,6 +11,7 @@
     services.glances = {
       enable = true;
       inherit (config.beannet.services."glances") port;
+      extraArgs = [ "--webserver" "--bind" "127.0.0.1" ];
     };
   };
 }

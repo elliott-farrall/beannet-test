@@ -45,10 +45,6 @@
                 inherit (config.beannet.services."traefik") href;
                 description = "Traefik Dashboard";
                 siteMonitor = config.beannet.services."traefik".url;
-                widget = {
-                  type = "traefik";
-                  inherit (config.beannet.services."traefik") url;
-                };
               };
             }
             {
@@ -148,5 +144,7 @@
         hideVersion = true;
       };
     };
+
+    systemd.services.homepage-dashboard.environment.HOSTNAME = "127.0.0.1";
   };
 }

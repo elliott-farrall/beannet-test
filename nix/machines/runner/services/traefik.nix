@@ -3,7 +3,8 @@
 {
   flake.clan.machines."runner" = { lib, config, ... }: {
     beannet.services."traefik" = {
-      port = 8080;
+      port = 8088;
+      url = "http://localhost:8088/ping";
     };
 
     services.traefik = {
@@ -53,6 +54,13 @@
           address = ":${toString config.beannet.ports.auth}";
           forwardedHeaders.trustedIPs = [ "127.0.0.1/32" "::1/128" ];
           http.tls.certResolver = "cloudflare";
+        };
+        entryPoints."ping" = {
+          address = "127.0.0.1:8088";
+        };
+
+        ping = {
+          entryPoint = "ping";
         };
 
         certificatesResolvers."cloudflare".acme = {

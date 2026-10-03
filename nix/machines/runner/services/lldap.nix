@@ -77,8 +77,6 @@
           -subj "/CN=lldap" \
           -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
       fi
-      # The dynamic lldap user must be able to read these; the directory is
-      # 0700 so world-readable files are still only accessible to root/lldap.
       chmod 0644 /var/lib/private/lldap/cert.pem /var/lib/private/lldap/key.pem
     '';
 

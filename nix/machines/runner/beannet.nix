@@ -2,8 +2,6 @@
 
 {
   flake.clan.machines."runner" = { lib, config, ... }: {
-    config.beannet.domain = "bean.directory";
-
     options.beannet = let config' = config.beannet; in {
       domain = lib.mkOption {
         type = lib.types.str;
@@ -67,7 +65,6 @@
               type = lib.types.str;
               default = "http://${config.hostname}:${toString config.port}";
               description = "Internal URL for the service";
-              readOnly = true;
             };
             domain = lib.mkOption {
               type = lib.types.str;
@@ -104,6 +101,20 @@
           };
         }));
       };
+    };
+
+    config = {
+      beannet.domain = "bean.directory";
+
+      networking.firewall.extraCommands = ''
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."homepage".port} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."gatus".port} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."glances".port} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."ddns".port} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.ports.ldap} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.ports.ldaps} -j nixos-fw-refuse
+        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."authelia".port} -j nixos-fw-refuse
+      '';
     };
   };
 }
