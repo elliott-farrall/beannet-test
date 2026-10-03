@@ -22,7 +22,7 @@
 
         # Nix
         nil.enable = true;
-        flake-checker.enable = true;
+        flake-checker.enable = false;
         pre-commit-hook-ensure-sops.enable = true;
 
         # Config

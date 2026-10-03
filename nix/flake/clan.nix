@@ -1,4 +1,4 @@
-{ lib, inputs, config, withSystem, ... }:
+{ inputs, config, withSystem, ... }:
 
 {
   imports = with inputs; [ clan-core.flakeModules.default ];
