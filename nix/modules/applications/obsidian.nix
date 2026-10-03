@@ -9,7 +9,7 @@
     config = lib.mkIf config.applications.obsidian.enable {
       programs.obsidian.enable = true;
 
-      xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "obsidian.desktop" (lib.readYAML ./desktop/associations.yaml).notes;
+      xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "obsidian.desktop" (lib.importJSON ./desktop/associations.json).notes;
 
       desktop.wmIcons."obsidian" = "";
     };

@@ -22,7 +22,7 @@
 
         home.sessionVariables.BROWSER = lib.getExe config.programs.zen-browser.package;
 
-        xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "zen-beta.desktop" (lib.readYAML ./desktop/associations.yaml).browser;
+        xdg.mimeApps.defaultApplications = lib.mkDefaultApplications "zen-beta.desktop" (lib.importJSON ./desktop/associations.json).browser;
 
         desktop.wmIcons."zen" = "󰖟";
 

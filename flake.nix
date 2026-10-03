@@ -15,8 +15,6 @@ rec {
     };
     clan-core = {
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
-      # TODO - Manage dependencies for clan-core
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree = {
       url = "github:vic/import-tree";
@@ -135,7 +133,6 @@ rec {
     };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
 
