@@ -3,7 +3,7 @@
 {
   imports = with inputs; [ git-hooks-nix.flakeModule ];
 
-  perSystem = { pkgs, config, self', ... }: {
+  perSystem = { config, self', ... }: {
     make-shells."bean".inputsFrom = [ config.pre-commit.devShell ];
 
     pre-commit.settings = {
@@ -42,14 +42,6 @@
         end-of-file-fixer.enable = true;
         trim-trailing-whitespace.enable = true;
         ripsecrets.enable = true;
-
-        renovate = {
-          enable = true;
-          entry = "renovate-config-validator";
-          files = "renovate\\.json$";
-          pass_filenames = false;
-          extraPackages = with pkgs; [ renovate ];
-        };
       };
     };
   };
