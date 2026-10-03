@@ -76,9 +76,9 @@
     ];
 
     clan.core.vars.generators."auth" = {
-      files."jwt-secret" = { };
-      files."session-secret" = { };
-      files."storage-key" = { };
+      files."jwt-secret".secret = true;
+      files."session-secret".secret = true;
+      files."storage-key".secret = true;
 
       script = ''
         openssl rand -hex 32 > $out/jwt-secret
