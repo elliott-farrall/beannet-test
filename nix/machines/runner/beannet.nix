@@ -37,6 +37,11 @@
           default = 3890;
           description = "Port for LDAP services";
         };
+        ldaps = lib.mkOption {
+          type = lib.types.int;
+          default = 6360;
+          description = "Port for LDAPS services";
+        };
       };
 
       services = lib.mkOption {
