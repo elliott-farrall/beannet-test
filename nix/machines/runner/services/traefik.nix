@@ -17,11 +17,21 @@
             rule = "Host(`${config.beannet.domain}`)";
             service = "homepage";
           };
+          http.routers."traefik" = {
+            rule = "Host(`traefik.${config.beannet.domain}`)";
+            service = lib.mkForce "api@internal";
+            entryPoints = [ "websecure" ];
+            middlewares = [ "auth" ];
+            tls.certResolver = "cloudflare";
+          };
         }
       ];
 
       staticConfigOptions = {
-        api.insecure = true;
+        api = {
+          insecure = false;
+          dashboard = true;
+        };
 
         entryPoints."web" = {
           address = ":${toString config.beannet.ports.http}";
