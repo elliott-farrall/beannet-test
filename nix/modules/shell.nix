@@ -6,7 +6,6 @@
 
     programs.zsh.enable = true;
     environment.pathsToLink = [ "/share/zsh" ]; # Allows completion for system packages
-    system.userActivationScripts.zshrc = "[ -e .zshrc ] || touch .zshrc"; # Prevents initial dialogue
   };
 
   flake.modules.homeManager.default = { ... }: {
@@ -15,8 +14,9 @@
     programs.zsh = {
       enable = true;
       syntaxHighlighting.enable = true;
+      dotDir = ".config/zsh";
     };
 
-    home.persistence.state.files = [ ".zsh_history" ];
+    home.persistence.state.directories = [ ".config/zsh" ];
   };
 }
