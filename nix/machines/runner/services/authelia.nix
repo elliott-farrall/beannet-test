@@ -11,7 +11,7 @@
       {
         http.middlewares."auth".forwardauth = {
           address = with config.beannet.services."authelia"; "${url}/api/verify?rd=${href}:${toString config.beannet.ports.auth}";
-          trustForwardHeader = true;
+          trustForwardHeader = false;
           authResponseHeaders = [ "Remote-User" "Remote-Groups" "Remote-Name" "Remote-Email" ];
         };
         http.routers."authelia".entrypoints = [ "auth" ];
@@ -22,6 +22,8 @@
       enable = true;
 
       settings = {
+        server.address = "tcp://127.0.0.1:${toString config.beannet.services."authelia".port}/";
+
         access_control.rules = [
           {
             domain = [

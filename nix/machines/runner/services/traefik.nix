@@ -36,6 +36,7 @@
         entryPoints."web" = {
           address = ":${toString config.beannet.ports.http}";
           asDefault = true;
+          forwardedHeaders.trustedIPs = [ "127.0.0.1/32" "::1/128" ];
           http.redirections.entrypoint = {
             to = "websecure";
             scheme = "https";
@@ -44,11 +45,13 @@
         entryPoints."websecure" = {
           address = ":${toString config.beannet.ports.https}";
           asDefault = true;
+          forwardedHeaders.trustedIPs = [ "127.0.0.1/32" "::1/128" ];
           http.tls.certResolver = "cloudflare";
           http.middlewares = [ "auth" ];
         };
         entryPoints."auth" = {
           address = ":${toString config.beannet.ports.auth}";
+          forwardedHeaders.trustedIPs = [ "127.0.0.1/32" "::1/128" ];
           http.tls.certResolver = "cloudflare";
         };
 
