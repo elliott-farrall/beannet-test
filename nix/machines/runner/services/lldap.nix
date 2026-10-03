@@ -24,7 +24,7 @@
 
       environment = {
         LLDAP_JWT_SECRET_FILE = "%d/jwt-secret";
-        LLDAP_KEY_SEED = "%d/key-seed";
+        LLDAP_KEY_SEED_FILE = "%d/key-seed";
         LLDAP_LDAP_USER_PASS_FILE = "%d/password";
       };
     };
@@ -36,7 +36,7 @@
 
     clan.core.vars.generators."ldap" = {
       files."jwt-secret".secret = true;
-      files."key-seed".secret = false;
+      files."key-seed".secret = true;
 
       prompts."password" = {
         description = "LDAP admin password";
@@ -54,5 +54,14 @@
     environment.persistence.data.directories = [
       { directory = "/var/lib/private/lldap"; mode = "0700"; }
     ];
+
+    system.activationScripts.lldap-var-lib-private-mode = ''
+      mkdir -p /var/lib/private
+      chmod 0700 /var/lib/private
+    '';
+
+    systemd.services.lldap.serviceConfig = {
+      StateDirectoryMode = lib.mkForce "0700";
+    };
   };
 }
