@@ -12,6 +12,7 @@
         "rlsp-yaml"
         "dockerfile"
         "terraform"
+        "comment"
       ];
 
       userSettings = {

@@ -6,9 +6,9 @@
 
     networking.hostId = builtins.substring 0 8 (builtins.hashString "sha256" config.system.name);
 
-    # TEMPORARY: force-import the root pool once after the hostId change from MD5 to SHA-256.
+    # TODO: Remove after all machines have rebooted once with the new hostId.
+    # Force-import the root pool once after the hostId change from MD5 to SHA-256.
     # This lets already-deployed machines boot with the new /etc/hostid without manual rescue.
-    # Remove after all machines have rebooted once with the new hostId.
     boot.zfs.forceImportRoot = true;
 
     environment.systemPackages = with pkgs; [ zfs ];
