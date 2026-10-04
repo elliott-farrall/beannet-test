@@ -1,10 +1,13 @@
 { inputs, ... }:
 
+let
+  hostIds = builtins.fromJSON (builtins.readFile ./hostIds.json);
+in
 {
   flake.modules.nixos.disks-zfs = { pkgs, config, ... }: {
     imports = with inputs; [ chaotic.nixosModules.zfs-impermanence-on-shutdown ];
 
-    networking.hostId = builtins.substring 0 8 (builtins.hashString "md5" config.system.name);
+    networking.hostId = hostIds.${config.system.name};
 
     environment.systemPackages = with pkgs; [ zfs ];
 
