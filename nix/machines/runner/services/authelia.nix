@@ -45,7 +45,7 @@
           user = "uid=${config.services.lldap.settings.ldap_user_dn},ou=people,${config.services.lldap.settings.ldap_base_dn}";
         };
 
-        storage.local.path = "/var/lib/authelia-auth/db.sqlite3";
+        storage.local.path = "/var/lib/authelia-auth/db-v2.sqlite3";
 
         notifier.filesystem.filename = "/var/lib/authelia-auth/notification.txt";
 

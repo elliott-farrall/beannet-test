@@ -20,10 +20,5 @@
     environment.persistence.state.directories = [
       { directory = "/var/lib/private/ddns-updater"; mode = "0700"; }
     ];
-
-    systemd.services.ddns-updater.serviceConfig = {
-      IPAddressDeny = "any";
-      IPAddressAllow = "localhost";
-    };
   };
 }

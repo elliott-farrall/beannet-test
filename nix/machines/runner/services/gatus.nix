@@ -25,10 +25,5 @@
         ];
       };
     };
-
-    systemd.services.gatus.serviceConfig = {
-      IPAddressDeny = "any";
-      IPAddressAllow = "localhost";
-    };
   };
 }
