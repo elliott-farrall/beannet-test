@@ -23,6 +23,10 @@
             show_free_models = false;
             show_zen_models = false;
           };
+
+          open_router = {
+            api_url = "https://openrouter.ai/api/v1";
+          };
         };
 
         agent = {
