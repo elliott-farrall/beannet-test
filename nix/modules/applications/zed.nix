@@ -9,6 +9,9 @@
       extensions = [
         "log"
         "nix"
+        "rlsp-yaml"
+        "dockerfile"
+        "terraform"
       ];
 
       userSettings = {
