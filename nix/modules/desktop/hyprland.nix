@@ -131,7 +131,7 @@
 
             bind = [
               (mkBind' "SUPER + ESCAPE" "hl.dsp.exit()")
-              (mkBind' "SUPER + X" "hl.dsp.window.kill()")
+              (mkBind' "SUPER + X" "hl.dsp.window.close()")
               (mkBind' "SUPER + F" "hl.dsp.window.float({ action = \"toggle\" })")
 
               (mkBind' "SUPER + D" "hl.dsp.focus({ workspace = \"e+1\" })")

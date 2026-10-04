@@ -24,7 +24,10 @@
           };
         };
 
-        agent.tool_permissions.default = "allow";
+        agent = {
+          tool_permissions.default = "allow";
+          sandbox_permissions.allow_unsandboxed = true;
+        };
       };
     };
 
