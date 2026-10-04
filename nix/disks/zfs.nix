@@ -6,9 +6,7 @@
 
     networking.hostId = builtins.substring 0 8 (builtins.hashString "sha256" config.system.name);
 
-    # TODO: remove after all machines have rebooted once with the new hostId.
-    # TODO: force-import the root pool once after the hostId change from MD5 to SHA-256.
-    # TODO: this lets already-deployed machines boot with the new /etc/hostid without manual rescue.
+    # TODO: remove after sprout reboots — force-import root pool once for the MD5→SHA-256 hostId transition.
     boot.zfs.forceImportRoot = true;
 
     environment.systemPackages = with pkgs; [ zfs ];
