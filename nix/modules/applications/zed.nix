@@ -5,6 +5,7 @@
     programs.zed-editor = {
       enable = true;
       mutableUserSettings = false;
+      enableMcpIntegration = true;
 
       extensions = [
         "log"

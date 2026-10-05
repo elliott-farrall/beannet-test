@@ -1,8 +1,5 @@
-{ config, ... }:
+{ ... }:
 
-let
-  clanDir = config.flake.clan.directory;
-in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."cloudflare" = {
@@ -20,11 +17,6 @@ in
       };
       prompts."dns-token" = {
         description = "Cloudflare API token with Zone:Read and DNS:Edit permissions (for DDNS and ACME)";
-        type = "hidden";
-        persist = true;
-      };
-      prompts."api-token" = {
-        description = "Cloudflare API token for MCP (create at dash.cloudflare.com/profile/api-tokens)";
         type = "hidden";
         persist = true;
       };
@@ -61,13 +53,4 @@ in
       '';
     };
   };
-
-  flake.modules.homeManager.default =
-    { ... }:
-    {
-      sops.secrets."mcp/cloudflare-token" = {
-        sopsFile = "${clanDir}/vars/shared/cloudflare/api-token/secret";
-        format = "binary";
-      };
-    };
 }
