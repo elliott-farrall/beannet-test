@@ -62,7 +62,6 @@ rec {
       url = "github:chaotic-cx/nyx";
       inputs.flake-schemas.follows = "flake-schemas";
       inputs.home-manager.follows = "home-manager";
-      inputs.jovian.follows = "dep_jovian";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utils = {
@@ -127,10 +126,6 @@ rec {
     /*                                  Packages                                  */
     /* -------------------------------------------------------------------------- */
 
-    nix-schemas = {
-      url = "github:DeterminateSystems/nix-src/flake-schemas";
-      # TODO - Override nix package and configure dependencies
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.home-manager.follows = "home-manager";
@@ -178,11 +173,6 @@ rec {
     dep_gnome-shell = {
       url = "github:GNOME/gnome-shell";
       flake = false;
-    };
-    dep_jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-      inputs.nix-github-actions.follows = "dep_nix-github-actions";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     dep_nix-github-actions = {
       url = "github:zhaofengli/nix-github-actions";

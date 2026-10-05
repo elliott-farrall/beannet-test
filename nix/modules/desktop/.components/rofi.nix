@@ -18,9 +18,28 @@
         programs.rofi = {
           enable = true;
 
-          terminal = config.home.sessionVariables.TERMINAL or null;
+          settings = {
+            terminal = config.home.sessionVariables.TERMINAL or null;
 
-          font = lib.mkForce "${fonts.serif.name} ${toString fonts.sizes.popups}";
+            font = lib.mkForce "${fonts.serif.name} ${toString fonts.sizes.popups}";
+
+            cycle = true;
+
+            sidebar-mode = true;
+            modes = [ "drun" "window" ];
+            display-drun = " 󰵆  Apps ";
+            display-run = "   Run ";
+            display-window = "   Window";
+            # display-Network = " 󰤨  Network";
+
+            dpi = 120;
+            show-icons = true;
+            icon-theme = config.stylix.icons.${config.stylix.polarity};
+            drun-display-format = "{name}";
+
+            hover-select = true;
+            steal-focus = true;
+          };
 
           theme = {
             "*" = {
@@ -104,24 +123,6 @@
               padding = mkLiteral "6px";
               margin = mkLiteral "20px 0px 0px 20px";
             };
-          };
-
-          cycle = true;
-          extraConfig = {
-            sidebar-mode = true;
-            modes = [ "drun" "window" ];
-            display-drun = " 󰵆  Apps ";
-            display-run = "   Run ";
-            display-window = "   Window";
-            # display-Network = " 󰤨  Network";
-
-            dpi = 120;
-            show-icons = true;
-            icon-theme = config.stylix.icons.${config.stylix.polarity};
-            drun-display-format = "{name}";
-
-            hover-select = true;
-            steal-focus = true;
           };
         };
       };
