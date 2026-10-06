@@ -38,6 +38,18 @@
 
       services = [
         {
+          "AI" = [
+            {
+              "Hermes" = {
+                icon = "chatgpt.png";
+                inherit (config.beannet.services."hermes") href;
+                description = "Hermes Agent dashboard";
+                siteMonitor = config.beannet.services."hermes".url;
+              };
+            }
+          ];
+        }
+        {
           "Network" = [
             {
               "Traefik" = {

@@ -130,6 +130,12 @@ rec {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.home-manager.follows = "home-manager";
     };
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     /* -------------------------------------------------------------------------- */
     /*                                Dependencies                                */

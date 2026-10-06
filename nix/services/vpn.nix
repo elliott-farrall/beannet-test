@@ -3,7 +3,9 @@
 {
   flake.clan.inventory.instances.zerotier = {
     roles.controller = {
-      machines."runner" = { };
+      machines."runner".settings.allowedIds = [
+        "fa9902098b"
+      ];
     };
 
     roles.peer = {
