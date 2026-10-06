@@ -15,7 +15,7 @@
       # It also validates the WebSocket Origin header against the bind address.
       # Rewrite both so Traefik can proxy the public subdomain while the
       # backend sees loopback. Authelia still runs first because the middleware
-      # chain is evaluated left-to-right; Clan VPN clients bypass Authelia via
+      # chain is evaluated left-to-right; Tailscale clients bypass Authelia via
       # an access-control rule while public clients keep the SSO gate.
       services.traefik.dynamicConfigOptions = lib.mkMerge [
         config.beannet.services."hermes".traefikConfig

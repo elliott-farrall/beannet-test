@@ -9,9 +9,7 @@ let
     filterAttrs
     hasInfix
     listToAttrs
-    mapAttrsToList
     nameValuePair
-    optional
     ;
 
   bracketIpv6 = addr: if hasInfix ":" addr && !(hasInfix "." addr) then "[${addr}]" else addr;
@@ -54,21 +52,9 @@ let
       machineNames
   );
 
-  renderHosts = hosts: concatStringsSep "\n\n" (
-    mapAttrsToList
-      (name: opts: concatStringsSep "\n" (
-        [ "Host ${name}" ]
-        ++ optional (opts.hostname or null != null) "  Hostname ${opts.hostname}"
-        ++ optional (opts.hostKeyAlias or null != null) "  HostKeyAlias ${opts.hostKeyAlias}"
-        ++ [ "  User ${opts.user}" ]
-        ++ [ "  IdentityFile ${opts.identityFile}" ]
-        ++ optional (opts.proxyJump or null != null) "  ProxyJump ${opts.proxyJump}"
-      ))
-      hosts
-  );
 in
 {
-  flake.modules.nixos.default = { config, ... }: {
+  flake.modules.nixos.default = { ... }: {
     services.openssh.settings = {
       PermitRootLogin = lib.mkForce "prohibit-password";
       PasswordAuthentication = lib.mkForce false;
@@ -76,21 +62,14 @@ in
 
     users.users.root.openssh.authorizedKeys.keys = rootPubKeys;
 
-    programs.ssh = {
-      knownHosts = lib.listToAttrs (
-        map
-          (name: lib.nameValuePair "clan-${name}" {
-            hostNames = map bracketIpv6 (machineHostPatterns name) ++ lib.optional (name == "runner") "ssh.${domain}";
-            publicKey = lib.head (machineHostPubKey name);
-          })
-          (lib.filter (name: machineHostPubKey name != [ ]) machineNames)
-      );
-
-      extraConfig = renderHosts (sshHosts {
-        jumpKey = config.clan.core.vars.generators.sshd-root-key.files."id_ed25519".path;
-        hostKeys = lib.genAttrs machineNames (_: config.clan.core.vars.generators.sshd-root-key.files."id_ed25519".path);
-      });
-    };
+    programs.ssh.knownHosts = lib.listToAttrs (
+      map
+        (name: lib.nameValuePair "clan-${name}" {
+          hostNames = map bracketIpv6 (machineHostPatterns name) ++ lib.optional (name == "runner") "ssh.${domain}";
+          publicKey = lib.head (machineHostPubKey name);
+        })
+        (lib.filter (name: machineHostPubKey name != [ ]) machineNames)
+    );
 
     services.fail2ban.enable = true;
   };

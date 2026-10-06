@@ -2,10 +2,6 @@
 
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
-    let
-      # ZeroTier RFC4193 ULA /64 for the Clan network 561b011a2726cc1e.
-      zerotierIpv6Subnet = "fd56:1b01:1a27:26cc::/64";
-    in
     {
       beannet.services."authelia" = {
         port = 9091;
@@ -29,31 +25,28 @@
         settings = {
           server.address = "tcp://127.0.0.1:${toString config.beannet.services."authelia".port}/";
 
-          access_control.rules =
-            # Anything on the Clan ZeroTier VPN reaches services without going
-            # through the browser SSO flow. Requests from the ZeroTier IPv6 ULA
-            # subnet bypass Authelia; everything else falls through to the
-            # standard one_factor rule below.
-            [
-              {
-                domain = [
-                  config.beannet.domain
-                  "*.${config.beannet.domain}"
-                ];
-                policy = "bypass";
-                networks = [ zerotierIpv6Subnet ];
-              }
-            ]
-            ++ [
-              {
-                domain = [
-                  config.beannet.domain
-                  "*.${config.beannet.domain}"
-                ];
-                policy = "one_factor";
-                subject = "group:lldap_admin";
-              }
-            ];
+          access_control.rules = [
+            {
+              domain = [ "headscale.${config.beannet.domain}" ];
+              policy = "bypass";
+            }
+            {
+              domain = [
+                config.beannet.domain
+                "*.${config.beannet.domain}"
+              ];
+              policy = "bypass";
+              networks = [ config.services.headscale.settings.prefixes.v4 ];
+            }
+            {
+              domain = [
+                config.beannet.domain
+                "*.${config.beannet.domain}"
+              ];
+              policy = "one_factor";
+              subject = "group:lldap_admin";
+            }
+          ];
 
           authentication_backend.ldap = {
             implementation = "lldap";
