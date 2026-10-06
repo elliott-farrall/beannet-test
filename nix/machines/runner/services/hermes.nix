@@ -2,9 +2,6 @@
 
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
-    let
-      apiServerPort = 8642;
-    in
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
 
@@ -28,39 +25,6 @@
             Host = "127.0.0.1";
             Origin = "http://127.0.0.1:${toString config.beannet.services."hermes".port}";
           };
-
-          # The api_server platform (used by Hermes Relay / desktop peers) runs
-          # on its own loopback port. Expose it publicly on a separate subdomain
-          # and also under the dashboard domain on the API paths, so the web
-          # dashboard (which expects the API on the same origin) works in the
-          # mobile app's webview.
-          http.routers."hermes-api" = {
-            rule = "Host(`hermes-api.${config.beannet.domain}`)";
-            service = "hermes-api";
-          };
-          http.routers."hermes-api-v1" = {
-            rule = "Host(`hermes.${config.beannet.domain}`) && PathPrefix(`/v1`)";
-            service = "hermes-api";
-          };
-          http.routers."hermes-api-sessions" = {
-            rule = "Host(`hermes.${config.beannet.domain}`) && PathPrefix(`/api/sessions`)";
-            service = "hermes-api";
-          };
-          http.routers."hermes-api-jobs" = {
-            rule = "Host(`hermes.${config.beannet.domain}`) && PathPrefix(`/api/jobs`)";
-            service = "hermes-api";
-          };
-          http.routers."hermes-api-platforms" = {
-            rule = "Host(`hermes.${config.beannet.domain}`) && PathPrefix(`/api/platforms`)";
-            service = "hermes-api";
-          };
-          http.routers."hermes-api-cron" = {
-            rule = "Host(`hermes.${config.beannet.domain}`) && PathPrefix(`/api/cron`)";
-            service = "hermes-api";
-          };
-          http.services."hermes-api".loadBalancer.servers = [
-            { url = "http://127.0.0.1:${toString apiServerPort}"; }
-          ];
         }
       ];
 
@@ -78,13 +42,9 @@
         settings = {
           dashboard.public_url = config.beannet.services."hermes".href;
 
-          platforms.api_server = {
-            enabled = true;
-            extra = {
-              host = "127.0.0.1";
-              port = apiServerPort;
-            };
-          };
+          # Ensure any leftover api_server config from earlier deployments is
+          # disabled; the activation script merges rather than replaces.
+          platforms.api_server.enabled = false;
 
           model = {
             provider = "openrouter";
@@ -117,7 +77,6 @@
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
-          config.clan.core.vars.generators."hermes-api-key".files."env".path
           config.clan.core.vars.generators."hermes-dashboard-auth".files."env".path
         ];
 
