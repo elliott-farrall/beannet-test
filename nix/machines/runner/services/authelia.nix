@@ -3,9 +3,6 @@
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
     let
-      # ZeroTier IPv4 assignment pool configured in
-      # nix/machines/runner/services/zerotier.nix.
-      zerotierIpv4Subnet = "10.147.17.0/24";
       # ZeroTier RFC4193 ULA /64 for the Clan network 561b011a2726cc1e.
       zerotierIpv6Subnet = "fd56:1b01:1a27:26cc::/64";
     in
@@ -33,11 +30,10 @@
           server.address = "tcp://127.0.0.1:${toString config.beannet.services."authelia".port}/";
 
           access_control.rules =
-            # Anything on the Clan Zerotier VPN reaches services without going
-            # through the browser SSO flow. Requests from either the Zerotier
-            # IPv6 ULA subnet or the Zerotier IPv4 assignment pool bypass
-            # Authelia; everything else falls through to the standard one_factor
-            # rule below.
+            # Anything on the Clan ZeroTier VPN reaches services without going
+            # through the browser SSO flow. Requests from the ZeroTier IPv6 ULA
+            # subnet bypass Authelia; everything else falls through to the
+            # standard one_factor rule below.
             [
               {
                 domain = [
@@ -45,7 +41,7 @@
                   "*.${config.beannet.domain}"
                 ];
                 policy = "bypass";
-                networks = [ zerotierIpv4Subnet zerotierIpv6Subnet ];
+                networks = [ zerotierIpv6Subnet ];
               }
             ]
             ++ [
