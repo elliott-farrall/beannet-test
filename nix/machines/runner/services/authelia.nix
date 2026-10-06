@@ -3,14 +3,11 @@
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
     let
-      zerotierIpPath = "${config.clan.core.settings.directory}/vars/shared/zerotier-ip-runner-zerotier/ip/value";
-      zerotierIp = lib.optionalString (builtins.pathExists zerotierIpPath)
-        (lib.removeSuffix "\n" (builtins.readFile zerotierIpPath));
-      # Zerotier assigns IPv6 addresses in a /64 ULA derived from the network id.
-      zerotierSubnet = lib.optionalString (zerotierIp != "")
-        "${lib.concatStringsSep ":" (lib.take 4 (lib.splitString ":" zerotierIp))}::/64";
-      # IPv4 assignment pool enabled in nix/machines/runner/services/zerotier.nix.
+      # ZeroTier IPv4 assignment pool configured in
+      # nix/machines/runner/services/zerotier.nix.
       zerotierIpv4Subnet = "10.147.17.0/24";
+      # ZeroTier RFC4193 ULA /64 for the Clan network 561b011a2726cc1e.
+      zerotierIpv6Subnet = "fd56:1b01:1a27:26cc::/64";
     in
     {
       beannet.services."authelia" = {
@@ -48,7 +45,7 @@
                   "*.${config.beannet.domain}"
                 ];
                 policy = "bypass";
-                networks = [ zerotierIpv4Subnet ] ++ lib.optional (zerotierSubnet != "") zerotierSubnet;
+                networks = [ zerotierIpv4Subnet zerotierIpv6Subnet ];
               }
             ]
             ++ [
