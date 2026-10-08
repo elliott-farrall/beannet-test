@@ -31,6 +31,21 @@
         mkdir -p $out
         cp -r ${inputs.hermes-protonpass}/* $out/
       '';
+
+      # Attempt to sign in to proton-cli using the credentials from the proton
+      # generator, but only if no session exists yet. Best-effort: if the
+      # account requires 2FA the login will fail and the user signs in
+      # interactively.
+      protonLogin = pkgs.writeShellScript "hermes-proton-login" ''
+        if ! proton account get >/dev/null 2>&1; then
+          env_file=/var/lib/hermes/.hermes/.env
+          username=$(grep '^PROTON_USERNAME=' "$env_file" | cut -d= -f2)
+          password=$(grep '^PROTON_PASSWORD=' "$env_file" | cut -d= -f2)
+          if [ -n "$username" ] && [ -n "$password" ]; then
+            printf '%s' "$password" | proton account login --user "$username" --password-file - >/dev/null 2>&1 || true
+          fi
+        fi
+      '';
     in
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
@@ -65,6 +80,9 @@
           dashboard.public_url = config.beannet.services."hermes".href;
 
           plugins.enabled = [ "proton" "protonpass" ];
+
+          secrets.sources = [ "protonpass" ];
+          secrets.protonpass.enabled = true;
 
           provider_routing.sort = "price";
           openrouter.min_coding_score = 0.65;
@@ -109,6 +127,7 @@
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
+          config.clan.core.vars.generators."proton".files."env".path
         ];
 
         hermesHomeFiles."SOUL.md" = ''
@@ -167,6 +186,7 @@
 
       systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
         "+${dashboardAuth}"
+        "+${protonLogin}"
       ];
     };
 }
