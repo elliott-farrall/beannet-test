@@ -22,7 +22,7 @@
 
         backend = {
           mode = "dashboard";
-          host = "127.0.0.1";
+          host = config.beannet.services."hermes".hostname;
           port = config.beannet.services."hermes".port;
         };
 
@@ -65,7 +65,10 @@
             };
           };
           fallback_providers = [
-            { provider = "openrouter"; model = "deepseek/deepseek-chat"; }
+            {
+              provider = "openrouter";
+              model = "deepseek/deepseek-chat";
+            }
           ];
         };
 
