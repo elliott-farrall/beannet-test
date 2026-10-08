@@ -136,6 +136,14 @@ rec {
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+    hermes-proton = {
+      url = "github:droolyai/hermes-proton";
+      flake = false;
+    };
+    hermes-protonpass = {
+      url = "github:flamerged/hermes-protonpass-plugin";
+      flake = false;
+    };
 
     /* -------------------------------------------------------------------------- */
     /*                                Dependencies                                */

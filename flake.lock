@@ -536,6 +536,38 @@
         "type": "github"
       }
     },
+    "hermes-proton": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787654723,
+        "narHash": "sha256-k9lwRDYM17OIchdzeG25vuZjOx2n2iLijOgmvOjz0Fg=",
+        "owner": "droolyai",
+        "repo": "hermes-proton",
+        "rev": "0a21b93f6e62f13ae5d1c8d1f705c58e80cf6114",
+        "type": "github"
+      },
+      "original": {
+        "owner": "droolyai",
+        "repo": "hermes-proton",
+        "type": "github"
+      }
+    },
+    "hermes-protonpass": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789035784,
+        "narHash": "sha256-ZStrev5SI6AGvWCTcyzECh0dVRUlmEc9p0tQqQwLKOo=",
+        "owner": "flamerged",
+        "repo": "hermes-protonpass-plugin",
+        "rev": "9268e7c28f45aba03f6071a9c8f9ac22aa590023",
+        "type": "github"
+      },
+      "original": {
+        "owner": "flamerged",
+        "repo": "hermes-protonpass-plugin",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -841,6 +873,8 @@
         "flake-schemas": "flake-schemas",
         "git-hooks-nix": "git-hooks-nix",
         "hermes-agent": "hermes-agent",
+        "hermes-proton": "hermes-proton",
+        "hermes-protonpass": "hermes-protonpass",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "import-tree": "import-tree",

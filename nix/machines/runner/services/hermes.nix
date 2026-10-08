@@ -16,6 +16,21 @@
         fi
         chown hermes:hermes "$env_file"
       '';
+
+      # hermes-proton wraps proton-cli to expose Mail, Drive and Calendar as
+      # agent tools. The plugin lives in the plugins/proton subdirectory of the
+      # repo, so extract it into a standalone package.
+      hermesProton = pkgs.runCommand "hermes-proton" { } ''
+        mkdir -p $out
+        cp -r ${inputs.hermes-proton}/plugins/proton/* $out/
+      '';
+
+      # hermes-protonpass resolves Hermes credentials from a Proton Pass vault.
+      # The repo root is the plugin package.
+      hermesProtonpass = pkgs.runCommand "hermes-protonpass" { } ''
+        mkdir -p $out
+        cp -r ${inputs.hermes-protonpass}/* $out/
+      '';
     in
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
@@ -35,6 +50,11 @@
       services.hermes-agent = {
         enable = true;
 
+        extraPlugins = [
+          hermesProton
+          hermesProtonpass
+        ];
+
         backend = {
           mode = "dashboard";
           host = config.beannet.services."hermes".hostname;
@@ -43,6 +63,8 @@
 
         settings = {
           dashboard.public_url = config.beannet.services."hermes".href;
+
+          plugins.enabled = [ "proton" "protonpass" ];
 
           provider_routing.sort = "price";
           openrouter.min_coding_score = 0.65;
@@ -117,6 +139,8 @@
         mcpServers = { };
       };
 
+      environment.systemPackages = [ pkgs.proton-cli ];
+
       environment.persistence.state = {
         files = [
           "/var/lib/hermes/.hermes/state.db"
@@ -132,6 +156,8 @@
           "/var/lib/hermes/.hermes/cron"
           "/var/lib/hermes/.hermes/backups"
           "/var/lib/hermes/.hermes/installs"
+          # proton-cli session (holds the logged-in Proton session and keys)
+          "/var/lib/hermes/.config/proton-cli"
         ];
       };
 
