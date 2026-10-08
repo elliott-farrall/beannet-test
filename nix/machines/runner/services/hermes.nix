@@ -2,6 +2,25 @@
 
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
+    let
+      # Inject the Hermes dashboard basic-auth credentials (reusing the LLDAP
+      # admin password) into ~/.hermes/.env. The module's activation rewrites
+      # .env from environmentFiles, so this runs as ExecStartPre to append the
+      # auth vars each start. Runs as root to read the LLDAP secret.
+      dashboardAuth = pkgs.writeShellScript "hermes-dashboard-auth" ''
+        env_file=/var/lib/hermes/.hermes/.env
+        touch "$env_file"
+        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
+          printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
+        fi
+        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
+          printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
+          tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
+          printf '\n' >> "$env_file"
+        fi
+        chown hermes:hermes "$env_file"
+      '';
+    in
     {
       imports = [ inputs.hermes-agent.nixosModules.default ];
 
@@ -25,8 +44,6 @@
           host = config.beannet.services."hermes".hostname;
           port = config.beannet.services."hermes".port;
         };
-
-        workingDirectory = "/var/lib/hermes/workspace";
 
         settings = {
           dashboard.public_url = config.beannet.services."hermes".href;
@@ -83,47 +100,8 @@
         "/var/lib/hermes"
       ];
 
-      # Inject the Hermes dashboard basic-auth credentials (reusing the LLDAP
-      # admin password) into ~/.hermes/.env before the services start. The
-      # module's activation rewrites .env from environmentFiles, so this runs as
-      # ExecStartPre to append the auth vars each start.
-      systemd.services.hermes-agent.serviceConfig.ExecStartPre = lib.mkBefore [
-        "+${pkgs.writeShellScript "hermes-mkdir-wd" ''
-          mkdir -p /var/lib/hermes/workspace
-          chown hermes:hermes /var/lib/hermes/workspace
-        ''}"
-        "+${pkgs.writeShellScript "hermes-dashboard-auth" ''
-          env_file=/var/lib/hermes/.hermes/.env
-          touch "$env_file"
-          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
-            printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
-          fi
-          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
-            printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
-            tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
-            printf '\n' >> "$env_file"
-          fi
-          chown hermes:hermes "$env_file"
-        ''}"
-      ];
       systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
-        "+${pkgs.writeShellScript "hermes-backend-mkdir-wd" ''
-          mkdir -p /var/lib/hermes/workspace
-          chown hermes:hermes /var/lib/hermes/workspace
-        ''}"
-        "+${pkgs.writeShellScript "hermes-backend-dashboard-auth" ''
-          env_file=/var/lib/hermes/.hermes/.env
-          touch "$env_file"
-          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
-            printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
-          fi
-          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
-            printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
-            tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
-            printf '\n' >> "$env_file"
-          fi
-          chown hermes:hermes "$env_file"
-        ''}"
+        "+${dashboardAuth}"
       ];
     };
 }
