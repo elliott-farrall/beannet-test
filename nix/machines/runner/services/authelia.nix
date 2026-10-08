@@ -16,6 +16,7 @@
             authResponseHeaders = [ "Remote-User" "Remote-Groups" "Remote-Name" "Remote-Email" ];
           };
           http.routers."authelia".entrypoints = [ "auth" ];
+          http.routers."authelia".middlewares = [ ];
         }
       ];
 
@@ -26,18 +27,6 @@
           server.address = "tcp://127.0.0.1:${toString config.beannet.services."authelia".port}/";
 
           access_control.rules = [
-            {
-              domain = [ "headscale.${config.beannet.domain}" ];
-              policy = "bypass";
-            }
-            {
-              domain = [
-                config.beannet.domain
-                "*.${config.beannet.domain}"
-              ];
-              policy = "bypass";
-              networks = [ config.services.headscale.settings.prefixes.v4 ];
-            }
             {
               domain = [
                 config.beannet.domain

@@ -82,6 +82,7 @@
               default = {
                 http.routers.${name} = {
                   rule = "Host(`${config.domain}`)";
+                  middlewares = [ "auth" ];
                   service = name;
                 };
                 http.services.${name}.loadBalancer.servers = [

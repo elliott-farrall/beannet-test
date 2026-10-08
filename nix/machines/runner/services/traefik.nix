@@ -48,7 +48,6 @@
           asDefault = true;
           forwardedHeaders.trustedIPs = [ "127.0.0.1/32" "::1/128" ];
           http.tls.certResolver = "cloudflare";
-          http.middlewares = [ "auth" ];
         };
         entryPoints."auth" = {
           address = ":${toString config.beannet.ports.auth}";

@@ -10,21 +10,10 @@
         port = 9119;
       };
 
-      # The Hermes dashboard has DNS-rebinding protection: when bound to
-      # 127.0.0.1 it rejects requests whose Host header is not 127.0.0.1.
-      # It also validates the WebSocket Origin header against the bind address.
-      # Rewrite both so Traefik can proxy the public subdomain while the
-      # backend sees loopback. Authelia still runs first because the middleware
-      # chain is evaluated left-to-right; Tailscale clients bypass Authelia via
-      # an access-control rule while public clients keep the SSO gate.
       services.traefik.dynamicConfigOptions = lib.mkMerge [
         config.beannet.services."hermes".traefikConfig
         {
-          http.routers."hermes".middlewares = [ "auth" "hermes-host" ];
-          http.middlewares."hermes-host".headers.customRequestHeaders = {
-            Host = "127.0.0.1";
-            Origin = "http://127.0.0.1:${toString config.beannet.services."hermes".port}";
-          };
+          http.routers."hermes".middlewares = lib.mkForce [ ];
         }
       ];
 
@@ -42,29 +31,13 @@
         settings = {
           dashboard.public_url = config.beannet.services."hermes".href;
 
-          # Ensure any leftover api_server config from earlier deployments is
-          # disabled; the activation script merges rather than replaces.
-          platforms.api_server.enabled = false;
+          provider_routing.sort = "price";
+          openrouter.min_coding_score = 0.65;
 
           model = {
             provider = "openrouter";
-            # Cost-optimised main model. Gemini Flash is dramatically cheaper than
-            # Claude Sonnet while still capable enough for routine agent work.
             default = "~google/gemini-flash-latest";
           };
-          provider_routing = {
-            # Prefer the cheapest OpenRouter provider for each request.
-            sort = "price";
-          };
-          fallback_providers = [
-            # DeepSeek Chat is a cheap, capable backup if Gemini Flash fails.
-            { provider = "openrouter"; model = "deepseek/deepseek-chat"; }
-          ];
-          openrouter = {
-            min_coding_score = 0.65;
-          };
-          # Offload side tasks to free OpenRouter models. If a free tier is
-          # rate-limited, Hermes falls back to the main model for that call.
           auxiliary = {
             vision = { provider = "openrouter"; model = "google/gemini-2.0-flash-exp:free"; };
             title_generation = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
@@ -73,16 +46,15 @@
             skills_hub = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
             mcp = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
           };
+          fallback_providers = [
+            { provider = "openrouter"; model = "deepseek/deepseek-chat"; }
+          ];
         };
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
-          config.clan.core.vars.generators."hermes-dashboard-auth".files."env".path
         ];
 
-        # MCP servers will be wired here once the exact list is decided.
-        # They will be wrapped behind Atlassian's mcp-compressor before being
-        # handed to Hermes.
         mcpServers = { };
       };
 
@@ -90,14 +62,27 @@
         "/var/lib/hermes"
       ];
 
-      # The upstream module relies on activation/tmpfiles to create the working
-      # directory. On the first deploy there is a race with systemd, causing the
-      # service to fail once with CHDIR before restarting. Ensure the directory
-      # exists as root before ExecStart runs.
+      # Inject the Hermes dashboard basic-auth credentials (reusing the LLDAP
+      # admin password) into ~/.hermes/.env before the services start. The
+      # module's activation rewrites .env from environmentFiles, so this runs as
+      # ExecStartPre to append the auth vars each start.
       systemd.services.hermes-agent.serviceConfig.ExecStartPre = lib.mkBefore [
         "+${pkgs.writeShellScript "hermes-mkdir-wd" ''
           mkdir -p /var/lib/hermes/workspace
           chown hermes:hermes /var/lib/hermes/workspace
+        ''}"
+        "+${pkgs.writeShellScript "hermes-dashboard-auth" ''
+          env_file=/var/lib/hermes/.hermes/.env
+          touch "$env_file"
+          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
+            printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
+          fi
+          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
+            printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
+            tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
+            printf '\n' >> "$env_file"
+          fi
+          chown hermes:hermes "$env_file"
         ''}"
       ];
       systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
@@ -105,10 +90,19 @@
           mkdir -p /var/lib/hermes/workspace
           chown hermes:hermes /var/lib/hermes/workspace
         ''}"
+        "+${pkgs.writeShellScript "hermes-backend-dashboard-auth" ''
+          env_file=/var/lib/hermes/.hermes/.env
+          touch "$env_file"
+          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
+            printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
+          fi
+          if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
+            printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
+            tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
+            printf '\n' >> "$env_file"
+          fi
+          chown hermes:hermes "$env_file"
+        ''}"
       ];
-
-      networking.firewall.extraCommands = ''
-        iptables -A nixos-fw -p tcp --dport ${toString config.beannet.services."hermes".port} -j nixos-fw-refuse
-      '';
     };
 }
