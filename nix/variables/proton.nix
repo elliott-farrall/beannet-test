@@ -14,7 +14,7 @@
         type = "hidden";
         persist = true;
       };
-      prompts."pass-token" = {
+      prompts."token" = {
         description = "Proton Pass personal access token (pst_...)";
         type = "hidden";
         persist = true;
@@ -27,7 +27,7 @@
           printf '\nPROTON_PASSWORD='
           tr -d '\n' < "$prompts/password"
           printf '\nPROTON_PASS_PERSONAL_ACCESS_TOKEN='
-          tr -d '\n' < "$prompts/pass-token"
+          tr -d '\n' < "$prompts/token"
           printf '\n'
         } > "$out/env"
       '';
