@@ -3,10 +3,6 @@
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
     let
-      # Inject the Hermes dashboard basic-auth credentials (reusing the LLDAP
-      # admin password) into ~/.hermes/.env. The module's activation rewrites
-      # .env from environmentFiles, so this runs as ExecStartPre to append the
-      # auth vars each start. Runs as root to read the LLDAP secret.
       dashboardAuth = pkgs.writeShellScript "hermes-dashboard-auth" ''
         env_file=/var/lib/hermes/.hermes/.env
         touch "$env_file"
@@ -97,7 +93,10 @@
       };
 
       environment.persistence.state.directories = [
-        "/var/lib/hermes"
+        # Persist the Hermes home (state databases, memories, skills, cron,
+        # sessions, plugins) so agent state survives reboots. Caches inside are
+        # small and acceptable to keep.
+        "/var/lib/hermes/.hermes"
       ];
 
       systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
