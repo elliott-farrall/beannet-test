@@ -39,12 +39,30 @@
             default = "~google/gemini-flash-latest";
           };
           auxiliary = {
-            vision = { provider = "openrouter"; model = "google/gemini-2.0-flash-exp:free"; };
-            title_generation = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
-            compression = { provider = "openrouter"; model = "qwen/qwen-2.5-72b-instruct:free"; };
-            approval = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
-            skills_hub = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
-            mcp = { provider = "openrouter"; model = "meta-llama/llama-3.1-8b-instruct:free"; };
+            vision = {
+              provider = "openrouter";
+              model = "google/gemini-2.0-flash-exp:free";
+            };
+            title_generation = {
+              provider = "openrouter";
+              model = "meta-llama/llama-3.1-8b-instruct:free";
+            };
+            compression = {
+              provider = "openrouter";
+              model = "qwen/qwen-2.5-72b-instruct:free";
+            };
+            approval = {
+              provider = "openrouter";
+              model = "meta-llama/llama-3.1-8b-instruct:free";
+            };
+            skills_hub = {
+              provider = "openrouter";
+              model = "meta-llama/llama-3.1-8b-instruct:free";
+            };
+            mcp = {
+              provider = "openrouter";
+              model = "meta-llama/llama-3.1-8b-instruct:free";
+            };
           };
           fallback_providers = [
             { provider = "openrouter"; model = "deepseek/deepseek-chat"; }
