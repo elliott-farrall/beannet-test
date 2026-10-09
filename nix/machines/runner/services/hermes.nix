@@ -32,19 +32,28 @@
         cp -r ${inputs.hermes-protonpass}/* $out/
       '';
 
-      # Attempt to sign in to proton-cli using the credentials from the proton
-      # generator, but only if no session exists yet. Best-effort: if the
-      # account requires 2FA the login will fail and the user signs in
-      # interactively.
-      protonLogin = pkgs.writeShellScript "hermes-proton-login" ''
-        if ! proton account get >/dev/null 2>&1; then
-          env_file=/var/lib/hermes/.hermes/.env
-          username=$(grep '^PROTON_USERNAME=' "$env_file" | cut -d= -f2)
-          password=$(grep '^PROTON_PASSWORD=' "$env_file" | cut -d= -f2)
-          if [ -n "$username" ] && [ -n "$password" ]; then
-            printf '%s' "$password" | proton account login --user "$username" --password-file - >/dev/null 2>&1 || true
-          fi
+      # Authenticate to pass-cli with the PAT, pull the Proton account
+      # credentials (username, password, TOTP) from the vault item, then log in
+      # to proton-cli so the hermes-proton plugin has a session.
+      protonAuth = pkgs.writeShellScript "hermes-proton-auth" ''
+        set -euo pipefail
+        env_file=/var/lib/hermes/.hermes/.env
+        pat=$(grep '^PROTON_PASS_PERSONAL_ACCESS_TOKEN=' "$env_file" | cut -d= -f2)
+        item=${config.beannet.services."hermes".protonItem}
+        if [ -z "$pat" ] || [ -z "$item" ]; then
+          echo "proton-auth: missing PAT or vault item; skipping" >&2
+          exit 0
         fi
+        if proton account get >/dev/null 2>&1; then
+          echo "proton-auth: session already valid" >&2
+          exit 0
+        fi
+        export PROTON_PASS_SESSION_DIR=/var/lib/hermes/.config/pass-cli
+        pass-cli login --pat "$pat"
+        username=$(pass-cli item view "$item" --field username)
+        password=$(pass-cli item view "$item" --field password)
+        totp=$(pass-cli item totp "$item" --output json | ${pkgs.jq}/bin/jq -r 'to_entries[0].value')
+        printf '%s' "$password" | proton account login --user "$username" --password-file - --totp "$totp"
       '';
     in
     {
@@ -53,6 +62,7 @@
       beannet.services."hermes" = {
         hostname = "127.0.0.1";
         port = 9119;
+        protonItem = "pass://Personal/proton";
       };
 
       services.traefik.dynamicConfigOptions = lib.mkMerge [
@@ -158,7 +168,25 @@
         mcpServers = { };
       };
 
-      environment.systemPackages = [ pkgs.proton-cli ];
+      environment.systemPackages = [ pkgs.proton-cli pkgs.proton-pass-cli ];
+
+      systemd.services.hermes-proton-auth = {
+        description = "Authenticate proton-cli using Proton Pass credentials";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          User = "hermes";
+          Group = "hermes";
+          Environment = "HOME=/var/lib/hermes";
+          ExecStart = protonAuth;
+        };
+      };
+
+      systemd.services.hermes-backend = {
+        after = [ "hermes-proton-auth.service" ];
+        wants = [ "hermes-proton-auth.service" ];
+      };
 
       environment.persistence.state = {
         files = [
@@ -186,7 +214,6 @@
 
       systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
         "+${dashboardAuth}"
-        "+${protonLogin}"
       ];
     };
 }

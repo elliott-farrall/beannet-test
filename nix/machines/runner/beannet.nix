@@ -99,6 +99,11 @@
               };
               readOnly = true;
             };
+            protonItem = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              description = "Proton Pass vault item (pass://vault/item) holding the Proton account credentials";
+            };
           };
         }));
       };
