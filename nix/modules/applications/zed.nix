@@ -19,18 +19,11 @@
       userSettings = {
         autosave.after_delay.milliseconds = 200;
 
-        language_models = {
-          opencode = {
-            show_free_models = false;
-            show_zen_models = false;
-          };
-
-          open_router = {
-            api_url = "https://openrouter.ai/api/v1";
-          };
-        };
-
         agent = {
+          default_model = {
+            provider = "openrouter";
+            model = "openrouter/auto";
+          };
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;
         };
