@@ -3,30 +3,6 @@
 {
   flake.clan.machines."runner" = { lib, pkgs, config, ... }:
     let
-      dashboardAuth = pkgs.writeShellScript "hermes-dashboard-auth" ''
-        env_file=/var/lib/hermes/.hermes/.env
-        touch "$env_file"
-        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_USERNAME=' "$env_file"; then
-          printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' >> "$env_file"
-        fi
-        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' "$env_file"; then
-          printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$env_file"
-          tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
-          printf '\n' >> "$env_file"
-        fi
-        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_SECRET=' "$env_file"; then
-          printf 'HERMES_DASHBOARD_BASIC_AUTH_SECRET=' >> "$env_file"
-          tr -d '\n' < ${config.clan.core.vars.generators."hermes-dashboard".files."secret".path} >> "$env_file"
-          printf '\n' >> "$env_file"
-        fi
-        if ! grep -q '^HERMES_DASHBOARD_SESSION_TOKEN=' "$env_file"; then
-          printf 'HERMES_DASHBOARD_SESSION_TOKEN=' >> "$env_file"
-          tr -d '\n' < ${config.clan.core.vars.generators."hermes-dashboard".files."session-token".path} >> "$env_file"
-          printf '\n' >> "$env_file"
-        fi
-        chown hermes:hermes "$env_file"
-      '';
-
       hermesProtonpass = pkgs.runCommand "hermes-protonpass" { } ''
         mkdir -p $out
         cp -r ${inputs.hermes-protonpass}/* $out/
@@ -171,6 +147,7 @@
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
           config.clan.core.vars.generators."proton".files."env".path
+          config.clan.core.vars.generators."hermes".files."env".path
         ];
 
         hermesHomeFiles."profile.yaml" = ''
@@ -338,10 +315,6 @@
         "/var/lib/hermes/.hermes/sessions"
       ];
 
-      systemd.services.hermes-backend.serviceConfig.ExecStartPre = lib.mkBefore [
-        "+${dashboardAuth}"
-      ];
-
       # Keep the proton-cli (Mail/Drive/Calendar) session fresh by logging in
       # from the Proton Pass Identity item holding the account credentials.
       systemd.services.hermes-proton-auth = lib.mkIf (config.beannet.services."hermes".protonItem != "") {
@@ -380,15 +353,19 @@
         };
       };
 
-      # Persistent dashboard signing secret + session token so restarts do not
-      # invalidate Hermes Relay and browser dashboard sessions.
-      clan.core.vars.generators."hermes-dashboard" = {
-        files."secret".secret = true;
-        files."session-token".secret = true;
-        runtimeInputs = [ pkgs.openssl ];
+      clan.core.vars.generators."hermes" = {
+        dependencies = [ "ldap" ];
+        files."env".secret = true;
+        runtimeInputs = with pkgs; [ openssl coreutils ];
         script = ''
-          openssl rand -hex 32 > $out/secret
-          openssl rand -hex 32 > $out/session-token
+          printf 'HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin\n' > "$out/env"
+          printf 'HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=' >> "$out/env"
+          tr -d '\n' < "$in/ldap/password" >> "$out/env"
+          printf '\nHERMES_DASHBOARD_BASIC_AUTH_SECRET=' >> "$out/env"
+          openssl rand -hex 32 | tr -d '\n' >> "$out/env"
+          printf '\nHERMES_DASHBOARD_SESSION_TOKEN=' >> "$out/env"
+          openssl rand -hex 32 | tr -d '\n' >> "$out/env"
+          printf '\n' >> "$out/env"
         '';
       };
     };
