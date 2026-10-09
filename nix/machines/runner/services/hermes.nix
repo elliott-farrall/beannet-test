@@ -171,7 +171,7 @@
         ];
 
         hermesHomeFiles."profile.yaml" = ''
-          display_name: Elliott
+          display_name: Jim
         '';
 
         hermesHomeFiles."SOUL.md" = ''
