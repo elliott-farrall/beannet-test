@@ -152,7 +152,10 @@
         settings = {
           dashboard.public_url = config.beannet.services."hermes".href;
 
-          plugins.enabled = [ "protonpass" ];
+          plugins.enabled = [
+            "protonpass"
+            "proton"
+          ];
 
           secrets = {
             sources = [ "protonpass" ];
