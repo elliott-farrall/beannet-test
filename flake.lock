@@ -883,6 +883,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
+        "skill-proton-pass": "skill-proton-pass",
         "stylix": "stylix",
         "systems": "systems_2",
         "terranix": "terranix",
@@ -891,6 +892,22 @@
         "vpn-confinement": "vpn-confinement",
         "wallpapers": "wallpapers",
         "zen-browser": "zen-browser"
+      }
+    },
+    "skill-proton-pass": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787417818,
+        "narHash": "sha256-jr06OE3Q0IhsuwL7MJPGNCM5Qap2Ky7aQp9O28KrXI8=",
+        "owner": "tohuw",
+        "repo": "proton-pass-skill",
+        "rev": "b7c5da50f528eb24929b3cc85379acb50cfc2044",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tohuw",
+        "repo": "proton-pass-skill",
+        "type": "github"
       }
     },
     "sops-nix": {

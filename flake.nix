@@ -144,6 +144,10 @@ rec {
       url = "github:flamerged/hermes-protonpass-plugin";
       flake = false;
     };
+    skill-proton-pass = {
+      url = "github:tohuw/proton-pass-skill";
+      flake = false;
+    };
 
     /* -------------------------------------------------------------------------- */
     /*                                Dependencies                                */
