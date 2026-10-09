@@ -14,6 +14,16 @@
           tr -d '\n' < ${config.clan.core.vars.generators."ldap".files."password".path} >> "$env_file"
           printf '\n' >> "$env_file"
         fi
+        if ! grep -q '^HERMES_DASHBOARD_BASIC_AUTH_SECRET=' "$env_file"; then
+          printf 'HERMES_DASHBOARD_BASIC_AUTH_SECRET=' >> "$env_file"
+          tr -d '\n' < ${config.clan.core.vars.generators."hermes-dashboard".files."secret".path} >> "$env_file"
+          printf '\n' >> "$env_file"
+        fi
+        if ! grep -q '^HERMES_DASHBOARD_SESSION_TOKEN=' "$env_file"; then
+          printf 'HERMES_DASHBOARD_SESSION_TOKEN=' >> "$env_file"
+          tr -d '\n' < ${config.clan.core.vars.generators."hermes-dashboard".files."session-token".path} >> "$env_file"
+          printf '\n' >> "$env_file"
+        fi
         chown hermes:hermes "$env_file"
       '';
 
@@ -144,54 +154,25 @@
 
           plugins.enabled = [ "protonpass" ];
 
-          secrets.sources = [ "protonpass" ];
-          secrets.protonpass.enabled = true;
-
-          provider_routing.sort = "price";
-          openrouter.min_coding_score = 0.65;
+          secrets = {
+            sources = [ "protonpass" ];
+            protonpass.enabled = true;
+          };
 
           model = {
             provider = "openrouter";
-            default = "~google/gemini-flash-latest";
+            default = "openrouter/auto";
           };
-          auxiliary = {
-            vision = {
-              provider = "openrouter";
-              model = "google/gemini-2.0-flash-exp:free";
-            };
-            title_generation = {
-              provider = "openrouter";
-              model = "meta-llama/llama-3.1-8b-instruct:free";
-            };
-            compression = {
-              provider = "openrouter";
-              model = "qwen/qwen-2.5-72b-instruct:free";
-            };
-            approval = {
-              provider = "openrouter";
-              model = "meta-llama/llama-3.1-8b-instruct:free";
-            };
-            skills_hub = {
-              provider = "openrouter";
-              model = "meta-llama/llama-3.1-8b-instruct:free";
-            };
-            mcp = {
-              provider = "openrouter";
-              model = "meta-llama/llama-3.1-8b-instruct:free";
-            };
-          };
-          fallback_providers = [
-            {
-              provider = "openrouter";
-              model = "deepseek/deepseek-chat";
-            }
-          ];
         };
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
           config.clan.core.vars.generators."proton".files."env".path
         ];
+
+        hermesHomeFiles."profile.yaml" = ''
+          display_name: Elliott
+        '';
 
         hermesHomeFiles."SOUL.md" = ''
           You are Jim, a personal AI assistant. You are warm, capable, and
@@ -394,6 +375,18 @@
           OnUnitActiveSec = "12h";
           Unit = "hermes-proton-auth.service";
         };
+      };
+
+      # Persistent dashboard signing secret + session token so restarts do not
+      # invalidate Hermes Relay and browser dashboard sessions.
+      clan.core.vars.generators."hermes-dashboard" = {
+        files."secret".secret = true;
+        files."session-token".secret = true;
+        runtimeInputs = [ pkgs.openssl ];
+        script = ''
+          openssl rand -hex 32 > $out/secret
+          openssl rand -hex 32 > $out/session-token
+        '';
       };
     };
 }
