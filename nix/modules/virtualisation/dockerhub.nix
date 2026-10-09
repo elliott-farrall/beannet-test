@@ -3,7 +3,11 @@
 {
   flake.modules.nixos.default = { lib, pkgs, config, ... }:
     let
-      inherit (config.flake.lib) capitalise;
+      capitalise = s:
+        if s == "" then ""
+        else
+          lib.strings.toUpper (lib.strings.substring 0 1 s)
+          + lib.strings.substring 1 (lib.strings.stringLength s) s;
       inherit (config.clan.core.vars.generators."docker") files;
 
       mkLoginService = backend: {
