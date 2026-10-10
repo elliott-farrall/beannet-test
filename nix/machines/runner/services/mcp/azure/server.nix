@@ -4,7 +4,7 @@ let
   supergatewayFor = config.flake.mcpPackages.supergateway;
 in
 {
-  flake.clan.machines."runner" = { config, pkgs, ... }:
+  flake.clan.machines."runner" = { config, lib, pkgs, ... }:
     let
       httpPort = 23385;
 
@@ -25,11 +25,16 @@ in
           pkgs.cacert
           pkgs.nodejs_24
           pkgs.azure-mcp
+          pkgs.icu
+          pkgs.openssl
           supergateway
         ];
         config = {
           Entrypoint = [ "${entrypoint}" ];
-          Env = [ "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" ];
+          Env = [
+            "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+            "LD_LIBRARY_PATH=${lib.makeLibraryPath [pkgs.icu pkgs.openssl]}"
+          ];
         };
       };
     in
