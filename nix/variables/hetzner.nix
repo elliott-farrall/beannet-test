@@ -1,8 +1,5 @@
-{ config, ... }:
+{ ... }:
 
-let
-  clanDir = config.flake.clan.directory;
-in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."hetzner" = {
@@ -18,13 +15,6 @@ in
         tr -d '\n' < "$prompts/cloud-token" >> "$out/env"
         printf '\n' >> "$out/env"
       '';
-    };
-  };
-
-  flake.modules.homeManager.default = { ... }: {
-    sops.secrets."mcp/hetzner-token" = {
-      sopsFile = "${clanDir}/vars/shared/hetzner/cloud-token/secret";
-      format = "binary";
     };
   };
 }

@@ -61,23 +61,6 @@
           ];
           env.LD_LIBRARY_PATH = lib.escapeShellArg (lib.makeLibraryPath [ pkgs.libsecret pkgs.glib ]);
         };
-        terraform = mkCompressedMcp {
-          name = "terraform";
-          backend = [ "${pkgs.terraform-mcp-server}/bin/terraform-mcp-server" ];
-        };
-        azure = mkCompressedMcp {
-          name = "azure";
-          backend = [ "${pkgs.azure-mcp}/bin/azure-mcp" "server" "start" ];
-          env.LD_LIBRARY_PATH = lib.escapeShellArg (lib.makeLibraryPath [ pkgs.icu pkgs.openssl ]);
-        };
-        hetzner = mkCompressedMcp {
-          name = "hetzner";
-          backend = [ "${pkgs.nix}/bin/nix" "shell" "nixpkgs#nodejs_22" "--command" "npx" "-y" "hetzner-mcp" ];
-        };
-        nixos = mkCompressedMcp {
-          name = "nixos";
-          backend = [ "${pkgs.mcp-nixos}/bin/mcp-nixos" ];
-        };
       };
     in
     {
@@ -96,25 +79,6 @@
         servers."composio" = {
           url = "https://connect.composio.dev/mcp";
           headers."x-consumer-api-key" = "{env:COMPOSIO_API_KEY}";
-        };
-        servers."terraform" = {
-          command = "${servers.terraform}/bin/mcp-terraform";
-          env.TFE_TOKEN.file = config.sops.secrets."mcp/terraform-token".path;
-        };
-        servers."azure" = {
-          command = "${servers.azure}/bin/mcp-azure";
-          env = {
-            AZURE_TENANT_ID.file = config.sops.secrets."mcp/azure-tenant-id".path;
-            AZURE_CLIENT_ID.file = config.sops.secrets."mcp/azure-client-id".path;
-            AZURE_CLIENT_SECRET.file = config.sops.secrets."mcp/azure-client-secret".path;
-          };
-        };
-        servers."hetzner" = {
-          command = "${servers.hetzner}/bin/mcp-hetzner";
-          env.HETZNER_CLOUD_TOKEN.file = config.sops.secrets."mcp/hetzner-token".path;
-        };
-        servers."nixos" = {
-          command = "${servers.nixos}/bin/mcp-nixos";
         };
       };
 

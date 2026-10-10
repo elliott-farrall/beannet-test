@@ -1,8 +1,5 @@
-{ config, ... }:
+{ ... }:
 
-let
-  clanDir = config.flake.clan.directory;
-in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."terraform" = {
@@ -18,13 +15,6 @@ in
         tr -d '\n' < "$prompts/mcp" >> "$out/env"
         printf '\n' >> "$out/env"
       '';
-    };
-  };
-
-  flake.modules.homeManager.default = { ... }: {
-    sops.secrets."mcp/terraform-token" = {
-      sopsFile = "${clanDir}/vars/shared/terraform/mcp/secret";
-      format = "binary";
     };
   };
 }
