@@ -59,6 +59,19 @@
       };
     in
     {
+      clan.core.vars.generators."azure-mcp" = {
+        files."env".secret = true;
+        runtimeInputs = [ pkgs.openssl ];
+        script = ''
+          printf 'TOKEN_AZURE=' > "$out/env"
+          openssl rand -hex 32 >> "$out/env"
+        '';
+      };
+
+      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
+        config.clan.core.vars.generators."azure-mcp".files."env".path
+      ];
+
       virtualisation.oci-containers.containers.azure = {
         image = "${image.imageName}:${image.imageTag}";
         imageFile = image;

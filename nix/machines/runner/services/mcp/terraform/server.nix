@@ -53,6 +53,19 @@
       };
     in
     {
+      clan.core.vars.generators."terraform-mcp" = {
+        files."env".secret = true;
+        runtimeInputs = [ pkgs.openssl ];
+        script = ''
+          printf 'TOKEN_TERRAFORM=' > "$out/env"
+          openssl rand -hex 32 >> "$out/env"
+        '';
+      };
+
+      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
+        config.clan.core.vars.generators."terraform-mcp".files."env".path
+      ];
+
       virtualisation.oci-containers.containers.terraform = {
         image = "${image.imageName}:${image.imageTag}";
         imageFile = image;

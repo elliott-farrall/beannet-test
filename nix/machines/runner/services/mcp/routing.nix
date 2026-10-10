@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.clan.machines."runner" = { config, pkgs, ... }:
+  flake.clan.machines."runner" = { pkgs, ... }:
     let
       authPort = 23381;
 
@@ -44,26 +44,12 @@
         };
       };
 
-      clan.core.vars.generators."mcp-auth" = {
-        files."env".secret = true;
-        runtimeInputs = [ pkgs.openssl ];
-        script = ''
-          : > "$out/env"
-          for name in nixos hetzner terraform azure azure-devops; do
-            var="TOKEN_$(printf '%s' "$name" | tr 'a-z-' 'A-Z_')"
-            printf '%s=' "$var" >> "$out/env"
-            openssl rand -hex 32 >> "$out/env"
-          done
-        '';
-      };
-
       systemd.services.mcp-auth = {
         description = "Bearer-token verifier for MCP endpoints (Traefik forwardAuth)";
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
-          EnvironmentFile = [ config.clan.core.vars.generators."mcp-auth".files."env".path ];
           ExecStart = "${pkgs.python3}/bin/python3 ${mcpAuthVerifier}";
           Restart = "always";
         };

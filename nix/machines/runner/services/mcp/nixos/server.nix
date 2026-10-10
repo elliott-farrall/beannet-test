@@ -53,6 +53,19 @@
       };
     in
     {
+      clan.core.vars.generators."nixos-mcp" = {
+        files."env".secret = true;
+        runtimeInputs = [ pkgs.openssl ];
+        script = ''
+          printf 'TOKEN_NIXOS=' > "$out/env"
+          openssl rand -hex 32 >> "$out/env"
+        '';
+      };
+
+      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
+        config.clan.core.vars.generators."nixos-mcp".files."env".path
+      ];
+
       virtualisation.oci-containers.containers.nixos = {
         image = "${image.imageName}:${image.imageTag}";
         imageFile = image;
