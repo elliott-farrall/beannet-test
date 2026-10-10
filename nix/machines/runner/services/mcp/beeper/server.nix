@@ -41,7 +41,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/beeper`)";
           entryPoints = [ "websecure" ];
           service = "beeper";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.beeper.loadBalancer.servers = [

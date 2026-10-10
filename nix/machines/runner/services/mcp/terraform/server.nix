@@ -90,7 +90,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/terraform`)";
           entryPoints = [ "websecure" ];
           service = "terraform";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.terraform.loadBalancer.servers = [

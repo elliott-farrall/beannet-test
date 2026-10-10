@@ -78,7 +78,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/nixos`)";
           entryPoints = [ "websecure" ];
           service = "nixos";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.nixos.loadBalancer.servers = [

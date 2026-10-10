@@ -125,7 +125,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/azure-devops`)";
           entryPoints = [ "websecure" ];
           service = "azure-devops";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.azure-devops.loadBalancer.servers = [

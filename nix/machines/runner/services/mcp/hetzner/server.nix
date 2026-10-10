@@ -115,7 +115,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/hetzner`)";
           entryPoints = [ "websecure" ];
           service = "hetzner";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.hetzner.loadBalancer.servers = [

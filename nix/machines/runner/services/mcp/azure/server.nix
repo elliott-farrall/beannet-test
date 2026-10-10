@@ -108,7 +108,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/azure`)";
           entryPoints = [ "websecure" ];
           service = "azure";
-          middlewares = [ "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" "mcp-rootpath" ];
           tls.certResolver = "cloudflare";
         };
         http.services.azure.loadBalancer.servers = [
