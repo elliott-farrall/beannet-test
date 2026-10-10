@@ -188,19 +188,5 @@
           printf '\n' >> "$out/env"
         '';
       };
-
-      clan.core.vars.generators."composio" = {
-        share = true;
-        prompts."api-key" = {
-          description = "Composio API key";
-          type = "hidden";
-          persist = true;
-        };
-        files."env".secret = true;
-        script = ''
-          printf 'COMPOSIO_API_KEY=' > "$out/env"
-          tr -d '\n' < "$prompts/api-key" >> "$out/env"
-        '';
-      };
     };
 }

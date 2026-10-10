@@ -47,16 +47,6 @@
         '';
 
       servers = {
-        atlassian = mkCompressedMcp {
-          name = "atlassian";
-          backend = [ "https://mcp.atlassian.com/v2/mcp" ];
-        };
-        github = mkCompressedMcp {
-          name = "github";
-          backend = [ "https://api.githubcopilot.com/mcp/" ];
-          env.GITHUB_MCP_PAT = "$(cat ${config.sops.secrets."mcp/github-token".path})";
-          headers.Authorization = "Bearer \${GITHUB_MCP_PAT}";
-        };
         azure-devops = mkCompressedMcp {
           name = "azure-devops";
           backend = [
@@ -71,13 +61,16 @@
           ];
           env.LD_LIBRARY_PATH = lib.escapeShellArg (lib.makeLibraryPath [ pkgs.libsecret pkgs.glib ]);
         };
-        cloudflare = mkCompressedMcp {
-          name = "cloudflare";
-          backend = [ "https://mcp.cloudflare.com/mcp" ];
-        };
         terraform = mkCompressedMcp {
           name = "terraform";
           backend = [ "${pkgs.terraform-mcp-server}/bin/terraform-mcp-server" ];
+        };
+        composio = mkCompressedMcp {
+          name = "composio";
+          backend = [ "https://connect.composio.dev/mcp" ];
+          timeout = 300;
+          env.COMPOSIO_API_KEY = "$(cat ${config.sops.secrets."mcp/composio-key".path})";
+          headers."x-consumer-api-key" = "\${COMPOSIO_API_KEY}";
         };
         azure = mkCompressedMcp {
           name = "azure";
@@ -92,22 +85,12 @@
           name = "nixos";
           backend = [ "${pkgs.mcp-nixos}/bin/mcp-nixos" ];
         };
-        openrouter = mkCompressedMcp {
-          name = "openrouter";
-          backend = [ "https://mcp.openrouter.ai/mcp" ];
-        };
       };
     in
     {
       programs.mcp = {
         enable = true;
 
-        servers."atlassian" = {
-          command = "${servers.atlassian}/bin/mcp-atlassian";
-        };
-        servers."github" = {
-          command = "${servers.github}/bin/mcp-github";
-        };
         servers."azure-devops" = {
           command = "${servers.azure-devops}/bin/mcp-azure-devops";
           env = {
@@ -117,8 +100,8 @@
             AZURE_CLIENT_SECRET.file = config.sops.secrets."mcp/azure-client-secret".path;
           };
         };
-        servers."cloudflare" = {
-          command = "${servers.cloudflare}/bin/mcp-cloudflare";
+        servers."composio" = {
+          command = "${servers.composio}/bin/mcp-composio";
         };
         servers."terraform" = {
           command = "${servers.terraform}/bin/mcp-terraform";
@@ -138,9 +121,6 @@
         };
         servers."nixos" = {
           command = "${servers.nixos}/bin/mcp-nixos";
-        };
-        servers."openrouter" = {
-          command = "${servers.openrouter}/bin/mcp-openrouter";
         };
       };
 

@@ -1,8 +1,5 @@
-{ config, ... }:
+{ ... }:
 
-let
-  clanDir = config.flake.clan.directory;
-in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."github" = {
@@ -12,13 +9,6 @@ in
         type = "hidden";
         persist = true;
       };
-    };
-  };
-
-  flake.modules.homeManager.default = { ... }: {
-    sops.secrets."mcp/github-token" = {
-      sopsFile = "${clanDir}/vars/shared/github/mcp/secret";
-      format = "binary";
     };
   };
 }
