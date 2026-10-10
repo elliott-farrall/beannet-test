@@ -53,17 +53,18 @@
       };
     in
     {
-      clan.core.vars.generators."nixos-mcp" = {
-        files."env".secret = true;
+      clan.core.vars.generators."nixos" = {
+        share = true;
+        files."mcp-auth".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
-          printf 'TOKEN_NIXOS=' > "$out/env"
-          openssl rand -hex 32 >> "$out/env"
+          printf 'TOKEN_NIXOS=' > "$out/mcp-auth"
+          openssl rand -hex 32 >> "$out/mcp-auth"
         '';
       };
 
       systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."nixos-mcp".files."env".path
+        config.clan.core.vars.generators."nixos".files."mcp-auth".path
       ];
 
       virtualisation.oci-containers.containers.nixos = {

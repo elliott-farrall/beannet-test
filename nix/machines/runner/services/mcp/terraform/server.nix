@@ -53,17 +53,27 @@
       };
     in
     {
-      clan.core.vars.generators."terraform-mcp" = {
+      clan.core.vars.generators."terraform" = {
+        share = true;
+        prompts."mcp" = {
+          description = "Terraform Cloud / Enterprise token";
+          type = "hidden";
+          persist = true;
+        };
         files."env".secret = true;
+        files."mcp-auth".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
-          printf 'TOKEN_TERRAFORM=' > "$out/env"
-          openssl rand -hex 32 >> "$out/env"
+          printf 'TFE_TOKEN=' > "$out/env"
+          tr -d '\n' < "$prompts/mcp" >> "$out/env"
+          printf '\n' >> "$out/env"
+          printf 'TOKEN_TERRAFORM=' > "$out/mcp-auth"
+          openssl rand -hex 32 >> "$out/mcp-auth"
         '';
       };
 
       systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."terraform-mcp".files."env".path
+        config.clan.core.vars.generators."terraform".files."mcp-auth".path
       ];
 
       virtualisation.oci-containers.containers.terraform = {

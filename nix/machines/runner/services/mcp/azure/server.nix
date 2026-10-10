@@ -59,17 +59,39 @@
       };
     in
     {
-      clan.core.vars.generators."azure-mcp" = {
+      clan.core.vars.generators."azure" = {
+        share = true;
+        prompts."tenant-id" = {
+          description = "Azure tenant ID for the service principal";
+          type = "hidden";
+          persist = true;
+        };
+        prompts."client-id" = {
+          description = "Azure service principal client (application) ID";
+          type = "hidden";
+          persist = true;
+        };
+        prompts."client-secret" = {
+          description = "Azure service principal client secret";
+          type = "hidden";
+          persist = true;
+        };
         files."env".secret = true;
+        files."mcp-auth".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
-          printf 'TOKEN_AZURE=' > "$out/env"
-          openssl rand -hex 32 >> "$out/env"
+          {
+            printf 'AZURE_TENANT_ID='; tr -d '\n' < "$prompts/tenant-id"; printf '\n'
+            printf 'AZURE_CLIENT_ID='; tr -d '\n' < "$prompts/client-id"; printf '\n'
+            printf 'AZURE_CLIENT_SECRET='; tr -d '\n' < "$prompts/client-secret"; printf '\n'
+          } > "$out/env"
+          printf 'TOKEN_AZURE=' > "$out/mcp-auth"
+          openssl rand -hex 32 >> "$out/mcp-auth"
         '';
       };
 
       systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."azure-mcp".files."env".path
+        config.clan.core.vars.generators."azure".files."mcp-auth".path
       ];
 
       virtualisation.oci-containers.containers.azure = {

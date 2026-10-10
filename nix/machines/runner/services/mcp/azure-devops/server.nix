@@ -82,17 +82,8 @@
       };
     in
     {
-      clan.core.vars.generators."azure-devops-mcp" = {
-        files."env".secret = true;
-        runtimeInputs = [ pkgs.openssl ];
-        script = ''
-          printf 'TOKEN_AZURE_DEVOPS=' > "$out/env"
-          openssl rand -hex 32 >> "$out/env"
-        '';
-      };
-
       systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."azure-devops-mcp".files."env".path
+        config.clan.core.vars.generators."azure-devops".files."mcp-auth".path
       ];
 
       virtualisation.oci-containers.containers.azure-devops = {

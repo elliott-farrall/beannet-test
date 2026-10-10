@@ -38,8 +38,9 @@
           rev = "30a976caced96a24aab024c8f266633c544c7438";
           hash = "sha256-4teJQrq3jt5whXcBZUfILKlWHUA9DeBMbU9PjKW8Upg=";
         };
-        nativeBuildInputs = [ pkgs.nodejs_24 ];
-        npmDepsHash = "sha256-wnQBxirXla/DEfg+rRwUOwwA3gnL0ZqYlvIZT4kdsF0=";
+        nativeBuildInputs = [ pkgs.nodejs_24 pkgs.pkg-config pkgs.python3 ];
+        buildInputs = [ pkgs.libsecret ];
+        npmDepsHash = "sha256-KBYqj19ynLGzmG9FBaHUPm3Xi5c1bTqSob7PEliSQsM=";
         buildPhase = ''
           runHook preBuild
           npm run build
@@ -77,17 +78,27 @@
       };
     in
     {
-      clan.core.vars.generators."hetzner-mcp" = {
+      clan.core.vars.generators."hetzner" = {
+        share = true;
+        prompts."cloud-token" = {
+          description = "Hetzner Cloud API token (create at https://console.hetzner.cloud → project → Security → API Tokens → Read/Write)";
+          type = "hidden";
+          persist = true;
+        };
         files."env".secret = true;
+        files."mcp-auth".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
-          printf 'TOKEN_HETZNER=' > "$out/env"
-          openssl rand -hex 32 >> "$out/env"
+          printf 'HETZNER_CLOUD_TOKEN=' > "$out/env"
+          tr -d '\n' < "$prompts/cloud-token" >> "$out/env"
+          printf '\n' >> "$out/env"
+          printf 'TOKEN_HETZNER=' > "$out/mcp-auth"
+          openssl rand -hex 32 >> "$out/mcp-auth"
         '';
       };
 
       systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."hetzner-mcp".files."env".path
+        config.clan.core.vars.generators."hetzner".files."mcp-auth".path
       ];
 
       virtualisation.oci-containers.containers.hetzner = {
