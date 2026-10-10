@@ -53,13 +53,12 @@
           rule = "Host(`${mcpDomain}`) && PathPrefix(`/beeper`)";
           entryPoints = [ "websecure" ];
           service = "beeper";
-          middlewares = [ "beeper-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" ];
           tls.certResolver = "cloudflare";
         };
         http.services.beeper.loadBalancer.servers = [
           { url = "http://127.0.0.1:23375"; }
         ];
-        http.middlewares.beeper-stripprefix.stripprefix.prefixes = [ "/beeper" ];
       };
     };
 }
