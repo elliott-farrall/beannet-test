@@ -31,6 +31,15 @@ in
         type = "hidden";
         persist = true;
       };
+
+      files."env".secret = true;
+      script = ''
+        {
+          printf 'AZURE_TENANT_ID='; tr -d '\n' < "$prompts/tenant-id"; printf '\n'
+          printf 'AZURE_CLIENT_ID='; tr -d '\n' < "$prompts/client-id"; printf '\n'
+          printf 'AZURE_CLIENT_SECRET='; tr -d '\n' < "$prompts/client-secret"; printf '\n'
+        } > "$out/env"
+      '';
     };
   };
 

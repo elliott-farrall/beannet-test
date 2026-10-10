@@ -12,6 +12,12 @@ in
         type = "hidden";
         persist = true;
       };
+      files."env".secret = true;
+      script = ''
+        printf 'HETZNER_CLOUD_TOKEN=' > "$out/env"
+        tr -d '\n' < "$prompts/cloud-token" >> "$out/env"
+        printf '\n' >> "$out/env"
+      '';
     };
   };
 
