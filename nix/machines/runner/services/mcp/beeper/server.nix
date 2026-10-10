@@ -2,9 +2,6 @@
 
 {
   flake.clan.machines."runner" = { config, pkgs, ... }:
-    let
-      mcpDomain = "mcp.${config.beannet.domain}";
-    in
     {
       clan.core.vars.generators."beeper" = {
         share = true;
@@ -25,9 +22,7 @@
 
       virtualisation.oci-containers.containers.beeperbox = {
         image = "ghcr.io/hamr0/beeperbox:0.9.2";
-        environment = {
-          MCP_ALLOWED_HOSTS = "localhost,127.0.0.1,::1,${mcpDomain}";
-        };
+        environment.MCP_ALLOWED_HOSTS = "localhost,127.0.0.1,::1,mcp.${config.beannet.domain}";
         environmentFiles = [
           config.clan.core.vars.generators."beeper".files."env".path
         ];
@@ -43,7 +38,7 @@
 
       services.traefik.dynamicConfigOptions = {
         http.routers.beeper = {
-          rule = "Host(`${mcpDomain}`) && PathPrefix(`/beeper`)";
+          rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/beeper`)";
           entryPoints = [ "websecure" ];
           service = "beeper";
           middlewares = [ "mcp-stripprefix" ];
