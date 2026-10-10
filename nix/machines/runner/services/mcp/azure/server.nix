@@ -32,6 +32,7 @@ in
         config = {
           Entrypoint = [ "${entrypoint}" ];
           Env = [
+            "HOME=/tmp"
             "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
             "LD_LIBRARY_PATH=${lib.makeLibraryPath [pkgs.icu pkgs.openssl]}"
           ];
