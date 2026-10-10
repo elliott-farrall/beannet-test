@@ -14,17 +14,11 @@
           persist = true;
         };
         files."env".secret = true;
+        runtimeInputs = [ pkgs.openssl ];
         script = ''
           printf 'BEEPER_TOKEN=' > "$out/env"
           tr -d '\n' < "$prompts/token" >> "$out/env"
-        '';
-      };
-
-      clan.core.vars.generators."beeper-mcp" = {
-        files."env".secret = true;
-        runtimeInputs = [ pkgs.openssl ];
-        script = ''
-          printf 'MCP_AUTH_TOKEN=' > "$out/env"
+          printf '\nMCP_AUTH_TOKEN=' >> "$out/env"
           openssl rand -hex 32 >> "$out/env"
         '';
       };
@@ -36,7 +30,6 @@
         };
         environmentFiles = [
           config.clan.core.vars.generators."beeper".files."env".path
-          config.clan.core.vars.generators."beeper-mcp".files."env".path
         ];
         volumes = [ "/var/lib/beeperbox:/root/.config" ];
         ports = [
