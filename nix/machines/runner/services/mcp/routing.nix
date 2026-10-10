@@ -49,7 +49,7 @@
         runtimeInputs = [ pkgs.openssl ];
         script = ''
           : > "$out/env"
-          for name in nixos hetzner terraform azure; do
+          for name in nixos hetzner terraform azure azure-devops; do
             var="TOKEN_$(printf '%s' "$name" | tr 'a-z-' 'A-Z_')"
             printf '%s=' "$var" >> "$out/env"
             openssl rand -hex 32 >> "$out/env"

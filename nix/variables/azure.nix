@@ -1,17 +1,22 @@
-{ config, ... }:
+{ ... }:
 
-let
-  clanDir = config.flake.clan.directory;
-in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."azure-devops" = {
       share = true;
+
       prompts."organisation" = {
         description = "Azure DevOps organisation name (e.g. my-org)";
         type = "line";
         persist = true;
       };
+
+      files."env".secret = true;
+      script = ''
+        printf 'ADO_ORG=' > "$out/env"
+        tr -d '\n' < "$prompts/organisation" >> "$out/env"
+        printf '\n' >> "$out/env"
+      '';
     };
 
     clan.core.vars.generators."azure" = {
@@ -40,15 +45,6 @@ in
           printf 'AZURE_CLIENT_SECRET='; tr -d '\n' < "$prompts/client-secret"; printf '\n'
         } > "$out/env"
       '';
-    };
-  };
-
-  flake.modules.homeManager.default = { ... }: {
-    sops.secrets = {
-      "mcp/ado-org" = { sopsFile = "${clanDir}/vars/shared/azure-devops/organisation/secret"; format = "binary"; };
-      "mcp/azure-tenant-id" = { sopsFile = "${clanDir}/vars/shared/azure/tenant-id/secret"; format = "binary"; };
-      "mcp/azure-client-id" = { sopsFile = "${clanDir}/vars/shared/azure/client-id/secret"; format = "binary"; };
-      "mcp/azure-client-secret" = { sopsFile = "${clanDir}/vars/shared/azure/client-secret/secret"; format = "binary"; };
     };
   };
 }
