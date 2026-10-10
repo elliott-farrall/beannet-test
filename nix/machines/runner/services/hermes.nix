@@ -9,14 +9,6 @@
         chmod -R u+w $out
         patch -d $out -p1 < ${./patches/hermes-protonpass.patch}
       '';
-
-      # Mail / Drive / Calendar plugin (droolyai/hermes-proton). Backed by
-      # roman-16/proton-cli, which authenticates via SRP login (password + 2FA)
-      # saved as a session. Credentials come from the user's Proton Pass
-      # Identity vault item, resolved below — so the login can be automated.
-      # The repo now keeps the plugin under plugins/proton/, so we point $out
-      # at that subdirectory to satisfy hermes-agent's extraPlugins contract
-      # (plugin.yaml + __init__.py at the package root).
       hermesProton = pkgs.runCommand "hermes-proton" { } ''
         mkdir -p $out
         cp -r ${inputs.hermes-proton}/plugins/proton/* $out/
@@ -103,6 +95,7 @@
           config.clan.core.vars.generators."hermes".files."env".path
           config.clan.core.vars.generators."openrouter".files."env".path
           config.clan.core.vars.generators."proton".files."env".path
+          config.clan.core.vars.generators."composio".files."env".path
         ];
 
         hermesHomeFiles = {
@@ -142,7 +135,12 @@
           "skills/proton-pass/references/agent-guard.md" = builtins.readFile (inputs.skill-proton-pass + "/references/agent-guard.md");
         };
 
-        mcpServers = { };
+        mcpServers = {
+          composio = {
+            url = "https://connect.composio.dev/mcp";
+            headers.x-consumer-api-key = "\${COMPOSIO_API_KEY}";
+          };
+        };
       };
 
       environment.systemPackages = [ pkgs.proton-pass-cli ];
@@ -188,6 +186,20 @@
           printf '\nHERMES_DASHBOARD_SESSION_TOKEN=' >> "$out/env"
           openssl rand -hex 32 | tr -d '\n' >> "$out/env"
           printf '\n' >> "$out/env"
+        '';
+      };
+
+      clan.core.vars.generators."composio" = {
+        share = true;
+        prompts."api-key" = {
+          description = "Composio API key";
+          type = "hidden";
+          persist = true;
+        };
+        files."env".secret = true;
+        script = ''
+          printf 'COMPOSIO_API_KEY=' > "$out/env"
+          tr -d '\n' < "$prompts/api-key" >> "$out/env"
         '';
       };
     };
