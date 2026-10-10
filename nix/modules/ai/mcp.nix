@@ -67,7 +67,7 @@
         };
         composio = mkCompressedMcp {
           name = "composio";
-          backend = [ "https://connect.composio.dev/mcp" ];
+          backend = [ "https://connect.composio.dev/mcp" "--auth" "explicit-headers" ];
           timeout = 300;
           env.COMPOSIO_API_KEY = "$(cat ${config.sops.secrets."mcp/composio-key".path})";
           headers."x-consumer-api-key" = "\${COMPOSIO_API_KEY}";
