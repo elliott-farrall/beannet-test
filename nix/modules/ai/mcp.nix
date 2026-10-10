@@ -65,13 +65,6 @@
           name = "terraform";
           backend = [ "${pkgs.terraform-mcp-server}/bin/terraform-mcp-server" ];
         };
-        composio = mkCompressedMcp {
-          name = "composio";
-          backend = [ "https://connect.composio.dev/mcp" "--auth" "explicit-headers" ];
-          timeout = 300;
-          env.COMPOSIO_API_KEY = "$(cat ${config.sops.secrets."mcp/composio-key".path})";
-          headers."x-consumer-api-key" = "\${COMPOSIO_API_KEY}";
-        };
         azure = mkCompressedMcp {
           name = "azure";
           backend = [ "${pkgs.azure-mcp}/bin/azure-mcp" "server" "start" ];
@@ -101,7 +94,8 @@
           };
         };
         servers."composio" = {
-          command = "${servers.composio}/bin/mcp-composio";
+          url = "https://connect.composio.dev/mcp";
+          headers."x-consumer-api-key" = "{env:COMPOSIO_API_KEY}";
         };
         servers."terraform" = {
           command = "${servers.terraform}/bin/mcp-terraform";
