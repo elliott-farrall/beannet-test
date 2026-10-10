@@ -55,17 +55,16 @@
     {
       clan.core.vars.generators."nixos" = {
         share = true;
-        files."mcp-auth".secret = true;
+        files."composio".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
-          printf 'TOKEN_NIXOS=' > "$out/mcp-auth"
-          openssl rand -hex 32 >> "$out/mcp-auth"
+          printf 'COMPOSIO_TOKEN=' > "$out/composio"
+          openssl rand -hex 32 >> "$out/composio"
         '';
       };
 
-      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."nixos".files."mcp-auth".path
-      ];
+      systemd.services.mcp-auth.environment.TOKEN_NIXOS =
+        config.clan.core.vars.generators."nixos".files."composio".path;
 
       virtualisation.oci-containers.containers.nixos = {
         image = "${image.imageName}:${image.imageTag}";

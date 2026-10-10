@@ -61,20 +61,19 @@
           persist = true;
         };
         files."env".secret = true;
-        files."mcp-auth".secret = true;
+        files."composio".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
           printf 'TFE_TOKEN=' > "$out/env"
           tr -d '\n' < "$prompts/mcp" >> "$out/env"
           printf '\n' >> "$out/env"
-          printf 'TOKEN_TERRAFORM=' > "$out/mcp-auth"
-          openssl rand -hex 32 >> "$out/mcp-auth"
+          printf 'COMPOSIO_TOKEN=' > "$out/composio"
+          openssl rand -hex 32 >> "$out/composio"
         '';
       };
 
-      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."terraform".files."mcp-auth".path
-      ];
+      systemd.services.mcp-auth.environment.TOKEN_TERRAFORM =
+        config.clan.core.vars.generators."terraform".files."composio".path;
 
       virtualisation.oci-containers.containers.terraform = {
         image = "${image.imageName}:${image.imageTag}";

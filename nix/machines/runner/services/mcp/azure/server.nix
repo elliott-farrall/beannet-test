@@ -77,7 +77,7 @@
           persist = true;
         };
         files."env".secret = true;
-        files."mcp-auth".secret = true;
+        files."composio".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
           {
@@ -85,14 +85,13 @@
             printf 'AZURE_CLIENT_ID='; tr -d '\n' < "$prompts/client-id"; printf '\n'
             printf 'AZURE_CLIENT_SECRET='; tr -d '\n' < "$prompts/client-secret"; printf '\n'
           } > "$out/env"
-          printf 'TOKEN_AZURE=' > "$out/mcp-auth"
-          openssl rand -hex 32 >> "$out/mcp-auth"
+          printf 'COMPOSIO_TOKEN=' > "$out/composio"
+          openssl rand -hex 32 >> "$out/composio"
         '';
       };
 
-      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."azure".files."mcp-auth".path
-      ];
+      systemd.services.mcp-auth.environment.TOKEN_AZURE =
+        config.clan.core.vars.generators."azure".files."composio".path;
 
       virtualisation.oci-containers.containers.azure = {
         image = "${image.imageName}:${image.imageTag}";

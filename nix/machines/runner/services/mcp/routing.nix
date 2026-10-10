@@ -15,7 +15,17 @@
             if not segments:
                 return None
             var = "TOKEN_" + re.sub(r"[^A-Z0-9]", "_", segments[0].upper())
-            return os.environ.get(var)
+            file = os.environ.get(var)
+            if not file:
+                return None
+            try:
+                with open(file) as fh:
+                    for line in fh:
+                        if line.startswith("COMPOSIO_TOKEN="):
+                            return line.strip().split("=", 1)[1]
+            except OSError:
+                return None
+            return None
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):

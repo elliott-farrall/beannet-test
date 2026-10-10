@@ -86,20 +86,19 @@
           persist = true;
         };
         files."env".secret = true;
-        files."mcp-auth".secret = true;
+        files."composio".secret = true;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
           printf 'HETZNER_CLOUD_TOKEN=' > "$out/env"
           tr -d '\n' < "$prompts/cloud-token" >> "$out/env"
           printf '\n' >> "$out/env"
-          printf 'TOKEN_HETZNER=' > "$out/mcp-auth"
-          openssl rand -hex 32 >> "$out/mcp-auth"
+          printf 'COMPOSIO_TOKEN=' > "$out/composio"
+          openssl rand -hex 32 >> "$out/composio"
         '';
       };
 
-      systemd.services.mcp-auth.serviceConfig.EnvironmentFile = [
-        config.clan.core.vars.generators."hetzner".files."mcp-auth".path
-      ];
+      systemd.services.mcp-auth.environment.TOKEN_HETZNER =
+        config.clan.core.vars.generators."hetzner".files."composio".path;
 
       virtualisation.oci-containers.containers.hetzner = {
         image = "${image.imageName}:${image.imageTag}";
