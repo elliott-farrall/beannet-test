@@ -11,6 +11,8 @@ in
       disks-zfs
     ];
 
+    zramSwap.enable = true;
+
     disko.devices.disk."main".device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_115217896";
 
     boot.loader = {

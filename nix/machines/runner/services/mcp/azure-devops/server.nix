@@ -31,15 +31,15 @@
 
       supergateway = pkgs.buildNpmPackage {
         pname = "supergateway";
-        version = "4.1.0";
+        version = "4.2.0-rc.1";
         src = pkgs.fetchFromGitHub {
           owner = "supercorp-ai";
           repo = "supergateway";
-          rev = "a3ce8ba34c40f7565d1786e1dbd19621aca86093";
-          hash = "sha256-oIO+EZ+9MFw5EmsPBDyxlfmPHJQ+7JhlH9qEep2Gv+s=";
+          rev = "dc9066fa1ea3d9bc8f65f38a5be5d0bbd1085f4b";
+          hash = "sha256-P5RPgssyqarvGdgYPaEmGxrC0jZPpOxSCeT4Jif/X9I=";
         };
         nativeBuildInputs = [ pkgs.nodejs_24 ];
-        npmDepsHash = "sha256-UxX19Sgp5sTAko/bC8+qZRpy6eCpYsxc/f3D+zuMGvs=";
+        npmDepsHash = "sha256-ix1WNLU3QaTn0uAGXei4RDdpEhe6bx5OtDZhZBYVUcc=";
         buildPhase = ''
           runHook preBuild
           npm run build
@@ -86,6 +86,8 @@
         exec ${pkgs.nodejs_24}/bin/node ${supergateway}/dist/index.js \
           --stdio "${stdioCmd}" \
           --outputTransport streamableHttp \
+          --stateful \
+          --apiKey "$COMPOSIO_TOKEN" \
           --port ${toString httpPort}
       '';
 
@@ -106,15 +108,13 @@
       };
     in
     {
-      systemd.services.mcp-auth.environment.TOKEN_AZURE_DEVOPS =
-        config.clan.core.vars.generators."azure-devops".files."composio".path;
-
       virtualisation.oci-containers.containers.azure-devops = {
         image = "${image.imageName}:${image.imageTag}";
         imageFile = image;
         environmentFiles = [
           config.clan.core.vars.generators."azure".files."env".path
           config.clan.core.vars.generators."azure-devops".files."env".path
+          config.clan.core.vars.generators."azure-devops".files."composio".path
         ];
         ports = [ "127.0.0.1:${toString httpPort}:${toString httpPort}" ];
         extraOptions = [ "--security-opt=no-new-privileges:true" ];
@@ -125,7 +125,7 @@
           rule = "Host(`mcp.${config.beannet.domain}`) && PathPrefix(`/azure-devops`)";
           entryPoints = [ "websecure" ];
           service = "azure-devops";
-          middlewares = [ "mcp-auth" "mcp-stripprefix" ];
+          middlewares = [ "mcp-stripprefix" ];
           tls.certResolver = "cloudflare";
         };
         http.services.azure-devops.loadBalancer.servers = [
