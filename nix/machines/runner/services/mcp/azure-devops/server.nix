@@ -1,14 +1,11 @@
-{ config, ... }:
+{ ... }:
 
-let
-  supergatewayFor = config.flake.mcpPackages.supergateway;
-in
 {
-  flake.clan.machines."runner" = { config, pkgs, ... }:
+  flake.clan.machines."runner" = { config, pkgs, mcpPackages, ... }:
     let
       httpPort = 23386;
 
-      supergateway = supergatewayFor pkgs;
+      inherit (mcpPackages) supergateway;
 
       azureDevopsMcp = pkgs.buildNpmPackage {
         pname = "azure-devops-mcp";

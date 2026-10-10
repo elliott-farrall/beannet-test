@@ -1,14 +1,11 @@
-{ config, ... }:
+{ ... }:
 
-let
-  supergatewayFor = config.flake.mcpPackages.supergateway;
-in
 {
-  flake.clan.machines."runner" = { config, pkgs, ... }:
+  flake.clan.machines."runner" = { config, pkgs, mcpPackages, ... }:
     let
       httpPort = 23382;
 
-      supergateway = supergatewayFor pkgs;
+      inherit (mcpPackages) supergateway;
 
       entrypoint = pkgs.writeShellScript "entrypoint" ''
         exec ${pkgs.nodejs_24}/bin/node ${supergateway}/dist/index.js \

@@ -1,14 +1,11 @@
-{ config, ... }:
+{ ... }:
 
-let
-  supergatewayFor = config.flake.mcpPackages.supergateway;
-in
 {
-  flake.clan.machines."runner" = { config, pkgs, ... }:
+  flake.clan.machines."runner" = { config, pkgs, mcpPackages, ... }:
     let
       httpPort = 23383;
 
-      supergateway = supergatewayFor pkgs;
+      inherit (mcpPackages) supergateway;
 
       hetznerMcp = pkgs.buildNpmPackage {
         pname = "hetzner-mcp";
