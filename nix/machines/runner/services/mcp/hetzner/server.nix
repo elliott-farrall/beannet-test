@@ -40,7 +40,7 @@
         };
         nativeBuildInputs = [ pkgs.nodejs_24 pkgs.pkg-config pkgs.python3 ];
         buildInputs = [ pkgs.libsecret ];
-        npmDepsHash = "sha256-KBYqj19ynLGzmG9FBaHUPm3Xi5c1bTqSob7PEliSQsM=";
+        npmDepsHash = "sha256-wnQBxirXla/DEfg+rRwUOwwA3gnL0ZqYlvIZT4kdsF0=";
         buildPhase = ''
           runHook preBuild
           npm run build
