@@ -41,7 +41,6 @@
         volumes = [ "/var/lib/beeperbox:/root/.config" ];
         ports = [
           "127.0.0.1:6080:6080"
-          "127.0.0.1:23373:23380"
           "127.0.0.1:23375:23375"
         ];
         extraOptions = [ "--shm-size=256m" "--security-opt=no-new-privileges:true" ];
