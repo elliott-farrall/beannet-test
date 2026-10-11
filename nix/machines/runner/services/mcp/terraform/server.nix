@@ -70,7 +70,7 @@
           printf 'TFE_TOKEN=' > "$out/env"
           tr -d '\n' < "$prompts/mcp" >> "$out/env"
           printf '\n' >> "$out/env"
-          printf 'TOKEN_TERRAFORM=' > "$out/composio"
+          printf 'COMPOSIO_TOKEN=' > "$out/composio"
           openssl rand -hex 32 >> "$out/composio"
           printf 'elliott-farrall' > "$out/organization"
         '';
