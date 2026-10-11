@@ -27,6 +27,8 @@
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;
         };
+
+        context_servers.composio.url = "https://connect.composio.dev/mcp";
       };
     };
 
