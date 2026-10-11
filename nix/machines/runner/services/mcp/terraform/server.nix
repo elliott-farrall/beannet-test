@@ -64,13 +64,15 @@
         };
         files."env".secret = true;
         files."composio".secret = true;
+        files."organization".secret = false;
         runtimeInputs = [ pkgs.openssl ];
         script = ''
           printf 'TFE_TOKEN=' > "$out/env"
           tr -d '\n' < "$prompts/mcp" >> "$out/env"
           printf '\n' >> "$out/env"
-          printf 'COMPOSIO_TOKEN=' > "$out/composio"
+          printf 'TOKEN_TERRAFORM=' > "$out/composio"
           openssl rand -hex 32 >> "$out/composio"
+          printf 'elliott-farrall' > "$out/organization"
         '';
       };
 
