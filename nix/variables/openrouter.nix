@@ -1,5 +1,8 @@
-{ ... }:
+{ config, ... }:
 
+let
+  clanDir = config.flake.clan.directory;
+in
 {
   flake.modules.nixos.default = { ... }: {
     clan.core.vars.generators."openrouter" = {
@@ -14,6 +17,13 @@
         printf 'OPENROUTER_API_KEY=' > "$out/env"
         tr -d '\n' < "$prompts/api-key" >> "$out/env"
       '';
+    };
+  };
+
+  flake.modules.homeManager.default = { ... }: {
+    sops.secrets."openrouter/api-key" = {
+      sopsFile = "${clanDir}/vars/shared/openrouter/api-key/secret";
+      format = "binary";
     };
   };
 }

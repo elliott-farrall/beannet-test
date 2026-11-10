@@ -68,6 +68,7 @@
       # Targets managed by Catppuccin instead of Stylix.
       targets = {
         hyprlock.enable = false;
+        opencode.enable = false;
         starship.enable = false;
         zed.enable = false;
       };

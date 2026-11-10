@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.modules.homeManager.default = { ... }: {
+  flake.modules.homeManager.default = { config, lib, ... }: {
     programs.zed-editor = {
       enable = true;
       mutableUserSettings = false;
@@ -29,6 +29,12 @@
         };
 
         context_servers.composio.url = "https://connect.composio.dev/mcp";
+
+        agent_servers."OpenCode" = {
+          type = "custom";
+          command = lib.getExe config.programs.opencode.package;
+          args = [ "acp" ];
+        };
       };
     };
 
