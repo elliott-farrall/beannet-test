@@ -36,10 +36,13 @@
           "+${pkgs.coreutils}/bin/install -m 0644 -o ${config.services.openclaw-gateway.user} -g ${config.services.openclaw-gateway.group} ${jimAvatar} ${config.services.openclaw-gateway.stateDir}/workspace/avatars/jim.png"
         ];
 
+        servicePath = [ pkgs.gh ];
+
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
           config.clan.core.vars.generators."composio".files."env".path
           config.clan.core.vars.generators."openclaw".files."env".path
+          config.clan.core.vars.generators."github-token".files."env".path
         ];
 
         config = {
@@ -78,6 +81,19 @@
       ];
 
       environment.persistence.data.directories = [ config.services.openclaw-gateway.stateDir ];
+
+      clan.core.vars.generators."github-token" = {
+        files."env".secret = true;
+        prompts."token" = {
+          description = "GitHub personal access token for Jim (repo, workflow, read:org, gist)";
+          type = "hidden";
+          persist = true;
+        };
+        script = ''
+          printf 'GH_TOKEN=' > "$out/env"
+          tr -d '\n' < "$prompts/token" >> "$out/env"
+        '';
+      };
 
       clan.core.vars.generators."openclaw" = {
         files."env".secret = true;
