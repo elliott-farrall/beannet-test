@@ -40,11 +40,11 @@
         {
           "AI" = [
             {
-              "Hermes" = {
+              "OpenClaw" = {
                 icon = "chatgpt.png";
-                inherit (config.beannet.services."hermes") href;
-                description = "Hermes Agent dashboard";
-                siteMonitor = config.beannet.services."hermes".url;
+                inherit (config.beannet.services."openclaw") href;
+                description = "OpenClaw Control UI";
+                siteMonitor = config.beannet.services."openclaw".url;
               };
             }
           ];

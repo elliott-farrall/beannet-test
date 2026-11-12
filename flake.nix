@@ -130,22 +130,16 @@ rec {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.home-manager.follows = "home-manager";
     };
-    hermes-agent = {
-      url = "github:NousResearch/hermes-agent";
+    openclaw = {
+      url = "github:openclaw/nix-openclaw";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
+      inputs.flake-utils.follows = "dep_flake-utils";
       inputs.home-manager.follows = "home-manager";
+      inputs.qmd.inputs.nixpkgs.follows = "nixpkgs";
+      inputs.qmd.inputs.flake-utils.follows = "dep_flake-utils";
     };
-    hermes-proton = {
-      url = "github:droolyai/hermes-proton";
-      flake = false;
-    };
-    hermes-protonpass = {
-      url = "github:flamerged/hermes-protonpass-plugin";
-      flake = false;
-    };
-    skill-proton-pass = {
-      url = "github:tohuw/proton-pass-skill";
+    raccoon-emoji = {
+      url = "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Raccoon/Color/raccoon_color.svg";
       flake = false;
     };
 

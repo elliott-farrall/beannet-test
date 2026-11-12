@@ -19,11 +19,7 @@
           config.beannet.services."ddns".gatusConfig
           config.beannet.services."gatus".gatusConfig
           config.beannet.services."glances".gatusConfig
-          {
-            name = "hermes";
-            url = "${config.beannet.services."hermes".url}/api/status";
-            conditions = [ "[STATUS] == 200" ];
-          }
+          config.beannet.services."openclaw".gatusConfig
           config.beannet.services."homepage".gatusConfig
           config.beannet.services."lldap".gatusConfig
           config.beannet.services."traefik".gatusConfig
