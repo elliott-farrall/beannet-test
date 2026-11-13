@@ -59,8 +59,8 @@
               name = "Jim";
               avatar = "avatars/jim.png";
             };
-            model.primary = "openrouter/qwen/qwen3.8-flash";
-            modelPolicy.allow = [ "openrouter/qwen/qwen3.8-flash" ];
+            model.primary = "openrouter/qwen/qwen3.7-flash";
+            modelPolicy.allow = [ "openrouter/qwen/qwen3.7-flash" ];
             thinkingDefault = "medium";
           };
 

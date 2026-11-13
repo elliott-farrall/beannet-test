@@ -22,7 +22,7 @@
         agent = {
           default_model = {
             provider = "openrouter";
-            model = "openrouter/auto";
+            model = "qwen/qwen3.7-flash";
           };
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;

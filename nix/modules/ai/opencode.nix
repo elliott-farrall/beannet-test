@@ -7,7 +7,7 @@
       enableMcpIntegration = true;
 
       settings = {
-        model = "openrouter/openrouter/auto";
+        model = "openrouter/qwen/qwen3.7-flash";
         provider.openrouter.options.apiKey = "{file:${config.sops.secrets."openrouter/api-key".path}}";
         permission = "allow";
       };
