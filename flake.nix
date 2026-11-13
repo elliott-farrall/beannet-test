@@ -142,6 +142,10 @@ rec {
       url = "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Raccoon/Color/raccoon_color.svg";
       flake = false;
     };
+    rtk-openclaw = {
+      url = "github:rtk-ai/rtk?dir=openclaw";
+      flake = false;
+    };
 
     /* -------------------------------------------------------------------------- */
     /*                                Dependencies                                */

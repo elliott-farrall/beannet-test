@@ -847,6 +847,7 @@
         "nixpkgs": "nixpkgs_2",
         "openclaw": "openclaw",
         "raccoon-emoji": "raccoon-emoji",
+        "rtk-openclaw": "rtk-openclaw",
         "stylix": "stylix",
         "systems": "systems_2",
         "terranix": "terranix",
@@ -855,6 +856,24 @@
         "vpn-confinement": "vpn-confinement",
         "wallpapers": "wallpapers",
         "zen-browser": "zen-browser"
+      }
+    },
+    "rtk-openclaw": {
+      "flake": false,
+      "locked": {
+        "dir": "openclaw",
+        "lastModified": 1794452240,
+        "narHash": "sha256-LGQFu2tAEph4K8M2SP16D+t5dEsOTgxBvAfl/yQFRi4=",
+        "owner": "rtk-ai",
+        "repo": "rtk",
+        "rev": "2a786dca60fa4759f4f8381262a6a3b98256667a",
+        "type": "github"
+      },
+      "original": {
+        "dir": "openclaw",
+        "owner": "rtk-ai",
+        "repo": "rtk",
+        "type": "github"
       }
     },
     "sops-nix": {

@@ -36,7 +36,7 @@
           "+${pkgs.coreutils}/bin/install -m 0644 -o ${config.services.openclaw-gateway.user} -g ${config.services.openclaw-gateway.group} ${jimAvatar} ${config.services.openclaw-gateway.stateDir}/workspace/avatars/jim.png"
         ];
 
-        servicePath = [ pkgs.gh ];
+        servicePath = [ pkgs.gh pkgs.rtk ];
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
@@ -64,7 +64,17 @@
             thinkingDefault = "medium";
           };
 
-          plugins.entries.device-pair.config.publicUrl = config.beannet.services."openclaw".href;
+          plugins = {
+            load.paths = [ inputs.rtk-openclaw ];
+            entries.rtk-rewrite = {
+              enabled = true;
+              config = {
+                enabled = true;
+                verbose = false;
+              };
+            };
+            entries.device-pair.config.publicUrl = config.beannet.services."openclaw".href;
+          };
 
           mcp.servers.composio = {
             url = "https://connect.composio.dev/mcp";
