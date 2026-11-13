@@ -64,6 +64,8 @@
             thinkingDefault = "medium";
           };
 
+          models.providers.openrouter.baseUrl = "http://127.0.0.1:8787/v1";
+
           plugins = {
             load.paths = [ inputs.rtk-openclaw ];
             entries.rtk-rewrite = {
