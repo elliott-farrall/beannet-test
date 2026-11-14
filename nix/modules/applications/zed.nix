@@ -13,7 +13,9 @@
         "rlsp-yaml"
         "dockerfile"
         "terraform"
+        "git-firefly"
         "comment"
+        "make"
       ];
 
       userSettings = {
