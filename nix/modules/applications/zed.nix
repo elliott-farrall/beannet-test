@@ -23,7 +23,7 @@
         agent = {
           default_model = {
             provider = "openrouter";
-            model = "google/gemma-3-12b-it";
+            model = "z-ai/glm-5.3-flash";
           };
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;
