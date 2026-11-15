@@ -23,7 +23,7 @@
         agent = {
           default_model = {
             provider = "openrouter";
-            model = "qwen/qwen3.7-flash";
+            model = "google/gemma-3-12b-it";
           };
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;
