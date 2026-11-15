@@ -61,7 +61,6 @@
             };
             model.primary = "openrouter/qwen/qwen3.5-9b";
             modelPolicy.allow = [ "openrouter/qwen/qwen3.5-9b" ];
-            thinkingDefault = "medium";
           };
 
           plugins = {
