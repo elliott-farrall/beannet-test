@@ -59,8 +59,8 @@
               name = "Jim";
               avatar = "avatars/jim.png";
             };
-            model.primary = "openrouter/google/gemma-4-31b-it:free";
-            modelPolicy.allow = [ "openrouter/google/gemma-4-31b-it:free" ];
+            model.primary = "openrouter/mistralai/mistral-nemo";
+            modelPolicy.allow = [ "openrouter/mistralai/mistral-nemo" ];
             thinkingDefault = "medium";
           };
 
