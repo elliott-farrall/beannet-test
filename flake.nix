@@ -146,6 +146,10 @@ rec {
       url = "github:rtk-ai/rtk?dir=openclaw";
       flake = false;
     };
+    openclaw-opencode-provider = {
+      url = "https://registry.npmjs.org/@openclaw/opencode-provider/-/opencode-provider-2026.11.3.tgz";
+      flake = false;
+    };
 
     /* -------------------------------------------------------------------------- */
     /*                                Dependencies                                */

@@ -22,11 +22,16 @@
 
         agent = {
           default_model = {
-            provider = "openrouter";
-            model = "z-ai/glm-5.3-flash";
+            provider = "opencode";
+            model = "glm-5.3-flash";
           };
           tool_permissions.default = "allow";
           sandbox_permissions.allow_unsandboxed = true;
+        };
+
+        language_models.opencode = {
+          show_zen_models = false;
+          show_go_models = true;
         };
 
         context_servers.composio.url = "https://connect.composio.dev/mcp";

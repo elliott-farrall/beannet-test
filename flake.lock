@@ -775,6 +775,19 @@
         "type": "github"
       }
     },
+    "openclaw-opencode-provider": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-I4cGRYnQXfjDXUYBPnGFMbRFAWAd/q2+UgMfYGjv990=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/@openclaw/opencode-provider/-/opencode-provider-2026.11.3.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/@openclaw/opencode-provider/-/opencode-provider-2026.11.3.tgz"
+      }
+    },
     "qmd": {
       "inputs": {
         "flake-utils": [
@@ -846,6 +859,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
         "openclaw": "openclaw",
+        "openclaw-opencode-provider": "openclaw-opencode-provider",
         "raccoon-emoji": "raccoon-emoji",
         "rtk-openclaw": "rtk-openclaw",
         "stylix": "stylix",

@@ -7,7 +7,8 @@
       enableMcpIntegration = true;
 
       settings = {
-        model = "openrouter/z-ai/glm-5.3-flash";
+        model = "opencode-go/glm-5.3-flash";
+        provider.opencode-go.options.apiKey = "{file:${config.sops.secrets."opencode-go/api-key".path}}";
         provider.openrouter.options.apiKey = "{file:${config.sops.secrets."openrouter/api-key".path}}";
         permission = "allow";
       };

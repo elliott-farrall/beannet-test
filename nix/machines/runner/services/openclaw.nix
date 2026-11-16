@@ -40,6 +40,7 @@
 
         environmentFiles = [
           config.clan.core.vars.generators."openrouter".files."env".path
+          config.clan.core.vars.generators."opencode-go".files."env".path
           config.clan.core.vars.generators."composio".files."env".path
           config.clan.core.vars.generators."openclaw".files."env".path
           config.clan.core.vars.generators."github-token".files."env".path
@@ -59,12 +60,19 @@
               name = "Jim";
               avatar = "avatars/jim.png";
             };
-            model.primary = "openrouter/qwen/qwen3.5-9b";
-            modelPolicy.allow = [ "openrouter/qwen/qwen3.5-9b" ];
+            model = {
+              primary = "opencode-go/glm-5.3-flash";
+              fallbacks = [
+                "opencode/glm-5.3-flash-free"
+              ];
+            };
           };
 
           plugins = {
-            load.paths = [ inputs.rtk-openclaw ];
+            load.paths = [
+              inputs.rtk-openclaw
+              inputs.openclaw-opencode-provider
+            ];
             entries.rtk-rewrite = {
               enabled = true;
               config = {
