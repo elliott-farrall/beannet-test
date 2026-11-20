@@ -15,6 +15,8 @@
 
       nixpkgs.overlays = [ inputs.openclaw.overlays.default ];
 
+      environment.systemPackages = [ pkgs.openclaw ];
+
       beannet.services."openclaw" = {
         hostname = "127.0.0.1";
         port = 18789;
